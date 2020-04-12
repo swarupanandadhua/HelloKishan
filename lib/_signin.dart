@@ -1,10 +1,13 @@
 import 'package:farmapp/home.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:farmapp/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
-  SignInScreen({Key key, this.title}) : super(key: key);
+  SignInScreen({Key key, this.title, this.auth}) : super(key: key);
+
   final String title;
+  final BaseAuth auth;
 
   @override
   SignInScreenState createState() => SignInScreenState();
@@ -96,7 +99,7 @@ class SignInScreenState extends State<SignInScreen> {
                       child: MaterialButton(
                         minWidth: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                        onPressed: () => _validateCredentials()
+                        onPressed: () => (_validateCredentials() != null)
                             ? Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -149,13 +152,19 @@ class SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  _validateCredentials() {
+  Future<bool> _validateCredentials() async {
     print('$_email $_password');
     setState(() {
       _validEmail = (((_email != null) ? _email.length : 0) > 5);
       _validPassword = (((_password != null) ? _password.length : 0) > 5);
     });
-    return _validPassword && _validPassword;
+    // TODO: Connect with FireBase
+    bool ok = _validPassword && _validPassword;
+    if (ok) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', _email);
+    }
+    return Future(() => (ok));
   }
 
   _clearCredentialError() {

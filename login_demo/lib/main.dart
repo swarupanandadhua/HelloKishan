@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'pages/root_page.dart';
 import 'services/authentication.dart';
 
-void main() => runApp(new MyApp());
+// void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override

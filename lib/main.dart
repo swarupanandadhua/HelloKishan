@@ -122,7 +122,7 @@ class WelcomeScreen2 extends StatelessWidget {
 /*     return AlertDialog(
       title: Text('Okta Verify'),
       content: Text(
-          'Okta has blocked Zoom for security reasons. Please contact it@synopsys.com for help.'),
+          'This is an alert dialogue"),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),

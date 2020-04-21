@@ -1,6 +1,7 @@
 import 'package:farmapp/home.dart';
 import 'package:farmapp/account.dart';
 import 'package:flutter/material.dart';
+import 'history.dart';
 
 class BotNavBar extends StatefulWidget {
   final int botNavBarIdx;
@@ -47,6 +48,9 @@ class BotNavBarState extends State<BotNavBar> {
           break;
         case 1:
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AccountScreen()), (route) => false);
+          break;
+        case 3:
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HistoryScreen()), (route) => false);
           break;
         default:
           assert(false);

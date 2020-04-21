@@ -149,7 +149,7 @@ class AccountScreenState extends State<AccountScreen> {
                   children: <Widget>[
                     Container(
                       height: 165.0,
-                      width: 300.0,
+                      width: 305.0,
                       margin: EdgeInsets.all(7.0),
                       child: Card(
                         elevation: 3.0,
@@ -258,7 +258,7 @@ class AccountScreenState extends State<AccountScreen> {
                     ),
                     Container(
                       height: 130.0,
-                      width: 230.0,
+                      width: 305.0,
                       margin: EdgeInsets.all(7.0),
                       child: Card(
                         elevation: 3.0,
@@ -367,7 +367,7 @@ class AccountScreenState extends State<AccountScreen> {
                     ),
                     Container(
                       height: 130.0,
-                      width: 230.0,
+                      width: 305.0,
                       margin: EdgeInsets.all(7.0),
                       child: Card(
                         elevation: 3.0,

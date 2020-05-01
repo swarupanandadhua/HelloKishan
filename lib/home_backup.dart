@@ -1,5 +1,6 @@
 import 'package:farmapp/common.dart';
 import 'package:flutter/material.dart';
+import 'package:farmapp/models/buyer.dart';
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -13,22 +14,6 @@ class HomeScreen extends StatefulWidget {
   HomeScreenState createState() {
     return HomeScreenState();
   }
-}
-
-class Buyer {
-  String name;
-  String nickName;
-  String productName;
-  double requirement;
-  double price;
-
-  Buyer(
-    this.name,
-    this.nickName,
-    this.productName,
-    this.requirement,
-    this.price,
-  );
 }
 
 class HomeScreenState extends State<HomeScreen> {

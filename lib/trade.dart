@@ -9,6 +9,5 @@ class TradeScreenState extends State<TradeScreen> {
   @override
   Widget build(BuildContext context) {
     return null;
-    // TODO
   }
 }

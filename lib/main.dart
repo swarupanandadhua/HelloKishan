@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:farmapp/search.dart';
 import 'package:farmapp/signin.dart';
 import 'package:farmapp/home.dart';
 import 'package:farmapp/services/auth.dart';
@@ -25,7 +26,7 @@ class FarmApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         accentColor: Colors.red,
       ),
-      home: WelcomeScreen2(),
+      home: SearchScreen(),
       navigatorKey: navigatorKey,
     );
   }

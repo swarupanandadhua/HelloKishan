@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-const _rowHeight = 264.0;
-final _borderRadius = BorderRadius.circular(_rowHeight / 2);
 
-class HistoryData{
+const _rowHeight = 264.0;
+
+class HistoryData {
   final String sellerIcon;
   final String buyer;
   final String productIcon;
@@ -11,15 +11,14 @@ class HistoryData{
   final double rate;
   final double qty;
 
-
-  HistoryData({
-    @required this.sellerIcon,
-    @required this.buyer,
-    @required this.date,
-    @required this.productIcon,
-    @required this.rate,
-    @required this.qty
-  }):assert(sellerIcon != null),
+  HistoryData(
+      {@required this.sellerIcon,
+      @required this.buyer,
+      @required this.date,
+      @required this.productIcon,
+      @required this.rate,
+      @required this.qty})
+      : assert(sellerIcon != null),
         assert(buyer != null),
         assert(date != null),
         assert(productIcon != null),
@@ -27,19 +26,16 @@ class HistoryData{
         assert(qty != null);
 }
 
-class HistoryTile extends StatelessWidget{
+class HistoryTile extends StatelessWidget {
   final HistoryData data;
 
-  HistoryTile({
-    @required this.data,
-    Key key
-  }):assert(data != null);
+  HistoryTile({@required this.data, Key key}) : assert(data != null);
 
   @override
   Widget build(BuildContext context) {
     String rateText = 'rate: ₹${data.rate}/kg';
     String qtyText = 'qty: ${data.qty}kg';
-    String amountText = 'amount: ₹${data.rate*data.qty}';
+    String amountText = 'amount: ₹${data.rate * data.qty}';
     return Padding(
       padding: EdgeInsets.all(4.0),
       child: Material(
@@ -55,23 +51,14 @@ class HistoryTile extends StatelessWidget{
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-//                Hero(
-//                  tag: 'Hero',
-//                  child: Padding(
-//                    padding: EdgeInsets.all(8.0),
-//                    child: CircleAvatar(
-//                      backgroundColor: Colors.transparent,
-//                      radius: 60.0,
-//                      child: Image.asset(data.sellerIcon)
-//                    ),
-//                  ),
-//                )
                     IconButton(
                       icon: Icon(Icons.account_circle),
                       iconSize: 60.0,
+                      onPressed: null,
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10.0, 30.0, 10.0),
+                      padding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 30.0, 10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -80,15 +67,12 @@ class HistoryTile extends StatelessWidget{
                             'Sold to',
                             style: TextStyle(
                                 color: Colors.grey[350],
-                                fontWeight: FontWeight.w500
-                            ),
+                                fontWeight: FontWeight.w500),
                           ),
                           Text(
                             data.buyer,
                             style: TextStyle(
-                                color: Colors.grey[800],
-                                fontSize: 20.0
-                            ),
+                                color: Colors.grey[800], fontSize: 20.0),
                           ),
                         ],
                       ),
@@ -113,8 +97,7 @@ class HistoryTile extends StatelessWidget{
                             rateText,
                             style: TextStyle(
                                 color: Colors.grey[500],
-                                fontWeight: FontWeight.w800
-                            ),
+                                fontWeight: FontWeight.w800),
                           ),
                           SizedBox(
                             height: 10.0,
@@ -123,8 +106,7 @@ class HistoryTile extends StatelessWidget{
                             qtyText,
                             style: TextStyle(
                                 color: Colors.grey[500],
-                                fontWeight: FontWeight.w800
-                            ),
+                                fontWeight: FontWeight.w800),
                           ),
                           SizedBox(
                             height: 10.0,
@@ -133,14 +115,13 @@ class HistoryTile extends StatelessWidget{
                             amountText,
                             style: TextStyle(
                                 color: Colors.grey[500],
-                                fontWeight: FontWeight.w800
-                            ),
+                                fontWeight: FontWeight.w800),
                           )
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0,12.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 12.0),
                       child: SizedBox(
                         height: 92,
                         child: Image.asset(
@@ -163,10 +144,10 @@ class HistoryTile extends StatelessWidget{
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(
-                          'Delivery Date'
+                      Text('Delivery Date'),
+                      SizedBox(
+                        width: 32,
                       ),
-                      SizedBox(width: 32,),
                       Icon(Icons.check),
                     ],
                   ),

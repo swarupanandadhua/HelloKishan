@@ -1,6 +1,5 @@
 import 'package:farmapp/common.dart';
 import 'package:flutter/material.dart';
-import 'package:farmapp/models/buyer.dart';
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -17,23 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  var buyerList = new List();
-
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < 12; i++) {
-      buyerList.insert(
-        i,
-        Buyer(
-          'Buyer Name $i',
-          'Nick$i',
-          'Carrot',
-          16.0 * (i + 1),
-          15.0 + i - (i % 3),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('FarmApp'),

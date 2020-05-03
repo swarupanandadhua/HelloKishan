@@ -153,18 +153,21 @@ class SignInScreenState extends State<SignInScreen> {
   }
 
   Future<bool> _validateCredentials() async {
-    print('$_email $_password');
     setState(() {
       _validEmail = (((_email != null) ? _email.length : 0) > 5);
       _validPassword = (((_password != null) ? _password.length : 0) > 5);
     });
-    // TODO: Connect with FireBase
-    bool ok = _validPassword && _validPassword;
-    if (ok) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('email', _email);
+    if (_validEmail && _validPassword) {
+      String uid;
+      Auth().signIn(_email, _password).then((val) => uid = val);
+      if (uid != null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('email', _email);
+        prefs.setString('uid', uid);
+      }
+      return Future(() => (uid != null));
     }
-    return Future(() => (ok));
+    return Future(() => false);
   }
 
   _clearCredentialError() {

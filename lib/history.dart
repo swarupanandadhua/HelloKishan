@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:farmapp/models/transaction.dart';
+import 'package:farmapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'components/historyComponent.dart';
 import 'common.dart';

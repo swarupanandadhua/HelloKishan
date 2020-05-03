@@ -1,6 +1,9 @@
 import 'package:farmapp/home.dart';
 import 'package:farmapp/account.dart';
+import 'package:farmapp/services/auth.dart';
+import 'package:farmapp/signin.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'history.dart';
 
 class BotNavBar extends StatefulWidget {
@@ -15,7 +18,7 @@ class BotNavBar extends StatefulWidget {
 
 class BotNavBarState extends State<BotNavBar> {
   int botNavBarIdx;
-  
+
   BotNavBarState(this.botNavBarIdx);
 
   @override
@@ -24,13 +27,22 @@ class BotNavBarState extends State<BotNavBar> {
       elevation: 16.0,
       type: BottomNavigationBarType.fixed,
       items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
         BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle), title: Text('Profile')),
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.import_export), title: Text('Trade')),
+          icon: Icon(Icons.account_circle),
+          title: Text('Profile'),
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.history), title: Text('History')),
+          icon: Icon(Icons.import_export),
+          title: Text('Trade'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.history),
+          title: Text('History'),
+        ),
       ],
       currentIndex: botNavBarIdx,
       fixedColor: Colors.indigo,
@@ -39,18 +51,29 @@ class BotNavBarState extends State<BotNavBar> {
   }
 
   void onItemTapped(int value) {
-    // print("Tapped: $value");
     setState(() {
       botNavBarIdx = value;
-      switch(value) {
+      switch (value) {
         case 0:
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false,
+          );
           break;
         case 1:
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AccountScreen()), (route) => false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => AccountScreen()),
+            (route) => false,
+          );
           break;
         case 3:
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HistoryScreen()), (route) => false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HistoryScreen()),
+            (route) => false,
+          );
           break;
         default:
           assert(false);
@@ -76,7 +99,10 @@ class LeftNavigationDrawer extends StatelessWidget {
             child: Container(
               height: 120,
               child: DrawerHeader(
-                child: Text(name, style: TextStyle(fontSize: 22, color: Colors.white)),
+                child: Text(
+                  name,
+                  style: TextStyle(fontSize: 22, color: Colors.white),
+                ),
                 decoration: BoxDecoration(color: Colors.indigo),
               ),
             ),
@@ -111,9 +137,16 @@ class LeftNavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text("Sign Out"),
-            onTap: () {
-              // Navigator.pop(context);
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+            onTap: () async {
+              Auth().signOut();
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.remove('email');
+              prefs.remove('uid');
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignInScreen()),
+              );
             },
           ),
         ],

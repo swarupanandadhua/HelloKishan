@@ -18,8 +18,14 @@ class Auth implements BaseAuth {
       email: email,
       password: password,
     );
-    FirebaseUser user = result.user;
-    return user.uid;
+    if (result == null) {
+      print("Error signing in\n");
+      return null;
+    } else {
+      String uid = result.user.uid;
+      print("Signed in as $uid\n");
+      return uid;
+    }
   }
 
   Future<String> signUp(String email, String password) async {
@@ -37,7 +43,13 @@ class Auth implements BaseAuth {
   }
 
   Future<void> signOut() async {
-    return _auth.signOut();
+    Future<void> result = _auth.signOut();
+    if (result == null) {
+      print('Error Singing Out\n');
+    } else {
+      print('Signed Out successfully\n');
+    }
+    return result;
   }
 
   Future<void> sendEmailVerification() async {

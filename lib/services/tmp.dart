@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:farmapp/models/models.dart';
 
 void uploadUser() {
   Map<String, dynamic> doc = Map<String, dynamic>();
@@ -41,26 +40,17 @@ void uploadTransaction() {
   Firestore.instance.document("/transaction/U00006").setData(doc);
 }
 
-void quickSignIn() async {
+Future<String> quickSignIn() async {
   AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(
     email: "swarup@gmail.com",
     password: "swarup123",
   );
   if (result == null) {
     print("Error signing in\n");
+    return null;
   } else {
     String uid = result.user.uid;
     print("Signed in as $uid\n");
+    return uid;
   }
-}
-
-void fetchRequirements(List<Requirement> requirementList) async {
-  Firestore.instance.collection('requirement').getDocuments().then((snapshot) {
-    snapshot.documents.forEach((doc) {
-      Requirement r = Requirement(
-        uid: doc["user"],
-      );
-      print(r.uid);
-    });
-  });
 }

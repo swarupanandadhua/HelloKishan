@@ -25,6 +25,7 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   firebase_storage:
+  firebase_image:
 
   shared_preferences:
   image_picker:

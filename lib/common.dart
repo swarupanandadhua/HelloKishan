@@ -1,5 +1,6 @@
 import 'package:farmapp/home.dart';
 import 'package:farmapp/account.dart';
+import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/auth.dart';
 import 'package:farmapp/signin_backup.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,11 @@ class LeftNavigationDrawer extends StatelessWidget {
           ListTile(
             title: Text("Sign Out"),
             onTap: () async {
-                await _auth.signOut();
+              await _auth.signOut();
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                  builder: (context) => Wrapper()),
+                    (route) => false,
+                );
             },
           ),
         ],

@@ -1,8 +1,11 @@
+import 'package:farmapp/main_backup.dart';
 import 'package:farmapp/screens/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/auth.dart';
+import 'dart:async';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,7 +21,14 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
           accentColor: Colors.red,
         ),
-        home: Wrapper(),
+        home: SplashScreen(
+            seconds: 3,
+            navigateAfterSeconds: new Wrapper(),
+            image: new Image.asset('images/app_logo.jpg'),
+            backgroundColor: Colors.white,
+            photoSize: 120.0,
+            loaderColor: Colors.indigo
+        ),
       ),
     );
   }

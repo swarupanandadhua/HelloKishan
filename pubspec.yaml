@@ -28,6 +28,8 @@ dependencies:
   firebase_image:
   provider: ^4.0.5+1
 
+  splashscreen:
+
   shared_preferences: ^0.5.6+3
   image_picker:
   flutter_spinkit:

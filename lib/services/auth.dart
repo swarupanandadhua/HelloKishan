@@ -18,14 +18,8 @@ class Auth implements BaseAuth {
       email: email,
       password: password,
     );
-    if (result == null) {
-      print("Error signing in\n");
-      return null;
-    } else {
-      String uid = result.user.uid;
-      print("Signed in as $uid\n");
-      return uid;
-    }
+    FirebaseUser user = result.user;
+    return user.uid;
   }
 
   Future<String> signUp(String email, String password) async {
@@ -43,13 +37,13 @@ class Auth implements BaseAuth {
   }
 
   Future<void> signOut() async {
-    Future<void> result = _auth.signOut();
-    if (result == null) {
-      print('Error Singing Out\n');
-    } else {
-      print('Signed Out successfully\n');
+    try {
+      print('signed out');
+      return await _auth.signOut();
+    } catch(e){
+      print(e.toString());
+      return null;
     }
-    return result;
   }
 
   Future<void> sendEmailVerification() async {
@@ -60,5 +54,43 @@ class Auth implements BaseAuth {
   Future<bool> isEmailVerified() async {
     FirebaseUser user = await _auth.currentUser();
     return user.isEmailVerified;
+  }
+
+  Stream<FirebaseUser> get user {
+    return _auth.onAuthStateChanged;
+  }
+
+  Future signInAnon() async {
+    try {
+      AuthResult result = await _auth.signInAnonymously();
+      FirebaseUser user = result.user;
+      return user.uid;
+    }
+    catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future registerWithEmailPassword(String email, String password) async {
+    try {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = result.user;
+      return user;
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+  }
+
+  Future signInWithEmailPassword(String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = result.user;
+      return user;
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:farmapp/home.dart';
 import 'package:farmapp/account.dart';
 import 'package:farmapp/services/auth.dart';
-import 'package:farmapp/signin.dart';
+import 'package:farmapp/signin_backup.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'history.dart';
@@ -89,6 +89,9 @@ class LeftNavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final Auth _auth = new Auth();
+
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
       child: Drawer(
@@ -138,15 +141,7 @@ class LeftNavigationDrawer extends StatelessWidget {
           ListTile(
             title: Text("Sign Out"),
             onTap: () async {
-              Auth().signOut();
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.remove('email');
-              prefs.remove('uid');
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignInScreen()),
-              );
+                await _auth.signOut();
             },
           ),
         ],

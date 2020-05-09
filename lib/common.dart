@@ -1,4 +1,4 @@
-import 'package:farmapp/home.dart';
+import 'package:farmapp/screens/home/home.dart';
 import 'package:farmapp/screens/account/account.dart';
 import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/auth.dart';

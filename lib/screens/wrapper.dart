@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:farmapp/screens/authenticate/Authenticate.dart';
+import 'package:farmapp/screens/account/auth.dart';
 import 'package:farmapp/screens/home/home.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +10,6 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<FirebaseUser>(context);
     print(user);
 
-    return (user == null) ? HomeScreen2() : Authenticate();
+    return (user == null) ? HomeScreen() : Authenticate();
   }
 }

@@ -1,6 +1,6 @@
 /* TODO: Merge this file with ./signin.dart */
 
-import 'package:farmapp/home.dart';
+import 'package:farmapp/screens/home/home.dart';
 import 'package:farmapp/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

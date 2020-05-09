@@ -1,9 +1,5 @@
-import 'package:farmapp/home.dart';
-import 'package:farmapp/screens/authenticate/register.dart';
-import '../home/home.dart';
 import 'package:farmapp/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   SignInScreen({this.toggleView});
@@ -17,7 +13,6 @@ class SignInScreenState extends State<SignInScreen> {
   final Auth _auth = Auth();
   final _formKey = GlobalKey<FormState>();
   String error = '';
-
 
   TextStyle style = TextStyle(
     fontFamily: 'Montserrat',
@@ -68,12 +63,12 @@ class SignInScreenState extends State<SignInScreen> {
                       TextFormField(
                         style: style,
                         validator: (val) {
-                          Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                          Pattern pattern =
+                              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                           RegExp regex = new RegExp(pattern);
-                          if (!regex.hasMatch(val))
-                            return 'Enter Valid Email';
-                          else
-                            return null;
+                          return (!regex.hasMatch(val))
+                              ? 'Enter Valid Email'
+                              : null;
                         },
                         onChanged: (val) => (_email = val),
                         decoration: InputDecoration(
@@ -92,7 +87,8 @@ class SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 25.0),
                       TextFormField(
                         style: style,
-                        validator: (val) => val.length < 6 ? "Enter valid Password" : null,
+                        validator: (val) =>
+                            val.length < 6 ? "Enter valid Password" : null,
                         onChanged: (val) => (_password = val),
                         obscureText: true,
                         decoration: InputDecoration(
@@ -118,8 +114,9 @@ class SignInScreenState extends State<SignInScreen> {
                           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
-                              dynamic result = await _auth.signInWithEmailPassword(_email, _password);
-                              if(result == null) {
+                              dynamic result = await _auth
+                                  .signInWithEmailPassword(_email, _password);
+                              if (result == null) {
                                 setState(() {
                                   error = 'Credential error';
                                 });
@@ -138,7 +135,8 @@ class SignInScreenState extends State<SignInScreen> {
                       ),
                       SizedBox(height: 15.0),
                       GestureDetector(
-                        onTap: () => print('TODO: Invoke FORGOT PASSWORD method'),
+                        onTap: () =>
+                            print('TODO: Invoke FORGOT PASSWORD method'),
                         child: SizedBox(
                           height: 15.0,
                           child: Text(

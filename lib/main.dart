@@ -1,16 +1,13 @@
-import 'package:farmapp/main_backup.dart';
 import 'package:farmapp/screens/wrapper.dart';
+import 'package:farmapp/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'services/auth.dart';
-import 'dart:async';
 import 'package:splashscreen/splashscreen.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(FarmApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class FarmApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<FirebaseUser>.value(
@@ -27,8 +24,7 @@ class MyApp extends StatelessWidget {
             image: new Image.asset('images/app_logo.jpg'),
             backgroundColor: Colors.white,
             photoSize: 120.0,
-            loaderColor: Colors.indigo
-        ),
+            loaderColor: Colors.indigo),
       ),
     );
   }

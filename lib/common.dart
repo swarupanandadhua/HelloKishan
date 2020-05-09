@@ -2,10 +2,8 @@ import 'package:farmapp/home.dart';
 import 'package:farmapp/account.dart';
 import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/auth.dart';
-import 'package:farmapp/signin_backup.dart';
+import 'package:farmapp/history.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'history.dart';
 
 class BotNavBar extends StatefulWidget {
   final int botNavBarIdx;
@@ -90,7 +88,6 @@ class LeftNavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final Auth _auth = new Auth();
 
     return SizedBox(
@@ -143,10 +140,11 @@ class LeftNavigationDrawer extends StatelessWidget {
             title: Text("Sign Out"),
             onTap: () async {
               await _auth.signOut();
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                  builder: (context) => Wrapper()),
-                    (route) => false,
-                );
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Wrapper()),
+                (route) => false,
+              );
             },
           ),
         ],

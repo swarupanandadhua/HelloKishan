@@ -1,10 +1,7 @@
-import 'package:farmapp/screens/authenticate/signIn.dart';
 import 'package:farmapp/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterScreen extends StatefulWidget {
-
   final Function toggleView;
   RegisterScreen({this.toggleView});
 
@@ -13,16 +10,12 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-
   final _formKey = GlobalKey<FormState>();
   String error = '';
   final Auth _auth = Auth();
 
   String _email = '';
   String _password = '';
-
-  bool _validEmail = true;
-  bool _validPassword = true;
 
   final TextStyle style = TextStyle(
     fontFamily: 'Montserrat',
@@ -44,12 +37,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       validator: (val) {
-        Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+        Pattern pattern =
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
         RegExp regex = new RegExp(pattern);
-        if (!regex.hasMatch(val))
+        if (!regex.hasMatch(val)) {
           return 'Enter Valid Email';
-        else
+        } else {
           return null;
+        }
       },
       style: style,
       onChanged: (val) => (_email = val),
@@ -101,8 +96,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           if (_formKey.currentState.validate()) {
-            dynamic result = await _auth.registerWithEmailPassword(_email, _password);
-            if(result == null) {
+            dynamic result =
+                await _auth.registerWithEmailPassword(_email, _password);
+            if (result == null) {
               setState(() {
                 error = 'User already exists';
               });
@@ -172,7 +168,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   registerButton(),
                   SizedBox(height: 15.0),
                   goSignInScreen(),
-
                 ],
               ),
             ),

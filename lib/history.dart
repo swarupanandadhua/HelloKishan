@@ -1,8 +1,9 @@
 import 'dart:io';
+
+import 'package:farmapp/common.dart';
+import 'package:farmapp/components/historyComponent.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:flutter/material.dart';
-import 'components/historyComponent.dart';
-import 'common.dart';
 
 class HistoryScreen extends StatefulWidget {
   @override
@@ -10,42 +11,32 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class HistoryScreenState extends State<HistoryScreen> {
-  HistoryData temp = HistoryData(
-      buyer: 'Rahul Shaikh',
-      date: DateTime.now(),
-      productIcon: '...',
+  Transaction temp = Transaction(
+    secondPartyName: 'Rahul Shaikh',
+    qty: 10,
+    rate: 10.0,
+  );
+  var datas = <Transaction>[
+    Transaction(
+      secondPartyName: 'Buyer 1',
       qty: 10,
       rate: 10.0,
-      sellerIcon: '...');
-  var datas = <HistoryData>[
-    HistoryData(
-        buyer: 'Buyer 1',
-        date: DateTime.now(),
-        productIcon: '...',
-        qty: 10,
-        rate: 10.0,
-        sellerIcon: '...'),
-    HistoryData(
-        buyer: 'Buyer 2',
-        date: DateTime.now(),
-        productIcon: '...',
-        qty: 20,
-        rate: 50.0,
-        sellerIcon: '...'),
-    HistoryData(
-        buyer: 'Buyer 3',
-        date: DateTime.now(),
-        productIcon: '...',
-        qty: 12,
-        rate: 5.0,
-        sellerIcon: '...'),
-    HistoryData(
-        buyer: 'Buyer 20',
-        date: DateTime.now(),
-        productIcon: '...',
-        qty: 12,
-        rate: 5.0,
-        sellerIcon: '...'),
+    ),
+    Transaction(
+      secondPartyName: 'Buyer 2',
+      qty: 20,
+      rate: 50.0,
+    ),
+    Transaction(
+      secondPartyName: 'Buyer 3',
+      qty: 12,
+      rate: 5.0,
+    ),
+    Transaction(
+      secondPartyName: 'Buyer 20',
+      qty: 12,
+      rate: 5.0,
+    ),
   ];
 
   Future<List<Transaction>> getTransactions() async {

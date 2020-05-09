@@ -1,33 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:farmapp/models/models.dart';
 import 'package:flutter/material.dart';
 
-const _rowHeight = 264.0;
-
-class HistoryData {
-  final String sellerIcon;
-  final String buyer;
-  final String productIcon;
-  final DateTime date;
-  final double rate;
-  final double qty;
-
-  HistoryData(
-      {@required this.sellerIcon,
-      @required this.buyer,
-      @required this.date,
-      @required this.productIcon,
-      @required this.rate,
-      @required this.qty})
-      : assert(sellerIcon != null),
-        assert(buyer != null),
-        assert(date != null),
-        assert(productIcon != null),
-        assert(rate != null),
-        assert(qty != null);
-}
-
 class HistoryTile extends StatelessWidget {
-  final HistoryData data;
+  final Transaction data;
 
   HistoryTile({@required this.data, Key key}) : assert(data != null);
 
@@ -43,7 +18,7 @@ class HistoryTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         elevation: 8.0,
         child: Container(
-          height: _rowHeight,
+          height: 264.0,
           child: Padding(
             padding: EdgeInsets.all(4.0),
             child: Column(
@@ -70,7 +45,7 @@ class HistoryTile extends StatelessWidget {
                                 fontWeight: FontWeight.w500),
                           ),
                           Text(
-                            data.buyer,
+                            data.secondPartyName,
                             style: TextStyle(
                                 color: Colors.grey[800], fontSize: 20.0),
                           ),

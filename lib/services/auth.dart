@@ -40,7 +40,7 @@ class Auth implements BaseAuth {
     try {
       print('signed out');
       return await _auth.signOut();
-    } catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -65,8 +65,7 @@ class Auth implements BaseAuth {
       AuthResult result = await _auth.signInAnonymously();
       FirebaseUser user = result.user;
       return user.uid;
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -74,7 +73,8 @@ class Auth implements BaseAuth {
 
   Future registerWithEmailPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       FirebaseUser user = result.user;
       return user;
     } catch (error) {
@@ -85,7 +85,8 @@ class Auth implements BaseAuth {
 
   Future signInWithEmailPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       FirebaseUser user = result.user;
       return user;
     } catch (error) {

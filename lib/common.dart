@@ -88,7 +88,7 @@ class LeftNavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Auth _auth = new Auth();
+    final Auth _auth = Auth();
 
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,

@@ -31,7 +31,7 @@ class SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SingleChildScrollView(
           child: Center(

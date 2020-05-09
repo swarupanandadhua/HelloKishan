@@ -20,8 +20,8 @@ class FarmApp extends StatelessWidget {
         ),
         home: SplashScreen(
             seconds: 3,
-            navigateAfterSeconds: new Wrapper(),
-            image: new Image.asset('images/app_logo.jpg'),
+            navigateAfterSeconds: Wrapper(),
+            image: Image.asset('images/app_logo.jpg'),
             backgroundColor: Colors.white,
             photoSize: 120.0,
             loaderColor: Colors.indigo),

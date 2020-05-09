@@ -1,8 +1,8 @@
 import 'package:farmapp/home.dart';
-import 'package:farmapp/account.dart';
+import 'package:farmapp/screens/account/account.dart';
 import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/auth.dart';
-import 'package:farmapp/history.dart';
+import 'package:farmapp/screens/history/history.dart';
 import 'package:flutter/material.dart';
 
 class BotNavBar extends StatefulWidget {

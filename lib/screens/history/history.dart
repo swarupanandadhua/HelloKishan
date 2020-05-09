@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:farmapp/common.dart';
-import 'package:farmapp/components/historyComponent.dart';
+import 'package:farmapp/screens/history/component.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:flutter/material.dart';
 

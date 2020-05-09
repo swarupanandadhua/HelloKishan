@@ -1,5 +1,5 @@
-import 'package:farmapp/screens/authenticate/signIn.dart';
-import 'package:farmapp/screens/authenticate/register.dart';
+import 'package:farmapp/screens/account/signin.dart';
+import 'package:farmapp/screens/account/register.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {

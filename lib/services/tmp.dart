@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 
 void uploadUser() {
   Map<String, dynamic> doc = Map<String, dynamic>();
@@ -53,4 +54,14 @@ Future<String> quickSignIn() async {
     print("Signed in as $uid\n");
     return uid;
   }
+}
+
+Future<Position> getLocation() async {
+  Position position = await Geolocator()
+      .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  if (position == null) {
+    position = await Geolocator()
+        .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+  return position;
 }

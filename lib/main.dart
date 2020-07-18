@@ -1,4 +1,4 @@
-import 'package:farmapp/screens/wrapper.dart';
+import 'package:farmapp/screens/post_requirement/post_requirement.dart';
 import 'package:farmapp/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +13,22 @@ class FarmApp extends StatelessWidget {
     return StreamProvider<FirebaseUser>.value(
       value: Auth().user,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'FarmApp',
         theme: ThemeData(
           primarySwatch: Colors.indigo,
-          accentColor: Colors.red,
+          accentColor: Colors.indigoAccent,
         ),
         home: SplashScreen(
-            seconds: 3,
-            navigateAfterSeconds: Wrapper(),
-            image: Image.asset('images/app_logo.jpg'),
-            backgroundColor: Colors.white,
-            photoSize: 120.0,
-            loaderColor: Colors.indigo),
+          seconds: 3,
+          // navigateAfterSeconds: Wrapper(),
+          // navigateAfterSeconds: SearchScreen(),
+          navigateAfterSeconds: PostRequirementScreen(),
+          image: Image.asset('images/app_logo.jpg'),
+          backgroundColor: Colors.white,
+          photoSize: 150.0,
+          loaderColor: Colors.white,
+        ),
       ),
     );
   }

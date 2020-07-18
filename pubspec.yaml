@@ -21,6 +21,7 @@ dependencies:
   shared_preferences:
   splashscreen:
   universal_html:
+  validate:
 
 environment:
   sdk:

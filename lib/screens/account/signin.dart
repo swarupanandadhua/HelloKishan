@@ -42,7 +42,7 @@ class SignInScreenState extends State<SignInScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(height: 60.0), // Breathing space
+                      SizedBox(height: 60.0),
                       SizedBox(
                         height: 150,
                         child: Image.asset(
@@ -51,7 +51,6 @@ class SignInScreenState extends State<SignInScreen> {
                           width: 150,
                         ),
                       ),
-
                       SizedBox(height: 12.0),
                       Text(
                         error,
@@ -117,9 +116,15 @@ class SignInScreenState extends State<SignInScreen> {
                               dynamic result = await _auth
                                   .signInWithEmailPassword(_email, _password);
                               if (result == null) {
+                                AlertDialog(
+                                  title: Text('Dialog Title'),
+                                  content: Text('This is my content'),
+                                );
+                                /* 
+
                                 setState(() {
                                   error = 'Credential error';
-                                });
+                                }); */
                               }
                             }
                           },

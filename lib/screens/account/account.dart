@@ -1,4 +1,6 @@
+import 'package:farmapp/assets/data/constants.dart';
 import 'package:farmapp/common.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -44,9 +46,14 @@ class AccountScreenState extends State<AccountScreen> {
                           height: 100.0,
                           margin: const EdgeInsets.all(10.0),
                           child: ClipOval(
-                            child: Image.network(
-                              'https://scontent.frdp1-1.fna.fbcdn.net/v/t1.0-9/83505123_2585879231521062_5611223821303414784_o.jpg?_nc_cat=108&_nc_sid=85a577&_nc_ohc=n8AoxCtgxc8AX_jkXKd&_nc_ht=scontent.frdp1-1.fna&oh=d6118752966c28fcecf10cd3b8ca8511&oe=5E92B26C',
+                            child: Image(
+                              image: FirebaseImage(
+                                  FIREBASE_BASE_URL + "/user/U00000.jpg"),
                             ),
+
+                            /*Image.network(
+                              'gs://farmapp-2d60d.appspot.com/user/U00000.jpg',
+                            ),*/
                           ),
                         ),
                       ),

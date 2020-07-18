@@ -8,8 +8,9 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<FirebaseUser>(context);
+    print("[SWARUP] Current user:");
     print(user);
 
-    return (user == null) ? HomeScreen() : Authenticate();
+    return (user == null) ? Authenticate() : HomeScreen();
   }
 }

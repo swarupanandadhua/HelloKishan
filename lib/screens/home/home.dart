@@ -23,6 +23,15 @@ class HomeScreenState extends State<HomeScreen> {
         title: Text('FarmApp'),
       ),
       drawer: LeftNavigationDrawer(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        elevation: 16.0,
+        child: Icon(Icons.add),
+        backgroundColor: Colors.indigo,
+        onPressed: () {
+          print('FAB Pressed');
+        },
+      ),
       body: Center(
         child: Scaffold(
           body: Center(

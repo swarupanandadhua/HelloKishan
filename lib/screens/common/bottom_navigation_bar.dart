@@ -1,6 +1,7 @@
 import 'package:farmapp/screens/home/home.dart';
 import 'package:farmapp/screens/account/account.dart';
 import 'package:farmapp/screens/history/history.dart';
+import 'package:farmapp/screens/trade/trade.dart';
 import 'package:flutter/material.dart';
 
 class BotNavBar extends StatefulWidget {
@@ -62,6 +63,13 @@ class BotNavBarState extends State<BotNavBar> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => AccountScreen()),
+            (route) => false,
+          );
+          break;
+        case 2:
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => TradeScreen()),
             (route) => false,
           );
           break;

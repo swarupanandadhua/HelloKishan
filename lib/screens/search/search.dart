@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
+import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:farmapp/models/models.dart';
@@ -46,14 +48,30 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? CircularProgressIndicator()
-        : Container(
-            child: ListView.builder(
-              itemBuilder: buildSearchItemTile,
-              itemCount: requirementList.length,
+    return Scaffold(
+      appBar: AppBar(title: Text('Serach Results')),
+      drawer: LeftNavigationDrawer(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        elevation: 16.0,
+        child: Icon(Icons.add),
+        backgroundColor: Colors.indigo,
+        onPressed: () {
+          print('FAB Pressed');
+        },
+      ),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              child: ListView.builder(
+                itemBuilder: buildSearchItemTile,
+                itemCount: requirementList.length,
+              ),
             ),
-          );
+      bottomNavigationBar: BotNavBar(botNavBarIdx: 0),
+    );
   }
 
   Widget buildSearchItemTile(BuildContext ctxt, int i) {

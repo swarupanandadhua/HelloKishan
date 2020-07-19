@@ -64,6 +64,21 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           key: this._formKey,
           child: ListView(
             children: <Widget>[
+              DropdownButtonFormField(
+                items: [
+                  DropdownMenuItem(
+                    value: "Buy",
+                    child: Text('I want to Buy'),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: "Sell",
+                    child: Text('I want to Sell'),
+                  ),
+                ],
+                onChanged: (value) {
+                  print("Dropdown clicked: $value");
+                },
+              ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(

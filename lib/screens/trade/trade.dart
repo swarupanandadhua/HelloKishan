@@ -8,6 +8,8 @@ class TradeScreen extends StatefulWidget {
 class TradeScreenState extends State<TradeScreen> {
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Center(
+      child: Text('TODO'),
+    );
   }
 }

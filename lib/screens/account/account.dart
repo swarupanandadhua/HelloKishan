@@ -1,5 +1,6 @@
 import 'package:farmapp/assets/data/constants.dart';
-import 'package:farmapp/common.dart';
+import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
+import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 

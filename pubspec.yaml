@@ -22,6 +22,7 @@ dependencies:
   splashscreen:
   universal_html:
   validate:
+  flutter_typeahead:
 
 environment:
   sdk:

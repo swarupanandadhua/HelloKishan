@@ -1,5 +1,6 @@
 import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
 import 'package:farmapp/screens/common/left_navigation_drawer.dart';
+import 'package:farmapp/screens/post_requirement/post_requirement.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,7 +29,10 @@ class HomeScreenState extends State<HomeScreen> {
         child: Icon(Icons.add),
         backgroundColor: Colors.indigo,
         onPressed: () {
-          print('FAB Pressed');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PostRequirementScreen()),
+          );
         },
       ),
       body: Center(

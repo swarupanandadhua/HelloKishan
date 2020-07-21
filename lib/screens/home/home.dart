@@ -21,7 +21,9 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('FarmApp')),
+      appBar: AppBar(
+        title: Text('FarmApp'),
+      ),
       drawer: LeftNavigationDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
@@ -72,18 +74,23 @@ class SellerCard extends StatelessWidget {
             ButtonBar(
               children: <Widget>[
                 FlatButton(
-                    child: const Text('BUY'),
-                    onPressed: () {
-                      Scaffold.of(context).showSnackBar(SnackBar(
+                  child: const Text('BUY'),
+                  onPressed: () {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
                         content: const Text('BUY Clicked'),
-                      ));
-                    }),
+                      ),
+                    );
+                  },
+                ),
                 FlatButton(
                   child: const Text('CALL'),
                   onPressed: () {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: const Text('CALL Clicked'),
-                    ));
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('CALL Clicked'),
+                      ),
+                    );
                   },
                 ),
               ],

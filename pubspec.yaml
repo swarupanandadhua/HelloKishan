@@ -24,6 +24,8 @@ dependencies:
   universal_html:
   validate:
   flutter_typeahead:
+  floating_search_bar:
+  url_launcher:
 
 environment:
   sdk:

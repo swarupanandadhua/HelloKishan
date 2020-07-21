@@ -49,7 +49,7 @@ class AccountScreenState extends State<AccountScreen> {
                           child: ClipOval(
                             child: Image(
                               image: FirebaseImage(
-                                  FIREBASE_BASE_URL + "/user/U00000.jpg"),
+                                  FIRESTORE_URL + "/user/U00000.jpg"),
                             ),
 
                             /*Image.network(

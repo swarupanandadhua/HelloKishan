@@ -24,10 +24,17 @@ class FarmApp extends StatelessWidget {
           // navigateAfterSeconds: Wrapper(),
           navigateAfterSeconds: SearchScreen(),
           // navigateAfterSeconds: PostRequirementScreen(),
+          // navigateAfterSeconds: OTPLoginScreen(),
           image: Image.asset('images/app_logo.jpg'),
           backgroundColor: Colors.white,
-          photoSize: 150.0,
+          photoSize: 130.0,
           loaderColor: Colors.white,
+          title: Text(
+            "FarmApp",
+            style: TextStyle(
+              fontSize: 40.0,
+            ),
+          ),
         ),
       ),
     );

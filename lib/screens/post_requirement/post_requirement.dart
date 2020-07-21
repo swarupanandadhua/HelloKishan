@@ -42,7 +42,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      print('Product Name: ${_requirement.productName}');
+      print('Product Name: ${_requirement.product}');
       print('Rate: ${_requirement.rate}');
     }
   }
@@ -96,7 +96,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 ),
                 validator: this._validateProductName,
                 onSaved: (String value) {
-                  this._requirement.productName = value;
+                  this._requirement.product = value;
                 },
               ),
               TextFormField(
@@ -110,7 +110,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 ),
                 validator: this._validateRate,
                 onSaved: (String value) {
-                  this._requirement.rate = num.tryParse(value);
+                  this._requirement.rate = value;
                 },
               ),
               Container(

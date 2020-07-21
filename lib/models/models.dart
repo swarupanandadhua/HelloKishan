@@ -1,29 +1,38 @@
+import 'package:farmapp/assets/data/constants.dart';
 import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Requirement {
   String rid;
-  String uid, name, nickName, profilePictureUrl;
-  String pid, productName;
-  double qty, rate;
+  String uid, name, nick, userImage, mobile;
+  String pid, product, productImage;
+  String qty, rate;
   TradeType wantsTo;
   Timestamp postedOn;
   Geolocation location;
+  String displayString, verb;
 
   Requirement({
     this.rid,
     this.uid,
     this.name,
-    this.nickName,
-    this.profilePictureUrl,
+    this.nick,
+    this.mobile,
     this.pid,
-    this.productName,
+    this.product,
     this.qty,
     this.rate,
     this.wantsTo,
     this.postedOn,
     this.location,
-  });
+  }) {
+    // this.userImage = "$FIRESTORE_URL/user/$uid.jpg";
+    this.userImage = "$FIRESTORE_URL/user/U00000.jpg";
+    // this.productImage = "$FIRESTORE_URL/product/$pid.jpg";
+    this.productImage = "$FIRESTORE_URL/product/P000.jpg";
+    this.verb = (wantsTo == TradeType.BUY) ? "buy" : "sell";
+    this.displayString = "$name wants to $verb $qty kg $product";
+  }
 }
 
 enum TransactionStatus {

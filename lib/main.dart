@@ -1,4 +1,4 @@
-import 'package:farmapp/screens/account/account.dart';
+import 'package:farmapp/screens/history/history.dart';
 import 'package:farmapp/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,8 @@ class FarmApp extends StatelessWidget {
           // navigateAfterSeconds: SearchScreen(),
           // navigateAfterSeconds: PostRequirementScreen(),
           // navigateAfterSeconds: OTPLoginScreen(),
-          navigateAfterSeconds: AccountScreen(),
+          // navigateAfterSeconds: AccountScreen(),
+          navigateAfterSeconds: HistoryScreen(),
           image: Image.asset('images/app_logo.jpg'),
           backgroundColor: Colors.white,
           photoSize: 130.0,

@@ -27,6 +27,7 @@ dependencies:
   floating_search_bar:
   url_launcher:
   stack_trace: ### For DEBUG purpose only ###
+  intl: ### Date Time ###
 
 environment:
   sdk:

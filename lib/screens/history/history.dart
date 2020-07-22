@@ -1,8 +1,8 @@
-import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart' as Firestore;
 import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
 import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:farmapp/models/models.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -11,197 +11,130 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class HistoryScreenState extends State<HistoryScreen> {
-  Transaction temp = Transaction(
-    secondPartyName: 'Rahul Shaikh',
-    qty: 10,
-    rate: 10.0,
-  );
-  var datas = <Transaction>[
-    Transaction(
-      secondPartyName: 'Buyer 1',
-      qty: 10,
-      rate: 10.0,
-    ),
-    Transaction(
-      secondPartyName: 'Buyer 2',
-      qty: 20,
-      rate: 50.0,
-    ),
-    Transaction(
-      secondPartyName: 'Buyer 3',
-      qty: 12,
-      rate: 5.0,
-    ),
-    Transaction(
-      secondPartyName: 'Buyer 20',
-      qty: 12,
-      rate: 5.0,
-    ),
-  ];
+  List<Transaction> transactions = List<Transaction>();
+  String dataLoadingStatus = "UNKNOWN";
 
-  Future<List<Transaction>> getTransactions() async {
-    sleep(Duration(seconds: 2));
-
-    for (int i = 0; i < 5; i++) {
-      transactions.insert(i, Transaction());
-    }
-    return transactions;
+  @override
+  void initState() {
+    super.initState();
+    fetchTransactions();
   }
 
-  List<Transaction> transactions;
+  Future<List<Transaction>> fetchTransactions() async {
+    await Firestore.Firestore.instance
+        .collection('transaction')
+        .getDocuments()
+        .then((snapshot) {
+      snapshot.documents.forEach((doc) {
+        Transaction t = Transaction();
+
+        setState(() {
+          transactions.insert(0, t);
+        });
+      });
+    });
+    setState(() {
+      dataLoadingStatus = "LOADED";
+    });
+    return transactions;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Farm App'),
+        title: Text('FarmApp'),
       ),
       drawer: LeftNavigationDrawer(),
-      body: Center(
-        child: ListView.builder(
-          itemCount: datas.length,
-          itemBuilder: _buildHistoryListItem,
-        ),
-      ),
+      body: _historyScreenBody(),
       bottomNavigationBar: BotNavBar(botNavBarIdx: 3),
     );
   }
 
-  Widget _buildHistoryListItem(BuildContext context, int i) {
-    return HistoryTile(data: datas[i]);
-  }
-}
-
-class HistoryTile extends StatelessWidget {
-  final Transaction data;
-
-  HistoryTile({@required this.data, Key key}) : assert(data != null);
-
-  @override
-  Widget build(BuildContext context) {
-    String rateText = 'rate: ₹${data.rate}/kg';
-    String qtyText = 'qty: ${data.qty}kg';
-    String amountText = 'amount: ₹${data.rate * data.qty}';
-    return Padding(
-      padding: EdgeInsets.all(4.0),
-      child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        elevation: 8.0,
-        child: Container(
-          height: 264.0,
-          child: Padding(
-            padding: EdgeInsets.all(4.0),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.account_circle),
-                      iconSize: 60.0,
-                      onPressed: null,
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(20.0, 10.0, 30.0, 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Sold to',
-                            style: TextStyle(
-                                color: Colors.grey[350],
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            data.secondPartyName,
-                            style: TextStyle(
-                                color: Colors.grey[800], fontSize: 20.0),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-                  child: Divider(
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(52.0, 0.0, 10.0, 0.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            rateText,
-                            style: TextStyle(
-                                color: Colors.grey[500],
-                                fontWeight: FontWeight.w800),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            qtyText,
-                            style: TextStyle(
-                                color: Colors.grey[500],
-                                fontWeight: FontWeight.w800),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            amountText,
-                            style: TextStyle(
-                                color: Colors.grey[500],
-                                fontWeight: FontWeight.w800),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 12.0),
-                      child: SizedBox(
-                        height: 92,
-                        child: Image.asset(
-                          'images/app_logo.jpg',
-                          height: 68,
-                          width: 68,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-                  child: Divider(
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 4.0, 72.0, 0.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text('Delivery Date'),
-                      SizedBox(
-                        width: 32,
-                      ),
-                      Icon(Icons.check),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+  _historyScreenBody() {
+    if (dataLoadingStatus == "UNKNOWN") {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (dataLoadingStatus == "LOADED" && transactions.length > 0) {
+      return Center(
+        child: ListView.builder(
+          itemCount: transactions.length,
+          itemBuilder: _buildHistoryTile,
         ),
+      );
+    } else {
+      return Center(
+        child: Text("No transactions yet!"),
+      );
+    }
+  }
+
+  Widget _buildHistoryTile(BuildContext contet, int i) {
+    Transaction transaction = transactions.elementAt(i);
+
+    return Card(
+      color: Colors.white,
+      elevation: 8.0,
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Image(
+                image: FirebaseImage(transaction.secondPartyImageUrl),
+                height: 50,
+                width: 50,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Sold to',
+                    style: TextStyle(
+                        color: Colors.grey[350], fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    transaction.secondPartyName,
+                    style: TextStyle(color: Colors.grey[800], fontSize: 20.0),
+                  ),
+                ],
+              ),
+              Image(
+                image: FirebaseImage(transaction.productImageUrl),
+                height: 50,
+                width: 50,
+              ),
+            ],
+          ),
+          Divider(
+            color: Colors.grey[600],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Rate : ₹${transaction.rate}/kg'),
+                  Text('Quantity: ${transaction.qty}kg'),
+                  Text('Total Amount: ₹${transaction.rate * transaction.qty}')
+                ],
+              ),
+            ],
+          ),
+          Divider(
+            color: Colors.grey[600],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(transaction.timestamp.toString()),
+              Icon(Icons.check),
+            ],
+          ),
+        ],
       ),
     );
   }

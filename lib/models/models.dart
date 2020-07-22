@@ -49,9 +49,9 @@ class Transaction {
   String tid;
   String firstPartyUid, firstPartyName;
   String secondPartyUid, secondPartyName, secondPartyImageUrl;
-  String pid, productName, prodImageURL;
+  String pid, productName, productImageUrl;
   double rate, qty, amt;
-  Timestamp timestamp;
+  DateTime timestamp;
   TradeType type;
   TransactionStatus status;
 
@@ -64,14 +64,23 @@ class Transaction {
     this.secondPartyImageUrl,
     this.pid,
     this.productName,
-    this.prodImageURL,
+    this.productImageUrl,
     this.rate,
     this.qty,
     this.amt,
     this.timestamp,
     this.type,
     this.status,
-  });
+  }) {
+    if (rate == null) rate = 25.0;
+    if (qty == null) qty = 25.0;
+    if (secondPartyName == null) secondPartyName = "Swarupananda Dhua";
+    if (timestamp == null) timestamp = DateTime.now();
+    if (secondPartyImageUrl == null)
+      secondPartyImageUrl = "$FIRESTORE_URL/user/U00000.jpg";
+    if (productImageUrl == null)
+      productImageUrl = "$FIRESTORE_URL/product/P000.jpg";
+  }
 }
 
 class User {

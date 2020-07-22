@@ -26,6 +26,7 @@ dependencies:
   flutter_typeahead:
   floating_search_bar:
   url_launcher:
+  stack_trace: ### For DEBUG purpose only ###
 
 environment:
   sdk:

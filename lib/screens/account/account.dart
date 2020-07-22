@@ -1,4 +1,4 @@
-import 'package:farmapp/assets/data/constants.dart';
+import 'package:farmapp/models/models.dart';
 import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
 import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
@@ -16,6 +16,10 @@ class AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final user = Provider.of<FirebaseUser>(context);
+    // print(user);
+    final User u = User();
+    print(u.imageUrl);
     bool checkboxValueA = true;
     bool checkboxValueB = false;
     bool checkboxValueC = false;
@@ -35,31 +39,23 @@ class AccountScreenState extends State<AccountScreen> {
               Container(
                 margin: EdgeInsets.all(7.0),
                 alignment: Alignment.topCenter,
-                height: 260.0,
                 child: Card(
-                  elevation: 3.0,
+                  elevation: 4.0,
                   child: Column(
                     children: <Widget>[
                       Container(
+                        margin: EdgeInsets.all(7.0),
                         alignment: Alignment.topCenter,
-                        child: Container(
-                          width: 100.0,
-                          height: 100.0,
-                          margin: const EdgeInsets.all(10.0),
-                          child: ClipOval(
-                            child: Image(
-                              image: FirebaseImage(
-                                  FIRESTORE_URL + "/user/U00000.jpg"),
-                            ),
-
-                            /*Image.network(
-                              'gs://farmapp-2d60d.appspot.com/user/U00000.jpg',
-                            ),*/
+                        child: ClipOval(
+                          child: Image(
+                            width: 100.0,
+                            height: 100.0,
+                            image: FirebaseImage(u.imageUrl),
                           ),
                         ),
                       ),
                       FlatButton(
-                        onPressed: null,
+                        onPressed: () => print(StackTrace.current),
                         child: Text(
                           'Change',
                           style: TextStyle(
@@ -78,44 +74,22 @@ class AccountScreenState extends State<AccountScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(
-                              left: 10.0,
-                              top: 20.0,
-                              right: 5.0,
-                              bottom: 5.0,
-                            ),
+                            margin: EdgeInsets.all(5.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                Text(
-                                  name,
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.5,
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Text(name),
                                 ),
-                                _verticalDivider(),
-                                Text(
-                                  mob,
-                                  style: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.5,
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Text(u.mobile),
                                 ),
-                                _verticalDivider(),
-                                Text(
-                                  email,
-                                  style: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.5,
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Text(u.email),
                                 )
                               ],
                             ),
@@ -125,7 +99,7 @@ class AccountScreenState extends State<AccountScreen> {
                             child: IconButton(
                               icon: Icon(Icons.edit),
                               color: Colors.blueAccent,
-                              onPressed: null,
+                              onPressed: () => print(StackTrace.current),
                             ),
                           )
                         ],

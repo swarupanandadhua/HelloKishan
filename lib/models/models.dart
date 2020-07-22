@@ -88,5 +88,9 @@ class User {
     this.email,
     this.dob,
     this.primaryAddr,
-  });
+  }) {
+    if (imageUrl == null) imageUrl = "$FIRESTORE_URL/user/U00000.jpg";
+    if (email == null) email = 'swarupanandadhua@gmail.com';
+    if (mobile == null) mobile = "+91 9609750449";
+  }
 }

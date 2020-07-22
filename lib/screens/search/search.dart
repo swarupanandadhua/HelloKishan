@@ -4,6 +4,7 @@ import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
 import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:farmapp/models/models.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -14,11 +15,37 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   List<Requirement> requirementList = List<Requirement>();
   bool isLoading = true;
+  Position currentPosition;
+  bool gotLocaion = false;
+
+  void fetchLocation() async {
+    Geolocator()
+      ..forceAndroidLocationManager
+      ..getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      ).then(
+        (Position position) {
+          setState(
+            () {
+              currentPosition = position;
+              gotLocaion = true;
+              print("Latitude: " + currentPosition.latitude.toString());
+              print("Longitude: " + currentPosition.longitude.toString());
+            },
+          );
+        },
+      ).catchError(
+        (e) {
+          print(e);
+        },
+      );
+  }
 
   @override
   void initState() {
     super.initState();
     fetchRequirements();
+    fetchLocation();
   }
 
   void fetchRequirements() async {

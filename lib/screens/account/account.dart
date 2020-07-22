@@ -546,7 +546,7 @@ class AccountScreenState extends State<AccountScreen> {
   }
 
   _verticalDivider() {
-    Container(
+    return Container(
       padding: EdgeInsets.all(2.0),
     );
   }

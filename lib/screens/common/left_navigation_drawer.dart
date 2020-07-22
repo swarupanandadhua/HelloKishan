@@ -1,3 +1,5 @@
+import 'package:farmapp/assets/data/constants.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:farmapp/screens/home/wrapper.dart';
 import 'package:farmapp/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ class LeftNavigationDrawer extends StatelessWidget {
           child: ListView(
         children: <Widget>[
           GestureDetector(
-            onTap: () => print('TODO: Launch ProfilePage'),
+            onTap: () => print(StackTrace.current),
             child: Container(
               height: 120,
               child: DrawerHeader(
@@ -31,31 +33,19 @@ class LeftNavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text("KYC"),
-            onTap: () {
-              // Navigator.pop(context);
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
+            onTap: () => print(StackTrace.current),
           ),
           ListTile(
             title: Text("Help"),
-            onTap: () {
-              // Navigator.pop(context);
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
+            onTap: () => UrlLauncher.launch(HELP_MAIL_LAUNCH_ARG),
           ),
           ListTile(
             title: Text("Settings"),
-            onTap: () {
-              // Navigator.pop(context);
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
+            onTap: () => print(StackTrace.current),
           ),
           ListTile(
             title: Text("Feedback"),
-            onTap: () {
-              // Navigator.pop(context);
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
+            onTap: () => print(StackTrace.current),
           ),
           ListTile(
             title: Text("Sign Out"),

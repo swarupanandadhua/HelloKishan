@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart' as Firestore;
-import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
 import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:farmapp/models/models.dart';
+import 'package:farmapp/services/database.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 
@@ -16,28 +15,13 @@ class HistoryScreenState extends State<HistoryScreen> {
   String dataLoadingStatus = "UNKNOWN";
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    fetchTransactions();
-  }
 
-  Future<List<Transaction>> fetchTransactions() async {
-    await Firestore.Firestore.instance
-        .collection(FIRESTORE_TRANSACTION_DB)
-        .getDocuments()
-        .then((snapshot) {
-      snapshot.documents.forEach((doc) {
-        Transaction t = Transaction();
-
-        setState(() {
-          transactions.insert(0, t);
-        });
-      });
-    });
-    setState(() {
+    setState(() async {
       dataLoadingStatus = "LOADED";
+      transactions = await fetchTransactions();
     });
-    return transactions;
   }
 
   @override

@@ -10,15 +10,13 @@ class AccountScreen extends StatefulWidget {
 }
 
 class AccountScreenState extends State<AccountScreen> {
-  String name = 'Swarupananda Dhua';
-  String mob = '9609750449';
-  String email = 'swarupanandadhua@gmail.com';
+  FarmAppUser u;
 
   @override
   Widget build(BuildContext context) {
     // final user = Provider.of<FirebaseUser>(context);
     // print(user);
-    final User u = User();
+    u = FarmAppUser();
     print(u.imageUrl);
     bool checkboxValueA = true;
     bool checkboxValueB = false;
@@ -81,7 +79,7 @@ class AccountScreenState extends State<AccountScreen> {
                               children: <Widget>[
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
-                                  child: Text(name),
+                                  child: Text(u.name),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
@@ -160,7 +158,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         '16th D Cross Road',
                                         style: TextStyle(
@@ -169,7 +167,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         'PAI Layout',
                                         style: TextStyle(
@@ -178,7 +176,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         'Bangalore 560016',
                                         style: TextStyle(
@@ -269,7 +267,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         '16th D Cross Road',
                                         style: TextStyle(
@@ -278,7 +276,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         'PAI Layout',
                                         style: TextStyle(
@@ -287,7 +285,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         'Bangalore 560016',
                                         style: TextStyle(
@@ -378,7 +376,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         '16th D Cross Road',
                                         style: TextStyle(
@@ -387,7 +385,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         'PAI Layout',
                                         style: TextStyle(
@@ -396,7 +394,7 @@ class AccountScreenState extends State<AccountScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
-                                      _verticalDivider(),
+                                      VerticalDivider(),
                                       Text(
                                         'Bangalore 560016',
                                         style: TextStyle(
@@ -542,12 +540,6 @@ class AccountScreenState extends State<AccountScreen> {
   _verticalD() {
     return Container(
       margin: EdgeInsets.only(left: 3.0, right: 0.0, top: 0.0, bottom: 0.0),
-    );
-  }
-
-  _verticalDivider() {
-    return Container(
-      padding: EdgeInsets.all(2.0),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:farmapp/models/constants.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:farmapp/screens/home/wrapper.dart';
-import 'package:farmapp/services/auth.dart';
+import 'package:farmapp/services/authentication.dart';
 import 'package:flutter/material.dart';
 
 class LeftNavigationDrawer extends StatelessWidget {

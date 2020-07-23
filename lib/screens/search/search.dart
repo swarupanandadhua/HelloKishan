@@ -1,6 +1,6 @@
-import 'package:farmapp/models/constants.dart';
+import 'package:farmapp/services/database.dart';
+import 'package:farmapp/services/location.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
 import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
@@ -10,79 +10,29 @@ import 'package:farmapp/models/models.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  SearchScreenState createState() => SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class SearchScreenState extends State<SearchScreen> {
   List<Requirement> requirementList = List<Requirement>();
-  bool isLoading = true;
-  Position currentPosition;
-  bool gotLocaion = false;
+  bool isRequirementsLoading = true;
 
-  void fetchLocation() async {
-    Geolocator()
-      ..forceAndroidLocationManager
-      ..getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      ).then(
-        (Position position) {
-          setState(
-            () {
-              currentPosition = position;
-              gotLocaion = true;
-              print("Latitude: " + currentPosition.latitude.toString());
-              print("Longitude: " + currentPosition.longitude.toString());
-            },
-          );
-        },
-      ).catchError(
-        (e) {
-          print(e);
-        },
-      );
-  }
+  bool isLocationLoading = true;
+  Position currentLocation;
 
   @override
   void initState() {
     super.initState();
-    fetchRequirements();
-    fetchLocation();
-  }
 
-  void fetchRequirements() async {
-    // Error handling
-    // String signin = await quickSignIn();
-    // if (signin != null) {
-    await Firestore.instance
-        .collection(FIRESTORE_REQUIREMENT_DB)
-        .getDocuments()
-        .then((snapshot) {
-      snapshot.documents.forEach((doc) {
-        int rate = doc["rate"];
-        int qty = doc["qty"];
-        Requirement r = Requirement(
-          uid: doc["user"],
-          name: doc["name"],
-          mobile: doc["mobile"],
-          pid: doc["product"],
-          product: doc["product"],
-          wantsTo: (doc["wants_to"] == "Buy") ? TradeType.BUY : TradeType.SELL,
-          rate: rate.toString(),
-          qty: qty.toString(),
-        );
-        print("uid:" + r.uid);
-        print("Mobile:" + r.mobile);
-        print("pid:" + r.pid);
-        print("\n\n");
-        setState(() {
-          requirementList.insert(0, r);
-        });
-      });
+    setState(() async {
+      requirementList = await fetchRequirements();
+      isRequirementsLoading = false;
     });
-    setState(() {
-      isLoading = false;
+
+    setState(() async {
+      currentLocation = await fetchLocation();
+      isLocationLoading = false;
     });
-    // }
   }
 
   @override
@@ -90,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Serach Results')),
       drawer: LeftNavigationDrawer(),
-      body: isLoading
+      body: isRequirementsLoading
           ? Center(
               child: CircularProgressIndicator(),
             )

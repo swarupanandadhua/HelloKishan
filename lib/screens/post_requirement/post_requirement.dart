@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:farmapp/screens/home/home.dart';
+import 'package:farmapp/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,24 +43,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   void submit() async {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save();
-
-      print('Product Name: ${_requirement.product}');
-      print('Rate: ${_requirement.rate}');
-      Map<String, dynamic> data = Map<String, dynamic>();
-      data["uid"] = _requirement.uid;
-      data["product"] = _requirement.product;
-      data["rate"] = _requirement.rate;
-      data["qty"] = _requirement.qty;
-      await Firestore.instance
-          .collection(FIRESTORE_REQUIREMENT_DB)
-          .add(data)
-          .then((doc) {
-        print("Requirement Saved:");
-        print("uid:" + _requirement.uid.toString());
-        print("product: " + _requirement.product.toString());
-        print("rate: " + _requirement.rate.toString());
-        print("qty: " + _requirement.qty.toString());
-      });
+      await postRequirement(_requirement);
       Navigator.pop(context);
       Navigator.push(
         context,

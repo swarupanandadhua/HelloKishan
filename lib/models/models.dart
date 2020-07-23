@@ -83,12 +83,12 @@ class Transaction {
   }
 }
 
-class User {
+class FarmAppUser {
   String uid, name, nickName, imageUrl;
   String mobile, email, dob;
   Geolocation primaryAddr;
 
-  User({
+  FarmAppUser({
     this.uid,
     this.name,
     this.nickName,
@@ -98,8 +98,9 @@ class User {
     this.dob,
     this.primaryAddr,
   }) {
-    if (imageUrl == null) imageUrl = "$FIRESTORE_URL/user/U00000.jpg";
-    if (email == null) email = 'swarupanandadhua@gmail.com';
+    if (name == null) name = "Swarupananda Dhua";
     if (mobile == null) mobile = "+91 9609750449";
+    if (email == null) email = 'swarupanandadhua@gmail.com';
+    if (imageUrl == null) imageUrl = "$FIRESTORE_URL/user/U00000.jpg";
   }
 }

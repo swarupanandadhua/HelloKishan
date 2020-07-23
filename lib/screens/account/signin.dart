@@ -1,4 +1,4 @@
-import 'package:farmapp/services/auth.dart';
+import 'package:farmapp/services/authentication.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {

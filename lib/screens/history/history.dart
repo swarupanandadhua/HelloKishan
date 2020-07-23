@@ -12,16 +12,19 @@ class HistoryScreen extends StatefulWidget {
 
 class HistoryScreenState extends State<HistoryScreen> {
   List<Transaction> transactions = List<Transaction>();
-  String dataLoadingStatus = "UNKNOWN";
+  bool isHistoryLoading = true;
+
+  fetchData() async {
+    transactions = await fetchTransactions();
+    setState(() {
+      isHistoryLoading = false;
+    });
+  }
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-
-    setState(() async {
-      dataLoadingStatus = "LOADED";
-      transactions = await fetchTransactions();
-    });
+    fetchData();
   }
 
   @override
@@ -37,11 +40,11 @@ class HistoryScreenState extends State<HistoryScreen> {
   }
 
   _historyScreenBody() {
-    if (dataLoadingStatus == "UNKNOWN") {
+    if (isHistoryLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
-    } else if (dataLoadingStatus == "LOADED" && transactions.length > 0) {
+    } else if ((transactions != null) && (transactions.length > 0)) {
       return Center(
         child: ListView.builder(
           itemCount: transactions.length,

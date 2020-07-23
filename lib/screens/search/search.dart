@@ -20,23 +20,24 @@ class SearchScreenState extends State<SearchScreen> {
   bool isLocationLoading = true;
   Position currentLocation;
 
-  @override
-  void initState() {
-    super.initState();
-
-    setState(() async {
-      requirementList = await fetchRequirements();
+  fetchData() async {
+    requirementList = await fetchRequirements();
+    currentLocation = await fetchLocation();
+    setState(() {
       isRequirementsLoading = false;
-    });
-
-    setState(() async {
-      currentLocation = await fetchLocation();
       isLocationLoading = false;
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("SearchScreen: build called...");
     return Scaffold(
       appBar: AppBar(title: Text('Serach Results')),
       drawer: LeftNavigationDrawer(),

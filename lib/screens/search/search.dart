@@ -1,3 +1,4 @@
+import 'package:farmapp/models/constants.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
@@ -53,7 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // String signin = await quickSignIn();
     // if (signin != null) {
     await Firestore.instance
-        .collection('requirement')
+        .collection(FIRESTORE_REQUIREMENT_DB)
         .getDocuments()
         .then((snapshot) {
       snapshot.documents.forEach((doc) {

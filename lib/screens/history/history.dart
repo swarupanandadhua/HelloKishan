@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as Firestore;
+import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
 import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:farmapp/models/models.dart';
@@ -22,7 +23,7 @@ class HistoryScreenState extends State<HistoryScreen> {
 
   Future<List<Transaction>> fetchTransactions() async {
     await Firestore.Firestore.instance
-        .collection('transaction')
+        .collection(FIRESTORE_TRANSACTION_DB)
         .getDocuments()
         .then((snapshot) {
       snapshot.documents.forEach((doc) {

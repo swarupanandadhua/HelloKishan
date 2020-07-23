@@ -1,6 +1,0 @@
-ListView [
-    prod_id, prod_name, prod_icon
-    sold/bought, whom, timestamp
-    status(failed, declined, successful, cancelled)
-    rate, qty, amt
-]

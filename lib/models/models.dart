@@ -1,4 +1,4 @@
-import 'package:farmapp/assets/data/constants.dart';
+import 'package:farmapp/models/constants.dart';
 import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

@@ -25,9 +25,10 @@ dependencies:
   validate:
   flutter_typeahead:
   floating_search_bar:
-  url_launcher:
+  url_launcher: ### Starting Phone/Mail Activities ###
   stack_trace: ### For DEBUG purpose only ###
   intl: ### Date Time ###
+  modal_progress_hud: ### Show ProgressBar as a Stack ###
 
 environment:
   sdk:
@@ -39,4 +40,4 @@ dev_dependencies:
 flutter:
   assets:
     - images/app_logo.jpg
-  uses-material-design: true # Material Icons Font
+  uses-material-design: true ### Material Icons Font ###

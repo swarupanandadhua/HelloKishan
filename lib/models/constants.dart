@@ -1,7 +1,9 @@
-const String FIRESTORE_URL = "gs://farmapp-2d60d.appspot.com";
-
-const String HELP_MAIL_LAUNCH_ARG =
-    "mailto:swarupanandadhua@gmail.com?subject=FarmApp%20Help&body=Please%20type%20your%20query%20here...";
+const String FIRESTORE_URL = 'gs://farmapp-2d60d.appspot.com';
+const String FIRESTORE_REQUIREMENT_DB = 'requirement';
+const String FIRESTORE_TRANSACTION_DB = 'transaction';
+const String HELP_MAIL_LAUNCH_ARG = """mailto:swarupanandadhua@gmail.com
+                                      ?subject=FarmApp%20Help
+                                      &body=Please%20type%20your%20query%20here...""";
 
 const List<String> PRODUCTS = [
   "আলু (Potato)",

@@ -21,14 +21,11 @@ dependencies:
   provider:
   shared_preferences:
   splashscreen:
+  progress_dialog:
   universal_html:
   validate:
-  flutter_typeahead:
-  floating_search_bar:
   url_launcher: ### Starting Phone/Mail Activities ###
   stack_trace: ### For DEBUG purpose only ###
-  intl: ### Date Time ###
-  modal_progress_hud: ### Show ProgressBar as a Stack ###
 
 environment:
   sdk:

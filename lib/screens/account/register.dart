@@ -11,11 +11,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  String error = '';
-  final Auth _auth = Auth();
-
-  String _email = '';
-  String _password = '';
+  String _error = '', _email = '', _password = '';
 
   final TextStyle style = TextStyle(
     fontFamily: 'Montserrat',
@@ -96,11 +92,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           if (_formKey.currentState.validate()) {
-            dynamic result =
-                await _auth.registerWithEmailPassword(_email, _password);
+            dynamic result = await AuthenticationService()
+                .registerWithEmailPassword(_email, _password);
             if (result == null) {
               setState(() {
-                error = 'User already exists';
+                _error = 'User already exists';
               });
             }
           }
@@ -157,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   showLogo(),
                   SizedBox(height: 12.0),
                   Text(
-                    error,
+                    _error,
                     style: TextStyle(color: Colors.red, fontSize: 20.0),
                   ),
                   SizedBox(height: 45.0), // Breathing space

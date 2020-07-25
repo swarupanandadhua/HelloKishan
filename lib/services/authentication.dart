@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Auth {
+class AuthenticationService {
   Stream<FirebaseUser> get user {
     return FirebaseAuth.instance.onAuthStateChanged;
   }
@@ -31,6 +31,27 @@ class Auth {
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  Future<String> quickSignIn() async {
+    AuthResult result;
+
+    try {
+      result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: "swarup@gmail.com",
+        password: "swarup123",
+      );
+    } catch (e) {
+      print(e);
+    }
+    if (result == null) {
+      print("Error signing in\n");
+      return null;
+    } else {
+      String uid = result.user.uid;
+      print("Signed in as $uid\n");
+      return uid;
     }
   }
 
@@ -64,16 +85,6 @@ class Auth {
     try {
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
       return user.isEmailVerified;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
-  Future<String> signInAnonymously() async {
-    try {
-      AuthResult result = await FirebaseAuth.instance.signInAnonymously();
-      return result.user.uid;
     } catch (e) {
       print(e);
       return null;

@@ -10,17 +10,13 @@ class SignInScreen extends StatefulWidget {
 }
 
 class SignInScreenState extends State<SignInScreen> {
-  final Auth _auth = Auth();
   final _formKey = GlobalKey<FormState>();
-  String error = '';
+  String _error = '', _password, _email;
 
   TextStyle style = TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 20.0,
   );
-
-  String _password;
-  String _email;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +49,7 @@ class SignInScreenState extends State<SignInScreen> {
                       ),
                       SizedBox(height: 12.0),
                       Text(
-                        error,
+                        _error,
                         style: TextStyle(color: Colors.red, fontSize: 20.0),
                       ),
                       SizedBox(
@@ -113,7 +109,7 @@ class SignInScreenState extends State<SignInScreen> {
                           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
-                              dynamic result = await _auth
+                              dynamic result = await AuthenticationService()
                                   .signInWithEmailPassword(_email, _password);
                               if (result == null) {
                                 AlertDialog(

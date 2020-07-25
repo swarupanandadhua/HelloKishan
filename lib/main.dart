@@ -1,17 +1,26 @@
-import 'package:farmapp/screens/search/search.dart';
+import 'package:farmapp/screens/account/authenticate.dart';
+import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-void main() => runApp(FarmApp());
+void main() => runApp(App());
 
 class FarmApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final FirebaseUser user = Provider.of<FirebaseUser>(context);
+    return (user == null) ? AuthenticateScreen() : WrapperScreen(tabIndex: 0);
+  }
+}
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return StreamProvider<FirebaseUser>.value(
-      value: Auth().user,
+      value: AuthenticationService().user,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'FarmApp',
@@ -21,21 +30,20 @@ class FarmApp extends StatelessWidget {
         ),
         home: SplashScreen(
           seconds: 3,
-          // navigateAfterSeconds: Wrapper(),
-          navigateAfterSeconds: SearchScreen(),
+          // navigateAfterSeconds: SearchScreen("product"),
           // navigateAfterSeconds: PostRequirementScreen(),
           // navigateAfterSeconds: OTPLoginScreen(),
           // navigateAfterSeconds: AccountScreen(),
           // navigateAfterSeconds: HistoryScreen(),
-          // navigateAfterSeconds: HomeScreen(),
+          navigateAfterSeconds: FarmApp(),
           image: Image.asset('images/app_logo.jpg'),
-          backgroundColor: Colors.white,
-          photoSize: 130.0,
-          loaderColor: Colors.white,
+          photoSize: 100.0,
           title: Text(
             "FarmApp",
             style: TextStyle(
               fontSize: 40.0,
+              color: Colors.indigo,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),

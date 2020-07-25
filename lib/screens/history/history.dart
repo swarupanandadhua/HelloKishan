@@ -1,5 +1,3 @@
-import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
-import 'package:farmapp/screens/common/left_navigation_drawer.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:farmapp/services/database.dart';
 import 'package:firebase_image/firebase_image.dart';
@@ -11,56 +9,49 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class HistoryScreenState extends State<HistoryScreen> {
-  List<Transaction> transactions = List<Transaction>();
-  bool isHistoryLoading = true;
-
-  fetchData() async {
-    transactions = await fetchTransactions();
-    setState(() {
-      isHistoryLoading = false;
-    });
-  }
+  Future<List<Transaction>> transactions;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    transactions = DatabaseService().fetchTransactions();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('FarmApp'),
-      ),
-      drawer: LeftNavigationDrawer(),
-      body: _historyScreenBody(),
-      bottomNavigationBar: BotNavBar(botNavBarIdx: 3),
+    return FutureBuilder<List<Transaction>>(
+      future: transactions,
+      builder: (BuildContext ctx, AsyncSnapshot<List<Transaction>> snap) {
+        if (snap.hasData) {
+          if (snap.data.length > 0) {
+            return Container(
+              color: Color(0xff0011),
+              child: ListView.builder(
+                itemBuilder: (context, i) {
+                  return _buildHistoryTile(snap.data[i]);
+                },
+                itemCount: snap.data.length,
+              ),
+            );
+          } else {
+            return Center(
+              child: Text("No transactions found!"),
+            );
+          }
+        } else if (snap.hasError) {
+          return Center(
+            child: Text('Something went wrong!'),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 
-  _historyScreenBody() {
-    if (isHistoryLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else if ((transactions != null) && (transactions.length > 0)) {
-      return Center(
-        child: ListView.builder(
-          itemCount: transactions.length,
-          itemBuilder: _buildHistoryTile,
-        ),
-      );
-    } else {
-      return Center(
-        child: Text("No transactions yet!"),
-      );
-    }
-  }
-
-  Widget _buildHistoryTile(BuildContext contet, int i) {
-    Transaction transaction = transactions.elementAt(i);
-
+  Widget _buildHistoryTile(Transaction t) {
     return Card(
       color: Colors.white,
       elevation: 8.0,
@@ -69,30 +60,42 @@ class HistoryScreenState extends State<HistoryScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Image(
-                image: FirebaseImage(transaction.secondPartyImageUrl),
-                height: 50,
-                width: 50,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipOval(
+                  child: Image(
+                    image: FirebaseImage(t.secondPartyImageUrl),
+                    height: 50.0,
+                    width: 50.0,
+                  ),
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'Sold to',
+                    (t.type == TradeType.BUY) ? "Bought from" : "Sold to",
                     style: TextStyle(
-                        color: Colors.grey[350], fontWeight: FontWeight.w500),
+                      color: Colors.grey[350],
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   Text(
-                    transaction.secondPartyName,
-                    style: TextStyle(color: Colors.grey[800], fontSize: 20.0),
+                    t.secondPartyName,
+                    style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
               ),
-              Image(
-                image: FirebaseImage(transaction.productImageUrl),
-                height: 50,
-                width: 50,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipOval(
+                  child: Image(
+                    image: FirebaseImage(t.productImageUrl),
+                    height: 50.0,
+                    width: 50.0,
+                  ),
+                ),
               ),
             ],
           ),
@@ -105,9 +108,9 @@ class HistoryScreenState extends State<HistoryScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Rate : ₹${transaction.rate}/kg'),
-                  Text('Quantity: ${transaction.qty}kg'),
-                  Text('Total Amount: ₹${transaction.rate * transaction.qty}')
+                  Text('Rate : ₹${t.rate}/kg'),
+                  Text('Quantity: ${t.qty}kg'),
+                  Text('Total Amount: ₹${t.rate * t.qty}'),
                 ],
               ),
             ],
@@ -118,7 +121,7 @@ class HistoryScreenState extends State<HistoryScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(transaction.timestamp.toString()),
+              Text(t.timestamp.toString()),
               Icon(Icons.check),
             ],
           ),

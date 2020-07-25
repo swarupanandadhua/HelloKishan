@@ -2,12 +2,12 @@ import 'package:farmapp/screens/account/signin.dart';
 import 'package:farmapp/screens/account/register.dart';
 import 'package:flutter/material.dart';
 
-class Authenticate extends StatefulWidget {
+class AuthenticateScreen extends StatefulWidget {
   @override
-  _AuthenticateState createState() => _AuthenticateState();
+  _AuthenticateScreenState createState() => _AuthenticateScreenState();
 }
 
-class _AuthenticateState extends State<Authenticate> {
+class _AuthenticateScreenState extends State<AuthenticateScreen> {
   bool showSignIn = true;
 
   void toggleView() {

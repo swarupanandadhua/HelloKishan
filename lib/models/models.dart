@@ -26,6 +26,9 @@ class Requirement {
     this.postedOn,
     this.location,
   }) {
+    if (name == null || name == "null") name = "Swarupananda Dhua";
+    if (mobile == null || mobile == "null") mobile = "+91 9609750449";
+    if (qty == null || qty == "null") qty = "10";
     // this.userImage = "$FIRESTORE_URL/user/$uid.jpg";
     this.userImage = "$FIRESTORE_URL/user/U00000.jpg";
     // this.productImage = "$FIRESTORE_URL/product/$pid.jpg";

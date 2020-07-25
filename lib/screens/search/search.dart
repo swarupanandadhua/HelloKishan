@@ -1,30 +1,32 @@
 import 'package:farmapp/services/database.dart';
 import 'package:farmapp/services/location.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-import 'package:farmapp/screens/common/bottom_navigation_bar.dart';
-import 'package:farmapp/screens/common/left_navigation_drawer.dart';
+import 'package:farmapp/screens/common/navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:farmapp/models/models.dart';
 
 class SearchScreen extends StatefulWidget {
+  final String product;
+  SearchScreen(this.product);
+
   @override
-  SearchScreenState createState() => SearchScreenState();
+  SearchScreenState createState() => SearchScreenState(product);
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  List<Requirement> requirementList = List<Requirement>();
-  bool isRequirementsLoading = true;
-
+  static final String title = 'Serach Results';
+  String product;
+  Future<List<Requirement>> requirements;
   bool isLocationLoading = true;
   Position currentLocation;
 
+  SearchScreenState(this.product);
+
   fetchData() async {
-    requirementList = await fetchRequirements();
-    currentLocation = await fetchLocation();
+    currentLocation = await LocationService().fetchLocation();
     setState(() {
-      isRequirementsLoading = false;
       isLocationLoading = false;
     });
   }
@@ -32,41 +34,63 @@ class SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    requirements = DatabaseService().fetchRequirements(product);
   }
 
   @override
   Widget build(BuildContext context) {
-    print("SearchScreen: build called...");
     return Scaffold(
-      appBar: AppBar(title: Text('Serach Results')),
-      drawer: LeftNavigationDrawer(),
-      body: isRequirementsLoading
-          ? Center(
+      appBar: AppBar(
+        title: Text(title),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      drawer: NavigationDrawer(),
+      body: FutureBuilder<List<Requirement>>(
+        future: requirements,
+        builder: (BuildContext ctx, AsyncSnapshot<List<Requirement>> snap) {
+          if (snap.hasData) {
+            if (snap.data.length > 0) {
+              return Container(
+                color: Color(0xff0011),
+                child: ListView.builder(
+                  itemBuilder: (context, i) {
+                    return buildSearchItemTile(snap.data[i]);
+                  },
+                  itemCount: snap.data.length,
+                ),
+              );
+            } else {
+              return Center(
+                child: Text("Nothing found!"),
+              );
+            }
+          } else if (snap.hasError) {
+            return Center(
+              child: Text('Something went wrong!'),
+            );
+          } else {
+            return Center(
               child: CircularProgressIndicator(),
-            )
-          : Container(
-              color: Color(0xff0011),
-              child: ListView.builder(
-                itemBuilder: buildSearchItemTile,
-                itemCount: requirementList.length,
-              ),
-            ),
-      bottomNavigationBar: BotNavBar(botNavBarIdx: 0),
+            );
+          }
+        },
+      ),
     );
   }
 
-  Widget buildSearchItemTile(BuildContext ctxt, int i) {
-    Requirement r = requirementList.elementAt(i);
+  Widget buildSearchItemTile(Requirement r) {
     return Card(
       elevation: 8.0,
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: Image(
-              image: FirebaseImage(r.userImage),
-              height: 50,
-              width: 50,
+            leading: ClipOval(
+              child: Image(
+                image: FirebaseImage(r.userImage),
+              ),
             ),
             title: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -82,10 +106,10 @@ class SearchScreenState extends State<SearchScreen> {
                 style: TextStyle(fontSize: 12),
               ),
             ),
-            trailing: Image(
-              image: FirebaseImage(r.productImage),
-              height: 50,
-              width: 50,
+            trailing: ClipOval(
+              child: Image(
+                image: FirebaseImage(r.productImage),
+              ),
             ),
           ),
           FlatButton(

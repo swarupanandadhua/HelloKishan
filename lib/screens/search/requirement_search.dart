@@ -51,7 +51,7 @@ class RequirementSearch extends SearchDelegate<String> {
             context,
             MaterialPageRoute(
               builder: (context) => SearchScreen(
-                products[i].replaceAll(RegExp("[^A-Za-z]"), ""),
+                products[i], //.replaceAll(RegExp("[^A-Za-z]"), ""),
               ),
             ),
           );

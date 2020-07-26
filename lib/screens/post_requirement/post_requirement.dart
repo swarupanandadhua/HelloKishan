@@ -4,8 +4,11 @@ import 'package:farmapp/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_html/html.dart';
 
 class PostRequirementScreen extends StatefulWidget {
   final String title;
@@ -24,18 +27,8 @@ class PostRequirementScreen extends StatefulWidget {
 class PostRequirementScreenState extends State<PostRequirementScreen> {
   ProgressDialog submitDialog;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Requirement _requirement = Requirement();
-
-  String _validateProductName(String value) {
-    for (int i = 0; i < PRODUCTS.length; i++) {
-      if (PRODUCTS[i].toLowerCase().contains(value.toLowerCase())) return null;
-    }
-    return 'Enter a valid product name';
-  }
-
-  String _validateRate(String value) {
-    return (num.tryParse(value) > 0) ? null : 'Enter a valid price';
-  }
+  final Requirement _requirement = Requirement();
+  final TextEditingController productTextController = TextEditingController();
 
   void submit() async {
     if (this._formKey.currentState.validate()) {
@@ -49,17 +42,19 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseUser user = Provider.of<FirebaseUser>(context, listen: false);
+    _requirement.uid = (user != null) ? user.uid : "U00000";
+
+    final Position position = Provider.of<Position>(context, listen: false);
+    _requirement.position = position;
+
     submitDialog = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
     );
-    submitDialog.style(message: "Please wait...");
-
+    submitDialog.style(message: 'Please wait...');
     final Size screenSize = MediaQuery.of(context).size;
-    final user = Provider.of<FirebaseUser>(context);
-    _requirement.uid = (user != null) ? user.uid : "U00000";
-    print(user);
 
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +68,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
             children: <Widget>[
               DropdownButtonFormField(
                 value: _requirement.wantsTo,
-                hint: Text("I want to..."),
+                hint: Text('I want to...'),
                 items: [
                   DropdownMenuItem(
                     value: TradeType.BUY,
@@ -86,27 +81,47 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    if (value == "Sell") {
+                    if (value == 'Sell') {
                       _requirement.wantsTo = TradeType.SELL;
-                    } else if (value == "Buy") {
+                    } else if (value == 'Buy') {
                       _requirement.wantsTo = TradeType.BUY;
                     } else {
                       _requirement.wantsTo = null;
                     }
                   });
-                  print("Dropdown clicked: $value");
                 },
               ),
-              // Use TypeAheadField: https://pub.dev/packages/flutter_typeahead
-              TextFormField(
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  hintText: 'Product Name',
-                  labelText: 'Enter product name',
+              TypeAheadFormField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  decoration: InputDecoration(labelText: 'Select a product'),
+                  controller: productTextController,
                 ),
-                validator: this._validateProductName,
-                onSaved: (String value) {
-                  this._requirement.product = value;
+                suggestionsCallback: (String pattern) async {
+                  return PRODUCTS.where(
+                    (p) {
+                      return p.toLowerCase().contains(pattern.toLowerCase());
+                    },
+                  ).toList();
+                },
+                itemBuilder: (BuildContext context, String suggestion) {
+                  return ListTile(
+                    leading: Icon(Icons.question_answer),
+                    title: Text(suggestion),
+                  );
+                },
+                transitionBuilder: (context, suggestionsBox, controller) {
+                  return suggestionsBox;
+                },
+                onSuggestionSelected: (String suggestion) {
+                  productTextController.text = suggestion;
+                },
+                validator: (val) {
+                  return PRODUCTS.contains(val)
+                      ? 'Please select a valid product name.'
+                      : null;
+                },
+                onSaved: (val) {
+                  this._requirement.product = val;
                 },
               ),
               TextFormField(
@@ -118,9 +133,29 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   hintText: 'Price/kg',
                   labelText: 'Enter the price per kg',
                 ),
-                validator: this._validateRate,
+                validator: (v) {
+                  return (num.tryParse(v) > 0) ? null : 'Enter a valid price';
+                },
                 onSaved: (String value) {
                   this._requirement.rate = value;
+                },
+              ),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  WhitelistingTextInputFormatter(RegExp(r'^\d+')),
+                ],
+                decoration: InputDecoration(
+                  hintText: 'Quantity',
+                  labelText: 'Enter how much you want (in kg)',
+                ),
+                validator: (v) {
+                  return (num.tryParse(v) > 0)
+                      ? null
+                      : 'Enter a valid quantity';
+                },
+                onSaved: (String value) {
+                  this._requirement.qty = value;
                 },
               ),
               Container(

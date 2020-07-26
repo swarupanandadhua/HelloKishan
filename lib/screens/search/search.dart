@@ -1,10 +1,8 @@
 import 'package:farmapp/services/database.dart';
-import 'package:farmapp/services/location.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:farmapp/screens/common/navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:farmapp/models/models.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -16,20 +14,12 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  static final String title = 'Serach Results';
-  String product;
+  final String title = 'Serach Results';
+  final String product;
+
   Future<List<Requirement>> requirements;
-  bool isLocationLoading = true;
-  Position currentLocation;
 
   SearchScreenState(this.product);
-
-  fetchData() async {
-    currentLocation = await LocationService().fetchLocation();
-    setState(() {
-      isLocationLoading = false;
-    });
-  }
 
   @override
   void initState() {

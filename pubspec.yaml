@@ -6,26 +6,26 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cloud_firestore:
   firebase_core:
-  firebase_analytics:
   firebase_auth:
   firebase_auth_web:
+  cloud_firestore:
   firebase_storage:
   firebase_image:
 
-  cupertino_icons:
-  flutter_spinkit:
   geolocator:
-  image_picker:
   provider:
-  shared_preferences:
-  splashscreen:
-  progress_dialog:
-  universal_html:
-  validate:
-  url_launcher: ### Starting Phone/Mail Activities ###
   stack_trace: ### For DEBUG purpose only ###
+  universal_html:
+  url_launcher: ### Starting Phone/Mail Activities ###
+  validate:
+
+  # cupertino_icons:
+  flutter_spinkit:
+  flutter_typeahead:
+  # image_picker:
+  progress_dialog:
+  splashscreen:
 
 environment:
   sdk:

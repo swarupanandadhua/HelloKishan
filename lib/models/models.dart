@@ -1,4 +1,5 @@
 import 'package:farmapp/models/constants.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,7 +10,7 @@ class Requirement {
   String qty, rate;
   TradeType wantsTo;
   Timestamp postedOn;
-  Geolocation location;
+  Position position;
   String displayString, verb;
 
   Requirement({
@@ -24,7 +25,7 @@ class Requirement {
     this.rate,
     this.wantsTo,
     this.postedOn,
-    this.location,
+    this.position,
   }) {
     if (name == null || name == "null") name = "Swarupananda Dhua";
     if (mobile == null || mobile == "null") mobile = "+91 9609750449";

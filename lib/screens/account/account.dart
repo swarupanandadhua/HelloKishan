@@ -1,6 +1,7 @@
 import 'package:farmapp/models/models.dart';
-import 'package:firebase_image/firebase_image.dart';
+import 'package:farmapp/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
   @override
@@ -9,13 +10,18 @@ class AccountScreen extends StatefulWidget {
 
 class AccountScreenState extends State<AccountScreen> {
   FarmAppUser u;
+  Future<String> imageUrl;
+
+  @override
+  void initState() {
+    u = Provider.of<FarmAppUser>(context, listen: false);
+    if (u == null) u = FarmAppUser();
+    imageUrl = DatabaseService().getImageUrl(u.imageUrl);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // final user = Provider.of<FirebaseUser>(context);
-    // print(user);
-    u = FarmAppUser();
-    print(u.imageUrl);
     bool checkboxValueA = true;
     bool checkboxValueB = false;
     bool checkboxValueC = false;
@@ -34,16 +40,48 @@ class AccountScreenState extends State<AccountScreen> {
                 elevation: 4.0,
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.all(7.0),
-                      alignment: Alignment.topCenter,
-                      child: ClipOval(
-                        child: Image(
-                          width: 100.0,
-                          height: 100.0,
-                          image: FirebaseImage(u.imageUrl),
-                        ),
-                      ),
+                    FutureBuilder(
+                      future: imageUrl,
+                      builder: (ctx, snap) {
+                        if (snap.connectionState == ConnectionState.done &&
+                            snap.hasData &&
+                            snap.data != null) {
+                          return GestureDetector(
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              margin: EdgeInsets.all(7.0),
+                              alignment: Alignment.topCenter,
+                              child: ClipOval(
+                                child: Image.network(snap.data),
+                              ),
+                            ),
+                            /* onTap: () async {
+                              var _image = await ImagePicker.pickImage(
+                                source: ImageSource.gallery,
+                              );
+                              final StorageReference ref = FirebaseStorage
+                                  .instance
+                                  .ref()
+                                  .child(u.imageUrl);
+                              final StorageUploadTask uploadTask =
+                                  ref.putFile(_image);
+                              await uploadTask.onComplete;
+                              setState(() {
+                                u.imageUrl = u.imageUrl;
+                              });
+                            }, */
+                          );
+                        } else {
+                          return Center(
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                      },
                     ),
                     FlatButton(
                       onPressed: () => print(StackTrace.current),

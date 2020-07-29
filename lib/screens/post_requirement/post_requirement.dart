@@ -1,14 +1,12 @@
 import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:farmapp/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart';
 
 class PostRequirementScreen extends StatefulWidget {
   final String title;
@@ -25,36 +23,33 @@ class PostRequirementScreen extends StatefulWidget {
 }
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {
-  ProgressDialog submitDialog;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final Requirement _requirement = Requirement();
+  final Requirement requirement = Requirement();
   final TextEditingController productTextController = TextEditingController();
 
-  void submit() async {
-    if (this._formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      submitDialog.show();
-      await DatabaseService().postRequirement(_requirement);
-      submitDialog.hide();
-      Navigator.pop(context);
-    }
-  }
+  FarmAppUser u;
+  ProgressDialog submitDialog;
+  Position position;
+  Size screenSize;
 
   @override
-  Widget build(BuildContext context) {
-    final FirebaseUser user = Provider.of<FirebaseUser>(context, listen: false);
-    _requirement.uid = (user != null) ? user.uid : "U00000";
-
-    final Position position = Provider.of<Position>(context, listen: false);
-    _requirement.position = position;
-
+  void initState() {
     submitDialog = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
-    );
-    submitDialog.style(message: 'Please wait...');
-    final Size screenSize = MediaQuery.of(context).size;
+    )..style(message: 'Please wait...');
+
+    u = Provider.of<FarmAppUser>(context, listen: false);
+    requirement.uid = (u != null) ? u.uid : 'U00000';
+
+    requirement.position = Provider.of<Position>(context, listen: false);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +62,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           child: ListView(
             children: <Widget>[
               DropdownButtonFormField(
-                value: _requirement.wantsTo,
+                value: requirement.tradeType,
                 hint: Text('I want to...'),
                 items: [
                   DropdownMenuItem(
@@ -79,17 +74,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     child: Text('Sell'),
                   ),
                 ],
-                onChanged: (value) {
-                  setState(() {
-                    if (value == 'Sell') {
-                      _requirement.wantsTo = TradeType.SELL;
-                    } else if (value == 'Buy') {
-                      _requirement.wantsTo = TradeType.BUY;
-                    } else {
-                      _requirement.wantsTo = null;
-                    }
-                  });
-                },
+                onChanged: (type) =>
+                    setState(() => requirement.setTradeType(type)),
               ),
               TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -117,11 +103,11 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 },
                 validator: (val) {
                   return PRODUCTS.contains(val)
-                      ? 'Please select a valid product name.'
-                      : null;
+                      ? null
+                      : 'Please select a valid product name.';
                 },
                 onSaved: (val) {
-                  this._requirement.product = val;
+                  this.requirement.product = val;
                 },
               ),
               TextFormField(
@@ -137,7 +123,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   return (num.tryParse(v) > 0) ? null : 'Enter a valid price';
                 },
                 onSaved: (String value) {
-                  this._requirement.rate = value;
+                  this.requirement.rate = value;
                 },
               ),
               TextFormField(
@@ -155,7 +141,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                       : 'Enter a valid quantity';
                 },
                 onSaved: (String value) {
-                  this._requirement.qty = value;
+                  this.requirement.qty = value;
                 },
               ),
               Container(
@@ -171,5 +157,15 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         ),
       ),
     );
+  }
+
+  void submit() async {
+    if (this._formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      submitDialog.show();
+      await DatabaseService().uploadRequirement(requirement);
+      submitDialog.hide();
+      Navigator.pop(context);
+    }
   }
 }

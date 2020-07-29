@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:farmapp/models/models.dart';
 
 class AuthenticationService {
-  Stream<FirebaseUser> get user {
-    return FirebaseAuth.instance.onAuthStateChanged;
+  Stream<FarmAppUser> get user {
+    return FirebaseAuth.instance.onAuthStateChanged.map(
+      (u) => FarmAppUser.fromFirebaseUser(u),
+    );
   }
 
   Future<String> signInWithEmailPassword(String email, String password) async {
@@ -39,18 +42,18 @@ class AuthenticationService {
 
     try {
       result = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: "swarup@gmail.com",
-        password: "swarup123",
+        email: 'swarup@gmail.com',
+        password: 'swarup123',
       );
     } catch (e) {
       print(e);
     }
     if (result == null) {
-      print("Error signing in\n");
+      print('Error signing in\n');
       return null;
     } else {
       String uid = result.user.uid;
-      print("Signed in as $uid\n");
+      print('Signed in as $uid\n');
       return uid;
     }
   }
@@ -91,18 +94,30 @@ class AuthenticationService {
     }
   }
 
-  Future<FirebaseUser> registerWithEmailPassword(
-      String email, String password) async {
-    try {
-      AuthResult result =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return result.user;
-    } catch (e) {
-      print(e);
-      return null;
-    }
+  Future<FirebaseUser> registerWithEmailPass(String email, String pass) async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+      email: email,
+      password: pass,
+    )
+        .then(
+      (result) {
+        return result.user;
+      },
+    );
+    return null;
+  }
+
+  Future<FirebaseUser> verifyPhoneNumber(String phoneNumber) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      timeout: Duration(seconds: 60),
+      verificationCompleted: (cred) => print(cred),
+      verificationFailed: (error) => print(error),
+      codeSent: (verificationId, [forceResendingToken]) =>
+          print(verificationId.toString() + forceResendingToken.toString()),
+      codeAutoRetrievalTimeout: (verificationId) => print(verificationId),
+    );
+    return null;
   }
 }

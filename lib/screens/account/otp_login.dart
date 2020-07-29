@@ -7,7 +7,7 @@ class OTPLoginScreen extends StatefulWidget {
 }
 
 class OTPLoginScreenState extends State<OTPLoginScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _otpLoginFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          key: this._formKey,
+          key: this._otpLoginFormKey,
           child: ListView(
             children: <Widget>[
               TextFormField(
@@ -32,12 +32,9 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                   labelText: 'Enter your 10 digit mobile No.',
                 ),
                 validator: (String value) {
-                  print('Validator called');
-                  return (value.length == 10) ? null : "Must be 10 digits";
+                  return (value.length == 10) ? null : 'Must be 10 digits';
                 },
-                onSaved: (String value) {
-                  // this._requirement.rate = num.tryParse(value);
-                },
+                onSaved: (String value) {},
               ),
               Container(
                 width: screenSize.width / 2,
@@ -55,8 +52,8 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
   }
 
   void submit() {
-    if (this._formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (this._otpLoginFormKey.currentState.validate()) {
+      _otpLoginFormKey.currentState.save();
     }
   }
 }

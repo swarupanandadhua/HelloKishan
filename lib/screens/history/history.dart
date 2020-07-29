@@ -35,7 +35,7 @@ class HistoryScreenState extends State<HistoryScreen> {
             );
           } else {
             return Center(
-              child: Text("No transactions found!"),
+              child: Text('No transactions found!'),
             );
           }
         } else if (snap.hasError) {
@@ -75,7 +75,7 @@ class HistoryScreenState extends State<HistoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    (t.type == TradeType.BUY) ? "Bought from" : "Sold to",
+                    (t.type == TradeType.BUY) ? 'Bought from' : 'Sold to',
                     style: TextStyle(
                       color: Colors.grey[350],
                       fontWeight: FontWeight.w500,

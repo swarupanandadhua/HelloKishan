@@ -21,8 +21,8 @@ class LocationService {
         desiredAccuracy: LocationAccuracy.best,
       ).then(
         (pos) {
-          print("Latitude: " + pos.latitude.toString());
-          print("Longitude: " + pos.longitude.toString());
+          print('Latitude: ' + pos.latitude.toString());
+          print('Longitude: ' + pos.longitude.toString());
           return pos;
         },
       );

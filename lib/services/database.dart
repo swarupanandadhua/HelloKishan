@@ -1,87 +1,93 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/models/models.dart' as FarmApp;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 
 class DatabaseService {
-  Future<void> uploadUser() async {
-    Map<String, dynamic> doc = Map<String, dynamic>();
-    doc["name"] = "Subir Das";
-    doc["dob"] = "01-03-1992";
-    doc["email"] = "subir1234@gmail.com";
-    doc["mobile"] = 1122334455;
-    doc["nickname"] = "Puchu";
-    doc["primary_addr"] = GeoPoint(21.38144, 90.769907);
-
+  Future<void> uploadUser(FarmApp.FarmAppUser u) async {
+    Map<String, dynamic> doc = u.toMap();
     try {
-      await Firestore.instance.document("/user/U00006").setData(doc);
+      await Firestore.instance
+          .document('/' + FIRESTORE_USER_DB + '/' + u.uid)
+          .setData(doc);
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> uploadRequirement() async {
-    Map<String, dynamic> doc = Map<String, dynamic>();
-    doc["posted_on"] = Timestamp.fromDate(DateTime(2020, 05, 03, 08, 08, 08));
-    doc["product"] = "P000";
-    doc["qty"] = 95;
-    doc["rate"] = 25;
-    doc["user"] = "U00000";
-    doc["wants_to"] = "Buy";
+  Future<void> deleteRequirement(String rid) async {
     try {
-      await Firestore.instance.document("/requirement/R00000").setData(doc);
+      await Firestore.instance
+          .document('/' + FIRESTORE_REQUIREMENT_DB + '/' + rid)
+          .delete();
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> deleteRequirement() async {
+  Future<void> uploadTransaction(FarmApp.Transaction t) async {
+    Map<String, dynamic> doc = t.toMap();
+
     try {
-      await Firestore.instance.document("/requirement/R00010").delete();
+      await Firestore.instance
+          .document('/' + FIRESTORE_TRANSACTION_DB + '/' + t.tid)
+          .setData(doc);
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> uploadTransaction() async {
-    Map<String, dynamic> doc = Map<String, dynamic>();
-    doc["name"] = "Subir Das";
-    doc["dob"] = "01-03-1992";
-    doc["email"] = "subir1234@gmail.com";
-    doc["mobile"] = 1122334455;
-    doc["nickname"] = "Puchu";
-    doc["primary_addr"] = GeoPoint(21.38144, 90.769907);
-
-    try {
-      await Firestore.instance.document("/transaction/U00006").setData(doc);
-    } catch (e) {
-      print(e);
-    }
+  Stream<List<FarmApp.Requirement>> fetchRequirementsByLocation(
+      String db, double lat, double long, double rad) {
+    CollectionReference ref = Firestore.instance.collection(db);
+    Geoflutterfire geo = Geoflutterfire();
+    GeoFirePoint center = geo.point(
+      latitude: lat,
+      longitude: long,
+    );
+    geo
+        .collection(
+          collectionRef: ref,
+        )
+        .within(
+          center: center,
+          radius: rad,
+          field: 'position',
+        )
+        .map(
+      (snap) {
+        List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
+        snap.forEach(
+          (doc) {
+            requirements.insert(
+              0,
+              FarmApp.Requirement.fromDocumentSnapshot(doc),
+            );
+          },
+        );
+        return requirements;
+      },
+    );
+    return null;
   }
 
   Future<List<FarmApp.Requirement>> fetchRequirements(String product) async {
     List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
     await Firestore.instance
         .collection(FIRESTORE_REQUIREMENT_DB)
-        .where("product", isEqualTo: product)
+        .where('product', isEqualTo: product)
         .getDocuments()
         .then(
       (snapshot) {
-        snapshot.documents.forEach((doc) {
-          print(doc.data.toString() + "\n");
-          FarmApp.Requirement r = FarmApp.Requirement(
-            uid: doc["user"],
-            name: doc["name"],
-            mobile: doc["mobile"],
-            pid: doc["product"],
-            product: doc["product"],
-            wantsTo: (doc["wants_to"] == "Buy")
-                ? FarmApp.TradeType.BUY
-                : FarmApp.TradeType.SELL,
-            rate: doc["rate"].toString(),
-            qty: doc["qty"].toString(),
-          );
-          requirements.insert(0, r);
-        });
+        snapshot.documents.forEach(
+          (doc) {
+            requirements.insert(
+              0,
+              FarmApp.Requirement.fromDocumentSnapshot(doc),
+            );
+          },
+        );
       },
     );
     return requirements;
@@ -94,32 +100,27 @@ class DatabaseService {
         .getDocuments()
         .then((snapshot) {
       snapshot.documents.forEach((doc) {
-        FarmApp.Transaction t = FarmApp.Transaction();
-        transactions.insert(0, t);
+        transactions.insert(
+          0,
+          FarmApp.Transaction.fromDocumentSnapshot(doc),
+        );
       });
     });
 
     return transactions;
   }
 
-  Future<bool> postRequirement(FarmApp.Requirement r) async {
-    Map<String, dynamic> data = Map<String, dynamic>();
-    data["uid"] = r.uid;
-    data["product"] = r.product;
-    data["rate"] = r.rate;
-    data["qty"] = r.qty;
+  Future<bool> uploadRequirement(FarmApp.Requirement r) async {
     await Firestore.instance
         .collection(FIRESTORE_REQUIREMENT_DB)
-        .add(data)
+        .add(r.toMap())
         .then((doc) {
-      print("Requirement Saved {");
-      print("    uid:" + r.uid.toString());
-      print("    product: " + r.product.toString());
-      print("    rate: " + r.rate.toString());
-      print("    qty: " + r.qty.toString());
-      print("}");
       return true;
     });
     return false;
+  }
+
+  Future<String> getImageUrl(String image) async {
+    return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
 }

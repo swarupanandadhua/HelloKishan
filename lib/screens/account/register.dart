@@ -1,5 +1,6 @@
 import 'package:farmapp/services/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:validate/validate.dart';
 
 class RegisterScreen extends StatefulWidget {
   final Function toggleView;
@@ -22,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return SizedBox(
       height: 150,
       child: Image.asset(
-        'images/app_logo.jpg',
+        'assets/images/app_logo.jpg',
         height: 150,
         width: 150,
       ),
@@ -33,14 +34,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       validator: (val) {
-        Pattern pattern =
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-        RegExp regex = RegExp(pattern);
-        if (!regex.hasMatch(val)) {
+        try {
+          Validate.isEmail(val);
+        } catch (e) {
+          print(e);
           return 'Enter Valid Email';
-        } else {
-          return null;
         }
+        return null;
       },
       style: style,
       onChanged: (val) => (_email = val),
@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           20.0,
           15.0,
         ),
-        hintText: "Enter Valid Email",
+        hintText: 'Enter Valid Email',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32.0),
         ),
@@ -62,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget showPasswordInput() {
     return TextFormField(
-      validator: (val) => val.length < 6 ? "Enter valid Password" : null,
+      validator: (val) => val.length < 6 ? 'Enter valid Password' : null,
       style: style,
       onChanged: (val) => (_password = val),
       obscureText: true,
@@ -73,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           20.0,
           15.0,
         ),
-        hintText: "Password",
+        hintText: 'Password',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32.0),
         ),
@@ -93,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             dynamic result = await AuthenticationService()
-                .registerWithEmailPassword(_email, _password);
+                .registerWithEmailPass(_email, _password);
             if (result == null) {
               setState(() {
                 _error = 'User already exists';
@@ -102,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
         },
         child: Text(
-          "Register",
+          'Register',
           textAlign: TextAlign.center,
           style: style.copyWith(
             color: Colors.white,

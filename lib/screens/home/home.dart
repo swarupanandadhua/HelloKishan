@@ -12,8 +12,16 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('TODO'),
+    return ListView.builder(
+      itemBuilder: (ctx, i) {
+        return Container(
+          child: Image.asset('assets/images/app_logo.jpg'),
+          height: 50,
+          width: 50,
+        );
+      },
+      itemCount: 10,
+      scrollDirection: Axis.horizontal,
     );
   }
 }

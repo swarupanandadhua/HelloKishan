@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:farmapp/screens/account/account.dart';
 import 'package:farmapp/screens/common/navigation_drawer.dart';
 import 'package:farmapp/screens/history/history.dart';
@@ -8,15 +9,12 @@ import 'package:farmapp/screens/home/home.dart';
 import 'package:flutter/material.dart';
 
 class WrapperScreen extends StatefulWidget {
-  final int tabIndex;
-  WrapperScreen({this.tabIndex});
-
   @override
-  _WrapperScreenState createState() => _WrapperScreenState(tabIndex);
+  _WrapperScreenState createState() => _WrapperScreenState();
 }
 
-class _WrapperScreenState extends State<WrapperScreen> {
-  int _tabIndex;
+class _WrapperScreenState extends State<WrapperScreen>
+    with SingleTickerProviderStateMixin {
   static List<Widget> _tabs = <Widget>[
     HomeScreen(),
     AccountScreen(),
@@ -24,19 +22,46 @@ class _WrapperScreenState extends State<WrapperScreen> {
     HistoryScreen(),
   ];
   static List<String> _titles = <String>[
-    "Home",
-    "Account",
-    "Trade",
-    "History",
+    'Home',
+    'Account',
+    'Trade',
+    'History',
+  ];
+  static List<Widget> _icons = [
+    Icon(
+      Icons.home,
+      size: 30,
+      color: Colors.white,
+    ),
+    Icon(
+      Icons.account_circle,
+      size: 30,
+      color: Colors.white,
+    ),
+    Icon(
+      Icons.import_export,
+      size: 30,
+      color: Colors.white,
+    ),
+    Icon(Icons.history, size: 30, color: Colors.white),
   ];
 
-  _WrapperScreenState(this._tabIndex);
+  TabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+      initialIndex: 0,
+      length: _tabs.length,
+      vsync: this,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_tabIndex]),
+        title: Text(_titles[_tabController.index]),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -62,38 +87,28 @@ class _WrapperScreenState extends State<WrapperScreen> {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 16.0,
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text(_titles[0]),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            title: Text(_titles[1]),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.import_export),
-            title: Text(_titles[2]),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            title: Text(_titles[3]),
-          ),
-        ],
-        currentIndex: _tabIndex,
-        fixedColor: Colors.indigo,
-        onTap: onBottomNavigationTapped,
+      bottomNavigationBar: CurvedNavigationBar(
+        color: Colors.indigo,
+        height: 50,
+        backgroundColor: Colors.white,
+        animationCurve: Curves.ease,
+        animationDuration: Duration(seconds: 1),
+        buttonBackgroundColor: Colors.indigo,
+        items: _icons,
+        onTap: (index) {
+          setState(() {
+            _tabController.animateTo(index);
+          });
+        },
       ),
-      body: _tabs[_tabIndex],
+      body: Container(
+        color: Colors.white,
+        child: TabBarView(
+          children: _tabs,
+          physics: NeverScrollableScrollPhysics(),
+          controller: _tabController,
+        ),
+      ),
     );
-  }
-
-  void onBottomNavigationTapped(int value) {
-    setState(() {
-      _tabIndex = value;
-    });
   }
 }

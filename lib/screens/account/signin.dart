@@ -1,5 +1,6 @@
 import 'package:farmapp/services/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:validate/validate.dart';
 
 class SignInScreen extends StatefulWidget {
   SignInScreen({this.toggleView});
@@ -42,7 +43,7 @@ class SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         height: 150,
                         child: Image.asset(
-                          'images/app_logo.jpg',
+                          'assets/images/app_logo.jpg',
                           height: 150,
                           width: 150,
                         ),
@@ -58,12 +59,13 @@ class SignInScreenState extends State<SignInScreen> {
                       TextFormField(
                         style: style,
                         validator: (val) {
-                          Pattern pattern =
-                              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                          RegExp regex = RegExp(pattern);
-                          return (!regex.hasMatch(val))
-                              ? 'Enter Valid Email'
-                              : null;
+                          try {
+                            Validate.isEmail(val);
+                          } catch (e) {
+                            print(e);
+                            return 'Enter Valid Email';
+                          }
+                          return null;
                         },
                         onChanged: (val) => (_email = val),
                         decoration: InputDecoration(
@@ -73,7 +75,7 @@ class SignInScreenState extends State<SignInScreen> {
                             20.0,
                             15.0,
                           ),
-                          hintText: "Email",
+                          hintText: 'Email',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0),
                           ),
@@ -83,7 +85,7 @@ class SignInScreenState extends State<SignInScreen> {
                       TextFormField(
                         style: style,
                         validator: (val) =>
-                            val.length < 6 ? "Enter valid Password" : null,
+                            val.length < 6 ? 'Enter valid Password' : null,
                         onChanged: (val) => (_password = val),
                         obscureText: true,
                         decoration: InputDecoration(
@@ -93,7 +95,7 @@ class SignInScreenState extends State<SignInScreen> {
                             20.0,
                             15.0,
                           ),
-                          hintText: "Password",
+                          hintText: 'Password',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0),
                           ),
@@ -125,7 +127,7 @@ class SignInScreenState extends State<SignInScreen> {
                             }
                           },
                           child: Text(
-                            "Login",
+                            'Login',
                             textAlign: TextAlign.center,
                             style: style.copyWith(
                               color: Colors.white,

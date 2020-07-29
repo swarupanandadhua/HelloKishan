@@ -1,4 +1,5 @@
 import 'package:farmapp/services/database.dart';
+import 'package:universal_html/html.dart' as HTML;
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:farmapp/screens/common/navigation_drawer.dart';
 import 'package:firebase_image/firebase_image.dart';
@@ -17,14 +18,18 @@ class SearchScreenState extends State<SearchScreen> {
   final String title = 'Serach Results';
   final String product;
 
-  Future<List<Requirement>> requirements;
+  Future<List<Requirement>> requirementsFuture;
+
+  HTML.Location location;
+
+  List<Requirement> requirements;
 
   SearchScreenState(this.product);
 
   @override
   void initState() {
     super.initState();
-    requirements = DatabaseService().fetchRequirements(product);
+    requirementsFuture = DatabaseService().fetchRequirements(product);
   }
 
   @override
@@ -36,13 +41,53 @@ class SearchScreenState extends State<SearchScreen> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (option) {
+              switch (option) {
+                case 'Sort by distance':
+                  print(StackTrace.current);
+                  break;
+                case 'Highest Price First':
+                  if (requirements != null) {
+                    setState(() {
+                      requirements.sort((a, b) => (a.rate.compareTo(b.rate)));
+                    });
+                  }
+                  break;
+                case 'Lowest Price First':
+                  if (requirements != null) {
+                    setState(() {
+                      requirements.sort((b, a) => (a.rate.compareTo(b.rate)));
+                    });
+                  }
+                  break;
+                default:
+                  print(StackTrace.current);
+              }
+            },
+            itemBuilder: (ctx) {
+              return {
+                'Sort by distance',
+                'Highest Price First',
+                'Lowest Price First',
+              }.map((String option) {
+                return PopupMenuItem<String>(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       drawer: NavigationDrawer(),
       body: FutureBuilder<List<Requirement>>(
-        future: requirements,
+        future: requirementsFuture,
         builder: (BuildContext ctx, AsyncSnapshot<List<Requirement>> snap) {
           if (snap.hasData) {
             if (snap.data.length > 0) {
+              requirements = snap.data;
               return Container(
                 color: Color(0xff0011),
                 child: ListView.builder(
@@ -54,7 +99,7 @@ class SearchScreenState extends State<SearchScreen> {
               );
             } else {
               return Center(
-                child: Text("Nothing found!"),
+                child: Text('Nothing found!'),
               );
             }
           } else if (snap.hasError) {
@@ -92,7 +137,7 @@ class SearchScreenState extends State<SearchScreen> {
             subtitle: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Rate: Rs. " + r.rate + " per kg",
+                'Rate: Rs. ' + r.rate + ' per kg',
                 style: TextStyle(fontSize: 12),
               ),
             ),

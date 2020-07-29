@@ -1,8 +1,7 @@
-import 'package:farmapp/screens/account/authenticate.dart';
+import 'package:farmapp/models/models.dart';
 import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/authentication.dart';
 import 'package:farmapp/services/location.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +14,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<Position>.value(
       value: LocationService().location,
-      child: StreamProvider<FirebaseUser>.value(
+      child: StreamProvider<FarmAppUser>.value(
         value: AuthenticationService().user,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -26,20 +25,16 @@ class App extends StatelessWidget {
           ),
           home: SplashScreen(
             seconds: 3,
-            // navigateAfterSeconds: SearchScreen("product"),
-            // navigateAfterSeconds: PostRequirementScreen(),
-            // navigateAfterSeconds: OTPLoginScreen(),
-            // navigateAfterSeconds: AccountScreen(),
-            // navigateAfterSeconds: HistoryScreen(),
             navigateAfterSeconds: FarmApp(),
-            image: Image.asset('images/app_logo.jpg'),
+            image: Image.asset('assets/images/app_logo.jpg'),
             photoSize: 100.0,
             title: Text(
-              "FarmApp",
+              'FarmApp',
               style: TextStyle(
                 fontSize: 40.0,
                 color: Colors.indigo,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'Agne',
               ),
             ),
           ),
@@ -52,7 +47,9 @@ class App extends StatelessWidget {
 class FarmApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final FirebaseUser user = Provider.of<FirebaseUser>(context);
-    return (user == null) ? AuthenticateScreen() : WrapperScreen(tabIndex: 0);
+    final FarmAppUser user = Provider.of<FarmAppUser>(context);
+    // return (user == null) ? AuthenticateScreen() : WrapperScreen();
+    // return (user == null) ? OTPLoginScreen() : WrapperScreen();
+    return (user == null) ? WrapperScreen() : WrapperScreen();
   }
 }

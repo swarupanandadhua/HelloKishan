@@ -9,7 +9,7 @@ class RequirementSearch extends SearchDelegate<String> {
       IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
-          query = "";
+          query = '';
         },
       ),
     ];
@@ -31,7 +31,7 @@ class RequirementSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     print(StackTrace.current);
-    return Text("TODO");
+    return Text('TODO');
   }
 
   @override
@@ -51,7 +51,7 @@ class RequirementSearch extends SearchDelegate<String> {
             context,
             MaterialPageRoute(
               builder: (context) => SearchScreen(
-                products[i], //.replaceAll(RegExp("[^A-Za-z]"), ""),
+                products[i], // .replaceAll(RegExp('[^A-Za-z]'), ''),
               ),
             ),
           );

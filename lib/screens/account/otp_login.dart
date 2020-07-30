@@ -25,7 +25,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
               TextFormField(
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  WhitelistingTextInputFormatter(RegExp(r'^\d{0,10}')),
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d{0,10}')),
                 ],
                 decoration: InputDecoration(
                   hintText: 'Mobile No.',

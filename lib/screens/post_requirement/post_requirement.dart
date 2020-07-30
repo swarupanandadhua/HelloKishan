@@ -113,7 +113,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
               TextFormField(
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
                 decoration: InputDecoration(
                   hintText: 'Price/kg',
@@ -129,7 +129,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
               TextFormField(
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  WhitelistingTextInputFormatter(RegExp(r'^\d+')),
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
                 ],
                 decoration: InputDecoration(
                   hintText: 'Quantity',

@@ -43,9 +43,9 @@ abstract class LoginStoreBase with Store {
     isLoginLoading = true;
     await FlutterLibphonenumber().init();
     await FlutterLibphonenumber().format(phoneNumber, 'in').then(
-          (value) => print(value),
+          (value) => debugPrint(value.toString()),
         );
-    print(phoneNumber);
+    debugPrint(phoneNumber);
 
     await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -53,7 +53,7 @@ abstract class LoginStoreBase with Store {
         verificationCompleted: (AuthCredential auth) async {
           await _auth.signInWithCredential(auth).then((AuthResult value) {
             if (value != null && value.user != null) {
-              print('Authentication successful');
+              debugPrint('Authentication successful');
               onAuthenticationSuccessful(context, value);
             } else {
               loginScaffoldKey.currentState.showSnackBar(const SnackBar(
@@ -77,7 +77,7 @@ abstract class LoginStoreBase with Store {
           });
         },
         verificationFailed: (AuthException authException) {
-          print('Error message: ' + authException.message);
+          debugPrint('Error message: ' + authException.message);
           loginScaffoldKey.currentState.showSnackBar(const SnackBar(
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.red,
@@ -117,7 +117,7 @@ abstract class LoginStoreBase with Store {
       ));
     }).then((AuthResult authResult) {
       if (authResult != null && authResult.user != null) {
-        print('Authentication successful');
+        debugPrint('Authentication successful');
         onAuthenticationSuccessful(context, authResult);
       }
     });

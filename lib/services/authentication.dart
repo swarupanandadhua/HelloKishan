@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:farmapp/models/models.dart';
+import 'package:flutter/material.dart';
 
 class AuthenticationService {
   Stream<FarmAppUser> get user {
@@ -18,7 +19,7 @@ class AuthenticationService {
       );
       return result.user.uid;
     } catch (e) {
-      print(e);
+      debugPrint(e);
       return null;
     }
   }
@@ -32,7 +33,7 @@ class AuthenticationService {
       );
       return result.user.uid;
     } catch (e) {
-      print(e);
+      debugPrint(e);
       return null;
     }
   }
@@ -46,14 +47,14 @@ class AuthenticationService {
         password: 'swarup123',
       );
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
     if (result == null) {
-      print('Error signing in\n');
+      debugPrint('Error signing in\n');
       return null;
     } else {
       String uid = result.user.uid;
-      print('Signed in as $uid\n');
+      debugPrint('Signed in as $uid\n');
       return uid;
     }
   }
@@ -62,7 +63,7 @@ class AuthenticationService {
     try {
       return await FirebaseAuth.instance.currentUser();
     } catch (e) {
-      print(e);
+      debugPrint(e);
       return null;
     }
   }
@@ -71,7 +72,7 @@ class AuthenticationService {
     try {
       await FirebaseAuth.instance.signOut();
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
   }
 
@@ -80,7 +81,7 @@ class AuthenticationService {
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
       await user.sendEmailVerification();
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
   }
 
@@ -89,7 +90,7 @@ class AuthenticationService {
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
       return user.isEmailVerified;
     } catch (e) {
-      print(e);
+      debugPrint(e);
       return null;
     }
   }
@@ -109,14 +110,59 @@ class AuthenticationService {
   }
 
   Future<FirebaseUser> verifyPhoneNumber(String phoneNumber) async {
+    if (!phoneNumber.startsWith("+91")) {
+      phoneNumber = "+91" + phoneNumber;
+    }
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       timeout: Duration(seconds: 60),
-      verificationCompleted: (cred) => print(cred),
-      verificationFailed: (error) => print(error),
-      codeSent: (verificationId, [forceResendingToken]) =>
-          print(verificationId.toString() + forceResendingToken.toString()),
-      codeAutoRetrievalTimeout: (verificationId) => print(verificationId),
+      verificationCompleted: (cred) async {
+        debugPrint("[FarmApp] Verification Completed!!!!!!!!!!");
+        debugPrint(cred.toString());
+        await FirebaseAuth.instance.signInWithCredential(cred).then(
+          (authResult) {
+            if (authResult?.user != null) {
+              debugPrint('[FarmApp] Authentication successful!!!!!!!!!!');
+              debugPrint("USER: " + authResult.user.toString());
+              return authResult.user;
+            } else {
+              debugPrint('[FarmApp] Failed!!!!!!!!!!');
+            }
+          },
+        );
+      },
+      verificationFailed: (error) {
+        debugPrint("[FarmApp] VerificationFailed!!!!!!!!!!");
+        debugPrint(error.message);
+      },
+      codeSent: (verificationId, [forceResendingToken]) {
+        debugPrint("[FarmApp] Code Sent!!!!!!!!!!");
+        debugPrint("VerID: " +
+            verificationId.toString() +
+            "\nforceResendingToken: " +
+            forceResendingToken.toString());
+      },
+      codeAutoRetrievalTimeout: (verificationId) async {
+        debugPrint("[FarmApp] 3 Code Auto retrieval timed out!!!!!!!!!!");
+        debugPrint(verificationId);
+        String otp = "123456";
+        // show input dialog & get otp
+        AuthCredential cred = PhoneAuthProvider.getCredential(
+          verificationId: verificationId,
+          smsCode: otp,
+        );
+        await FirebaseAuth.instance.signInWithCredential(cred).then(
+          (authResult) {
+            if (authResult?.user != null) {
+              debugPrint('[FarmApp] Authentication successful!!!!!!!!!!');
+              debugPrint("USER: " + authResult.user.toString());
+              return authResult.user;
+            } else {
+              debugPrint('[FarmApp] Failed!!!!!!!!!!');
+            }
+          },
+        );
+      },
     );
     return null;
   }

@@ -1,3 +1,4 @@
+import 'package:farmapp/models/constants.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,9 +14,9 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemBuilder: (ctx, i) {
+      itemBuilder: (_, i) {
         return Container(
-          child: Image.asset('assets/images/app_logo.jpg'),
+          child: Image.asset(FARMAPP_LOGO),
           height: 50,
           width: 50,
         );

@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "982498269300",
-    "firebase_url": "https://farmapp-2d60d.firebaseio.com",
-    "project_id": "farmapp-2d60d",
-    "storage_bucket": "farmapp-2d60d.appspot.com"
+    "project_number": "139488158745",
+    "firebase_url": "https://farmapp-swarupananda.firebaseio.com",
+    "project_id": "farmapp-swarupananda",
+    "storage_bucket": "farmapp-swarupananda.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:982498269300:android:96530b11a8021657f4d921",
+        "mobilesdk_app_id": "1:139488158745:android:e0780e1dbb78555dc23688",
         "android_client_info": {
           "package_name": "com.farmapp.farmapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "982498269300-q43efu73j51jgtnih2c43nqpk69bm010.apps.googleusercontent.com",
+          "client_id": "139488158745-a79islc3lqrdcldh1irnhm0sv6628j35.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.farmapp.farmapp",
+            "certificate_hash": "05a175ce0747f2194d5fa2f80af2040d9fa1249e"
+          }
+        },
+        {
+          "client_id": "139488158745-dcpqqfn4vdskhufncsi39rh9qsc914r3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBah9RUJKDs0EMmyrq45WJuRrRqn_xZhx0"
+          "current_key": "AIzaSyB6cNt7mbqYeRqc9IfeRc4n1C111LpaoEQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "982498269300-q43efu73j51jgtnih2c43nqpk69bm010.apps.googleusercontent.com",
+              "client_id": "139488158745-dcpqqfn4vdskhufncsi39rh9qsc914r3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

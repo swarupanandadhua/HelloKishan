@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/models/models.dart' as FarmApp;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class DatabaseService {
@@ -12,7 +13,7 @@ class DatabaseService {
           .document('/' + FIRESTORE_USER_DB + '/' + u.uid)
           .setData(doc);
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
   }
 
@@ -22,7 +23,7 @@ class DatabaseService {
           .document('/' + FIRESTORE_REQUIREMENT_DB + '/' + rid)
           .delete();
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
   }
 
@@ -34,7 +35,7 @@ class DatabaseService {
           .document('/' + FIRESTORE_TRANSACTION_DB + '/' + t.tid)
           .setData(doc);
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
   }
 

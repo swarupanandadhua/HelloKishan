@@ -34,8 +34,8 @@ class LoginScreenState extends State<LoginScreen> {
     if (_loginFormKey.currentState.validate()) {
       _loginFormKey.currentState.save();
 
-      print('Email: ${_loginData.email}');
-      print('Password: ${_loginData.password}');
+      debugPrint('Email: ${_loginData.email}');
+      debugPrint('Password: ${_loginData.password}');
     }
   }
 

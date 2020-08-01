@@ -1,3 +1,4 @@
+import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:validate/validate.dart';
@@ -43,7 +44,7 @@ class SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         height: 150,
                         child: Image.asset(
-                          'assets/images/app_logo.jpg',
+                          FARMAPP_LOGO,
                           height: 150,
                           width: 150,
                         ),
@@ -62,7 +63,7 @@ class SignInScreenState extends State<SignInScreen> {
                           try {
                             Validate.isEmail(val);
                           } catch (e) {
-                            print(e);
+                            debugPrint(e);
                             return 'Enter Valid Email';
                           }
                           return null;
@@ -139,7 +140,7 @@ class SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 15.0),
                       GestureDetector(
                         onTap: () =>
-                            print('TODO: Invoke FORGOT PASSWORD method'),
+                            debugPrint('TODO: Invoke FORGOT PASSWORD method'),
                         child: SizedBox(
                           height: 15.0,
                           child: Text(

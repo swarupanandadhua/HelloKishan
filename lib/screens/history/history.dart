@@ -21,13 +21,13 @@ class HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Transaction>>(
       future: transactions,
-      builder: (BuildContext ctx, AsyncSnapshot<List<Transaction>> snap) {
+      builder: (_, snap) {
         if (snap.hasData) {
           if (snap.data.length > 0) {
             return Container(
               color: Color(0xff0011),
               child: ListView.builder(
-                itemBuilder: (context, i) {
+                itemBuilder: (_, i) {
                   return _buildHistoryTile(snap.data[i]);
                 },
                 itemCount: snap.data.length,

@@ -1,3 +1,6 @@
+import 'package:farmapp/screens/wrapper.dart';
+import 'package:farmapp/services/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,6 +11,8 @@ class OTPLoginScreen extends StatefulWidget {
 
 class OTPLoginScreenState extends State<OTPLoginScreen> {
   final GlobalKey<FormState> _otpLoginFormKey = GlobalKey<FormState>();
+
+  String _mobile;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,9 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                 validator: (String value) {
                   return (value.length == 10) ? null : 'Must be 10 digits';
                 },
-                onSaved: (String value) {},
+                onSaved: (String value) {
+                  this._mobile = value;
+                },
               ),
               Container(
                 width: screenSize.width / 2,
@@ -51,9 +58,24 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     );
   }
 
-  void submit() {
+  void submit() async {
     if (this._otpLoginFormKey.currentState.validate()) {
       _otpLoginFormKey.currentState.save();
+      // showDialog('sending otp')
+      FirebaseUser u =
+          await AuthenticationService().verifyPhoneNumber(this._mobile);
+      // dissmissDialog
+      if (u == null) {
+        // showDialog('Something went wrong);
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => WrapperScreen(),
+          ),
+          (route) => false,
+        );
+      }
     }
   }
 }

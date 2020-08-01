@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
@@ -21,8 +22,8 @@ class LocationService {
         desiredAccuracy: LocationAccuracy.best,
       ).then(
         (pos) {
-          print('Latitude: ' + pos.latitude.toString());
-          print('Longitude: ' + pos.longitude.toString());
+          debugPrint('Latitude: ' + pos.latitude.toString());
+          debugPrint('Longitude: ' + pos.longitude.toString());
           return pos;
         },
       );

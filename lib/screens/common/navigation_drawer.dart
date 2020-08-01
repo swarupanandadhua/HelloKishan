@@ -1,6 +1,6 @@
 import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/models/models.dart';
-import 'package:farmapp/screens/account/authenticate.dart';
+import 'package:farmapp/screens/account/otp_login.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:farmapp/services/authentication.dart';
@@ -18,7 +18,7 @@ class NavigationDrawer extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             GestureDetector(
-              onTap: () => print(StackTrace.current),
+              onTap: () => debugPrint(StackTrace.current.toString()),
               child: Container(
                 height: 120,
                 child: DrawerHeader(
@@ -35,7 +35,7 @@ class NavigationDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('KYC'),
-              onTap: () => print(StackTrace.current),
+              onTap: () => debugPrint(StackTrace.current.toString()),
             ),
             ListTile(
               title: Text('Help'),
@@ -43,11 +43,11 @@ class NavigationDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Settings'),
-              onTap: () => print(StackTrace.current),
+              onTap: () => debugPrint(StackTrace.current.toString()),
             ),
             ListTile(
               title: Text('Feedback'),
-              onTap: () => print(StackTrace.current),
+              onTap: () => debugPrint(StackTrace.current.toString()),
             ),
             ListTile(
               title: Text('Sign Out'),
@@ -56,7 +56,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AuthenticateScreen(),
+                    builder: (_) => OTPLoginScreen(),
                   ),
                   (route) => false,
                 );

@@ -30,7 +30,7 @@ class RequirementSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    print(StackTrace.current);
+    debugPrint(StackTrace.current.toString());
     return Text('TODO');
   }
 
@@ -50,7 +50,7 @@ class RequirementSearch extends SearchDelegate<String> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SearchScreen(
+              builder: (_) => SearchScreen(
                 products[i], // .replaceAll(RegExp('[^A-Za-z]'), ''),
               ),
             ),

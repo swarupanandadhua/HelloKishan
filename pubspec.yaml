@@ -11,7 +11,14 @@ dependencies:
   firebase_auth_web:
   cloud_firestore:
   firebase_storage:
+
   firebase_image:
+  #firebase_storage_image:
+  shimmer:
+  flutter_bloc:
+  octo_image:
+  transparent_image:
+  pin_entry_text_field:
 
   geolocator:
   geoflutterfire:

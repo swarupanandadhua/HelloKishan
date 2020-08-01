@@ -82,20 +82,20 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   decoration: InputDecoration(labelText: 'Select a product'),
                   controller: productTextController,
                 ),
-                suggestionsCallback: (String pattern) async {
+                suggestionsCallback: (pattern) async {
                   return PRODUCTS.where(
                     (p) {
                       return p.toLowerCase().contains(pattern.toLowerCase());
                     },
                   ).toList();
                 },
-                itemBuilder: (BuildContext context, String suggestion) {
+                itemBuilder: (_, suggestion) {
                   return ListTile(
                     leading: Icon(Icons.question_answer),
                     title: Text(suggestion),
                   );
                 },
-                transitionBuilder: (context, suggestionsBox, controller) {
+                transitionBuilder: (_, suggestionsBox, controller) {
                   return suggestionsBox;
                 },
                 onSuggestionSelected: (String suggestion) {

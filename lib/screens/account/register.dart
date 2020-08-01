@@ -1,3 +1,4 @@
+import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:validate/validate.dart';
@@ -23,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return SizedBox(
       height: 150,
       child: Image.asset(
-        'assets/images/app_logo.jpg',
+        FARMAPP_LOGO,
         height: 150,
         width: 150,
       ),
@@ -37,8 +38,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         try {
           Validate.isEmail(val);
         } catch (e) {
-          print(e);
-          return 'Enter Valid Email';
+          debugPrint(e);
+          return 'Enter valid Email';
         }
         return null;
       },
@@ -51,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           20.0,
           15.0,
         ),
-        hintText: 'Enter Valid Email',
+        hintText: 'Enter valid Email',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32.0),
         ),

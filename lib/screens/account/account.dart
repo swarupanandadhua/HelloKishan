@@ -42,7 +42,7 @@ class AccountScreenState extends State<AccountScreen> {
                   children: <Widget>[
                     FutureBuilder(
                       future: imageUrl,
-                      builder: (ctx, snap) {
+                      builder: (_, snap) {
                         if (snap.connectionState == ConnectionState.done &&
                             snap.hasData &&
                             snap.data != null) {
@@ -84,7 +84,8 @@ class AccountScreenState extends State<AccountScreen> {
                       },
                     ),
                     FlatButton(
-                      onPressed: () => print(StackTrace.current),
+                      onPressed: () =>
+                          debugPrint(StackTrace.current.toString()),
                       child: Text(
                         'Change',
                         style: TextStyle(
@@ -128,7 +129,8 @@ class AccountScreenState extends State<AccountScreen> {
                           child: IconButton(
                             icon: Icon(Icons.edit),
                             color: Colors.blueAccent,
-                            onPressed: () => print(StackTrace.current),
+                            onPressed: () =>
+                                debugPrint(StackTrace.current.toString()),
                           ),
                         )
                       ],
@@ -259,7 +261,8 @@ class AccountScreenState extends State<AccountScreen> {
                                 Icons.more_vert,
                               ),
                               color: Colors.black38,
-                              onPressed: () => print(StackTrace.current),
+                              onPressed: () =>
+                                  debugPrint(StackTrace.current.toString()),
                             ),
                           ),
                         ],
@@ -367,7 +370,8 @@ class AccountScreenState extends State<AccountScreen> {
                                 Icons.more_vert,
                               ),
                               color: Colors.black38,
-                              onPressed: () => print(StackTrace.current),
+                              onPressed: () =>
+                                  debugPrint(StackTrace.current.toString()),
                             ),
                           )
                         ],
@@ -475,7 +479,8 @@ class AccountScreenState extends State<AccountScreen> {
                                 Icons.more_vert,
                               ),
                               color: Colors.black38,
-                              onPressed: () => print(StackTrace.current),
+                              onPressed: () =>
+                                  debugPrint(StackTrace.current.toString()),
                             ),
                           )
                         ],
@@ -495,7 +500,8 @@ class AccountScreenState extends State<AccountScreen> {
                       icon: Icon(
                         Icons.vpn_key,
                       ),
-                      onPressed: () => print(StackTrace.current),
+                      onPressed: () =>
+                          debugPrint(StackTrace.current.toString()),
                     ),
                     _verticalD(),
                     Text(
@@ -519,7 +525,8 @@ class AccountScreenState extends State<AccountScreen> {
                       icon: Icon(
                         Icons.history,
                       ),
-                      onPressed: () => print(StackTrace.current),
+                      onPressed: () =>
+                          debugPrint(StackTrace.current.toString()),
                     ),
                     _verticalD(),
                     Text(
@@ -543,7 +550,8 @@ class AccountScreenState extends State<AccountScreen> {
                       icon: Icon(
                         Icons.do_not_disturb_on,
                       ),
-                      onPressed: () => print(StackTrace.current),
+                      onPressed: () =>
+                          debugPrint(StackTrace.current.toString()),
                     ),
                     _verticalD(),
                     Text(

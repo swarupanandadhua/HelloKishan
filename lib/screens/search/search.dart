@@ -1,8 +1,8 @@
 import 'package:farmapp/services/database.dart';
+import 'package:firebase_image/firebase_image.dart';
 import 'package:universal_html/html.dart' as HTML;
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:farmapp/screens/common/navigation_drawer.dart';
-import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 import 'package:farmapp/models/models.dart';
 
@@ -46,7 +46,7 @@ class SearchScreenState extends State<SearchScreen> {
             onSelected: (option) {
               switch (option) {
                 case 'Sort by distance':
-                  print(StackTrace.current);
+                  debugPrint(StackTrace.current.toString());
                   break;
                 case 'Highest Price First':
                   if (requirements != null) {
@@ -63,10 +63,10 @@ class SearchScreenState extends State<SearchScreen> {
                   }
                   break;
                 default:
-                  print(StackTrace.current);
+                  debugPrint(StackTrace.current.toString());
               }
             },
-            itemBuilder: (ctx) {
+            itemBuilder: (_) {
               return {
                 'Sort by distance',
                 'Highest Price First',
@@ -84,14 +84,14 @@ class SearchScreenState extends State<SearchScreen> {
       drawer: NavigationDrawer(),
       body: FutureBuilder<List<Requirement>>(
         future: requirementsFuture,
-        builder: (BuildContext ctx, AsyncSnapshot<List<Requirement>> snap) {
+        builder: (_, snap) {
           if (snap.hasData) {
             if (snap.data.length > 0) {
               requirements = snap.data;
               return Container(
                 color: Color(0xff0011),
                 child: ListView.builder(
-                  itemBuilder: (context, i) {
+                  itemBuilder: (_, i) {
                     return buildSearchItemTile(snap.data[i]);
                   },
                   itemCount: snap.data.length,

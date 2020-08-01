@@ -30,7 +30,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'FarmApp',
+        title: FARMAPP_NAME,
         theme: ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: Colors.indigoAccent,
@@ -41,7 +41,7 @@ class App extends StatelessWidget {
           image: Image.asset(FARMAPP_LOGO),
           photoSize: 100.0,
           title: Text(
-            'FarmApp',
+            FARMAPP_NAME,
             style: TextStyle(
               fontSize: 40.0,
               color: Colors.indigo,

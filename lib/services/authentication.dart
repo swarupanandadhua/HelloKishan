@@ -110,6 +110,7 @@ class AuthenticationService {
   }
 
   Future<FirebaseUser> verifyPhoneNumber(String phoneNumber) async {
+    FirebaseUser u;
     if (!phoneNumber.startsWith("+91")) {
       phoneNumber = "+91" + phoneNumber;
     }
@@ -124,9 +125,10 @@ class AuthenticationService {
             if (authResult?.user != null) {
               debugPrint('[FarmApp] Authentication successful!!!!!!!!!!');
               debugPrint("USER: " + authResult.user.toString());
-              return authResult.user;
+              u = authResult.user;
             } else {
               debugPrint('[FarmApp] Failed!!!!!!!!!!');
+              u = null;
             }
           },
         );
@@ -134,6 +136,7 @@ class AuthenticationService {
       verificationFailed: (error) {
         debugPrint("[FarmApp] VerificationFailed!!!!!!!!!!");
         debugPrint(error.message);
+        u = null;
       },
       codeSent: (verificationId, [forceResendingToken]) {
         debugPrint("[FarmApp] Code Sent!!!!!!!!!!");
@@ -164,6 +167,6 @@ class AuthenticationService {
         );
       },
     );
-    return null;
+    return u;
   }
 }

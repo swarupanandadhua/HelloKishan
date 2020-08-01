@@ -1,3 +1,4 @@
+import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('FarmApp'),
+        title: Text(FARMAPP_NAME),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -61,12 +62,46 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
   void submit() async {
     if (this._otpLoginFormKey.currentState.validate()) {
       _otpLoginFormKey.currentState.save();
-      // showDialog('sending otp')
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return Dialog(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                Text("Verifying..."),
+              ],
+            ),
+          );
+        },
+      );
+
       FirebaseUser u =
           await AuthenticationService().verifyPhoneNumber(this._mobile);
-      // dissmissDialog
+      Navigator.pop(context);
       if (u == null) {
-        // showDialog('Something went wrong);
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return Dialog(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Something went wrong !'),
+                  RaisedButton.icon(
+                    label: Text('Dismiss'),
+                    icon: Icon(Icons.error),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       } else {
         Navigator.pushAndRemoveUntil(
           context,

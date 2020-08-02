@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AuthenticationService {
   Stream<FarmAppUser> get user {
@@ -109,62 +110,141 @@ class AuthenticationService {
     return null;
   }
 
-  Future<FirebaseUser> verifyPhoneNumber(String phoneNumber) async {
-    FirebaseUser u;
-    if (!phoneNumber.startsWith("+91")) {
-      phoneNumber = "+91" + phoneNumber;
+  Future<FirebaseUser> verifyPhoneNumber(String phone, BuildContext ctx) async {
+    Widget indicator = Container(
+      height: 30,
+      width: 30,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+    showMyProgressDialog(BuildContext ctx, String label) {
+      showDialog(
+        context: ctx,
+        barrierDismissible: false,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(label),
+            content: indicator,
+          );
+        },
+      );
     }
+
+    showMyInfoDialog(BuildContext ctx, String label) {
+      showDialog(
+        context: ctx,
+        barrierDismissible: false,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(label),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: Text('Dismiss'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    // 8433901047
+    // 9609750449
+    bool timedOut = false;
+    showMyProgressDialog(ctx, "Sending OTP...");
+    FirebaseUser u;
+    if (!phone.startsWith("+91")) {
+      phone = "+91" + phone;
+    }
+    debugPrint(
+        "----------------------verifyPhoneNumber called------------------");
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
+      phoneNumber: phone,
+      codeSent: (verificationId, [forceResendingToken]) {
+        debugPrint("----------------------codeSent called------------------");
+        Navigator.pop(ctx);
+        showMyProgressDialog(ctx, "Auto reading OTP...");
+      },
       timeout: Duration(seconds: 60),
-      verificationCompleted: (cred) async {
-        debugPrint("[FarmApp] Verification Completed!!!!!!!!!!");
-        debugPrint(cred.toString());
+      codeAutoRetrievalTimeout: (verificationId) async {
+        timedOut = true;
+        debugPrint(
+            "--------------------codeAutoRetrievalTimeout called------------");
+        Navigator.pop(ctx);
+        TextEditingController tc = TextEditingController();
+        String otp = await showDialog<String>(
+          context: ctx,
+          barrierDismissible: false,
+          builder: (ctx) => AlertDialog(
+            title: Text('Enter the OTP'),
+            content: TextField(
+              controller: tc,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d{0,6}')),
+              ],
+            ),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(ctx, tc.text);
+                  showMyProgressDialog(ctx, "Submitting OTP...");
+                },
+                child: Text('Submit'),
+              )
+            ],
+          ),
+        );
+        AuthCredential cred = PhoneAuthProvider.getCredential(
+          verificationId: verificationId,
+          smsCode: otp,
+        );
+        Navigator.pop(ctx);
+        showMyProgressDialog(ctx, "Signing in...");
         await FirebaseAuth.instance.signInWithCredential(cred).then(
           (authResult) {
             if (authResult?.user != null) {
-              debugPrint('[FarmApp] Authentication successful!!!!!!!!!!');
-              debugPrint("USER: " + authResult.user.toString());
               u = authResult.user;
             } else {
-              debugPrint('[FarmApp] Failed!!!!!!!!!!');
               u = null;
+            }
+            if (u == null) {
+              showMyInfoDialog(ctx, "codeAutoRetrievalTimeout: Sign in failed");
+            } else {
+              showMyInfoDialog(
+                  ctx, "codeAutoRetrievalTimeout: Sign in successful");
+            }
+          },
+        );
+      },
+      verificationCompleted: (cred) async {
+        if (!timedOut) Navigator.pop(ctx);
+        debugPrint(
+            "----------------verificationCompleted called--------------------");
+        await FirebaseAuth.instance.signInWithCredential(cred).then(
+          (authResult) {
+            if (authResult?.user != null) {
+              u = authResult.user;
+            } else {
+              u = null;
+            }
+            if (u == null) {
+              showMyInfoDialog(ctx, "verificationCompleted: Sign in failed");
+            } else {
+              showMyInfoDialog(
+                  ctx, "verificationCompleted: Sign in successful");
             }
           },
         );
       },
       verificationFailed: (error) {
-        debugPrint("[FarmApp] VerificationFailed!!!!!!!!!!");
+        debugPrint("-----------verificationFailed called--------------");
         debugPrint(error.message);
+        showMyInfoDialog(ctx, "verificationFailed called");
         u = null;
-      },
-      codeSent: (verificationId, [forceResendingToken]) {
-        debugPrint("[FarmApp] Code Sent!!!!!!!!!!");
-        debugPrint("VerID: " +
-            verificationId.toString() +
-            "\nforceResendingToken: " +
-            forceResendingToken.toString());
-      },
-      codeAutoRetrievalTimeout: (verificationId) async {
-        debugPrint("[FarmApp] 3 Code Auto retrieval timed out!!!!!!!!!!");
-        debugPrint(verificationId);
-        String otp = "123456";
-        // show input dialog & get otp
-        AuthCredential cred = PhoneAuthProvider.getCredential(
-          verificationId: verificationId,
-          smsCode: otp,
-        );
-        await FirebaseAuth.instance.signInWithCredential(cred).then(
-          (authResult) {
-            if (authResult?.user != null) {
-              debugPrint('[FarmApp] Authentication successful!!!!!!!!!!');
-              debugPrint("USER: " + authResult.user.toString());
-              return authResult.user;
-            } else {
-              debugPrint('[FarmApp] Failed!!!!!!!!!!');
-            }
-          },
-        );
       },
     );
     return u;

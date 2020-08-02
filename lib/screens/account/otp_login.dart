@@ -1,7 +1,5 @@
 import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/authentication.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -63,54 +61,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     if (this._otpLoginFormKey.currentState.validate()) {
       _otpLoginFormKey.currentState.save();
 
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) {
-          return Dialog(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                Text("Verifying..."),
-              ],
-            ),
-          );
-        },
-      );
-
-      FirebaseUser u =
-          await AuthenticationService().verifyPhoneNumber(this._mobile);
-      Navigator.pop(context);
-      if (u == null) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) {
-            return Dialog(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Something went wrong !'),
-                  RaisedButton.icon(
-                    label: Text('Dismiss'),
-                    icon: Icon(Icons.error),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      } else {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) => WrapperScreen(),
-          ),
-          (route) => false,
-        );
-      }
+      AuthenticationService().verifyPhoneNumber(this._mobile, context);
     }
   }
 }

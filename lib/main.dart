@@ -1,7 +1,6 @@
 import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:farmapp/screens/account/otp_login.dart';
-import 'package:farmapp/screens/wrapper.dart';
 import 'package:farmapp/services/authentication.dart';
 import 'package:farmapp/services/location.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +57,9 @@ class App extends StatelessWidget {
 class FarmApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final FarmAppUser user = Provider.of<FarmAppUser>(context);
+    // final FarmAppUser user = Provider.of<FarmAppUser>(context);
     // return (user == null) ? AuthenticateScreen() : WrapperScreen();
-    return (user != null) ? WrapperScreen() : OTPLoginScreen();
+    // return (user != null) ? WrapperScreen() : OTPLoginScreen();
+    return OTPLoginScreen();
   }
 }

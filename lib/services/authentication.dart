@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class AuthenticationService {
   Stream<FarmAppUser> get user {
@@ -110,26 +111,12 @@ class AuthenticationService {
     return null;
   }
 
-  Future<FirebaseUser> verifyPhoneNumber(String phone, BuildContext ctx) async {
-    Widget indicator = Container(
-      height: 30,
-      width: 30,
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
+  void verifyPhoneNumber(String phone, BuildContext ctx) async {
+    ProgressDialog pd = ProgressDialog(
+      ctx,
+      isDismissible: false,
+      type: ProgressDialogType.Normal,
     );
-    showMyProgressDialog(BuildContext ctx, String label) {
-      showDialog(
-        context: ctx,
-        barrierDismissible: false,
-        builder: (_) {
-          return AlertDialog(
-            title: Text(label),
-            content: indicator,
-          );
-        },
-      );
-    }
 
     showMyInfoDialog(BuildContext ctx, String label) {
       showDialog(
@@ -140,9 +127,7 @@ class AuthenticationService {
             title: Text(label),
             actions: [
               FlatButton(
-                onPressed: () {
-                  Navigator.pop(ctx);
-                },
+                onPressed: () => Navigator.pop(ctx),
                 child: Text('Dismiss'),
               ),
             ],
@@ -153,27 +138,22 @@ class AuthenticationService {
 
     // 8433901047
     // 9609750449
-    bool timedOut = false;
-    showMyProgressDialog(ctx, "Sending OTP...");
+    pd.update(message: 'Sending OTP...');
+    pd.show();
     FirebaseUser u;
-    if (!phone.startsWith("+91")) {
-      phone = "+91" + phone;
-    }
-    debugPrint(
-        "----------------------verifyPhoneNumber called------------------");
+    if (!phone.startsWith('+91')) phone = '+91' + phone;
+
+    debugPrint('-----verifyPhoneNumber called-----');
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       codeSent: (verificationId, [forceResendingToken]) {
-        debugPrint("----------------------codeSent called------------------");
-        Navigator.pop(ctx);
-        showMyProgressDialog(ctx, "Auto reading OTP...");
+        debugPrint('-----codeSent called-----');
+        pd.update(message: 'Auto reading OTP...');
       },
-      timeout: Duration(seconds: 60),
+      timeout: Duration(seconds: 30),
       codeAutoRetrievalTimeout: (verificationId) async {
-        timedOut = true;
-        debugPrint(
-            "--------------------codeAutoRetrievalTimeout called------------");
-        Navigator.pop(ctx);
+        debugPrint('-----codeAutoRetrievalTimeout called-----');
+        if (pd.isShowing()) pd.hide();
         TextEditingController tc = TextEditingController();
         String otp = await showDialog<String>(
           context: ctx,
@@ -190,8 +170,8 @@ class AuthenticationService {
             actions: [
               FlatButton(
                 onPressed: () {
+                  if (pd.isShowing()) pd.hide();
                   Navigator.pop(ctx, tc.text);
-                  showMyProgressDialog(ctx, "Submitting OTP...");
                 },
                 child: Text('Submit'),
               )
@@ -202,51 +182,50 @@ class AuthenticationService {
           verificationId: verificationId,
           smsCode: otp,
         );
-        Navigator.pop(ctx);
-        showMyProgressDialog(ctx, "Signing in...");
-        await FirebaseAuth.instance.signInWithCredential(cred).then(
-          (authResult) {
-            if (authResult?.user != null) {
-              u = authResult.user;
-            } else {
-              u = null;
-            }
-            if (u == null) {
-              showMyInfoDialog(ctx, "codeAutoRetrievalTimeout: Sign in failed");
-            } else {
+        pd.update(message: 'Signing in...');
+        pd.show();
+        try {
+          await FirebaseAuth.instance.signInWithCredential(cred).then(
+            (authResult) {
+              if (pd.isShowing()) pd.hide();
+              u = authResult?.user;
               showMyInfoDialog(
-                  ctx, "codeAutoRetrievalTimeout: Sign in successful");
-            }
-          },
-        );
+                  ctx, (u == null) ? 'Sign in failed' : 'Signed in');
+            },
+          );
+        } catch (e) {
+          if (e.toString().contains("ERROR_INVALID_VERIFICATION_CODE")) {
+            if (pd.isShowing()) pd.hide();
+            showMyInfoDialog(ctx, 'Invalid OTP');
+          } else {
+            debugPrint(e.toString());
+          }
+        }
       },
       verificationCompleted: (cred) async {
-        if (!timedOut) Navigator.pop(ctx);
-        debugPrint(
-            "----------------verificationCompleted called--------------------");
+        pd.update(message: 'Signing in...');
+        if (!pd.isShowing()) pd.show();
+        debugPrint('-----verificationCompleted called-----');
         await FirebaseAuth.instance.signInWithCredential(cred).then(
           (authResult) {
-            if (authResult?.user != null) {
-              u = authResult.user;
-            } else {
-              u = null;
-            }
-            if (u == null) {
-              showMyInfoDialog(ctx, "verificationCompleted: Sign in failed");
-            } else {
-              showMyInfoDialog(
-                  ctx, "verificationCompleted: Sign in successful");
-            }
+            if (pd.isShowing()) pd.hide();
+            u = authResult?.user;
+            showMyInfoDialog(ctx, (u == null) ? 'Sign in failed' : 'Signed in');
           },
         );
       },
       verificationFailed: (error) {
-        debugPrint("-----------verificationFailed called--------------");
+        debugPrint('-----verificationFailed called-----');
         debugPrint(error.message);
-        showMyInfoDialog(ctx, "verificationFailed called");
+        if (pd.isShowing()) pd.hide();
+        showMyInfoDialog(ctx, 'Verification failed');
         u = null;
       },
     );
-    return u;
+/*     u.updateProfile(
+      UserUpdateInfo()
+        ..displayName = 'Hello'
+        ..photoUrl = 'url',
+    ); */
   }
 }

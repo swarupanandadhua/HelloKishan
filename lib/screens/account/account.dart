@@ -1,5 +1,5 @@
-import 'package:farmapp/models/models.dart';
 import 'package:farmapp/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,14 +9,14 @@ class AccountScreen extends StatefulWidget {
 }
 
 class AccountScreenState extends State<AccountScreen> {
-  FarmAppUser u;
+  FirebaseUser u;
   Future<String> imageUrl;
 
   @override
   void initState() {
-    u = Provider.of<FarmAppUser>(context, listen: false);
-    if (u == null) u = FarmAppUser();
-    imageUrl = DatabaseService().getImageUrl(u.imageUrl);
+    u = Provider.of<FirebaseUser>(context, listen: false);
+    assert(u != null);
+    imageUrl = DatabaseService().getImageUrl(u.photoUrl);
     super.initState();
   }
 
@@ -111,11 +111,11 @@ class AccountScreenState extends State<AccountScreen> {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(3.0),
-                                child: Text(u.name),
+                                child: Text(u.displayName),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(3.0),
-                                child: Text(u.mobile),
+                                child: Text(u.displayName),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(3.0),

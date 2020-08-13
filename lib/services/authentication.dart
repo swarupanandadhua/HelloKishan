@@ -1,15 +1,14 @@
 import 'dart:async';
+import 'package:farmapp/screens/account/profile_update.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:farmapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
-  Stream<FarmAppUser> get user {
-    return FirebaseAuth.instance.onAuthStateChanged.map(
-      (u) => FarmAppUser.fromFirebaseUser(u),
-    );
+  Stream<FirebaseUser> get user {
+    return FirebaseAuth.instance.onAuthStateChanged;
   }
 
   Future<String> signInWithEmailPassword(String email, String password) async {
@@ -73,6 +72,8 @@ class AuthenticationService {
   Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
+      SharedPreferences.getInstance()
+          .then<bool>((pref) => pref.setBool('loggedin', false));
     } catch (e) {
       debugPrint(e);
     }
@@ -136,6 +137,22 @@ class AuthenticationService {
       );
     }
 
+    signInCallBack(FirebaseUser u) {
+      if (u != null) {
+        SharedPreferences.getInstance()
+            .then<bool>((pref) => pref.setBool('loggedin', true));
+        Navigator.pushAndRemoveUntil(
+          ctx,
+          MaterialPageRoute(
+            builder: (ctx) => ProfileUpdateScreen(),
+          ),
+          (route) => false,
+        );
+      } else {
+        showMyInfoDialog(ctx, 'Sign in failed');
+      }
+    }
+
     // 8433901047
     // 9609750449
     pd.update(message: 'Sending OTP...');
@@ -189,8 +206,9 @@ class AuthenticationService {
             (authResult) {
               if (pd.isShowing()) pd.hide();
               u = authResult?.user;
-              showMyInfoDialog(
-                  ctx, (u == null) ? 'Sign in failed' : 'Signed in');
+              // showMyInfoDialog(
+              // ctx, (u == null) ? 'Sign in failed' : 'Signed in');
+              signInCallBack(u);
             },
           );
         } catch (e) {
@@ -210,7 +228,8 @@ class AuthenticationService {
           (authResult) {
             if (pd.isShowing()) pd.hide();
             u = authResult?.user;
-            showMyInfoDialog(ctx, (u == null) ? 'Sign in failed' : 'Signed in');
+            // showMyInfoDialog(ctx, (u == null) ? 'Sign in failed' : 'Signed in');
+            signInCallBack(u);
           },
         );
       },

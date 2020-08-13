@@ -1,6 +1,7 @@
 import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/models/models.dart';
 import 'package:farmapp/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -27,7 +28,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   final Requirement requirement = Requirement();
   final TextEditingController productTextController = TextEditingController();
 
-  FarmAppUser u;
+  FirebaseUser u;
   ProgressDialog submitDialog;
   Position position;
   Size screenSize;
@@ -40,7 +41,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
       isDismissible: false,
     )..style(message: 'Please wait...');
 
-    u = Provider.of<FarmAppUser>(context, listen: false);
+    u = Provider.of<FirebaseUser>(context, listen: false);
     requirement.uid = (u != null) ? u.uid : 'U00000';
 
     requirement.position = Provider.of<Position>(context, listen: false);

@@ -1,5 +1,4 @@
 import 'package:farmapp/models/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -171,21 +170,6 @@ class FarmAppUser {
     this.dob,
     this.primaryAddr,
   }) {
-    if (uid == null) uid = 'U00000';
-    if (name == null) name = 'Swarupananda Dhua';
-    if (mobile == null) mobile = '+91 9609750449';
-    if (email == null) email = 'swarupanandadhua@gmail.com';
-    if (imageUrl == null) imageUrl = '/user/U00000.jpg';
-  }
-
-  FarmAppUser.fromFirebaseUser(FirebaseUser u) {
-    if (u != null) {
-      uid = u.uid;
-      name = u.displayName;
-      mobile = u.phoneNumber;
-      email = u.email;
-      imageUrl = u.photoUrl;
-    }
     if (uid == null) uid = 'U00000';
     if (name == null) name = 'Swarupananda Dhua';
     if (mobile == null) mobile = '+91 9609750449';

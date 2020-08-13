@@ -1,7 +1,10 @@
 import 'package:farmapp/models/constants.dart';
 import 'package:farmapp/services/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OTPLoginScreen extends StatefulWidget {
   @override
@@ -47,6 +50,27 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                 child: RaisedButton(
                   child: Text('Send OTP'),
                   onPressed: this.submit,
+                ),
+                margin: EdgeInsets.only(top: 20.0),
+              ),
+              Container(
+                // TODO: Remove this debug button
+                width: screenSize.width / 2,
+                child: RaisedButton(
+                  child: Text('Debug Print User'),
+                  onPressed: () {
+                    FirebaseAuth.instance
+                        .currentUser()
+                        .then((value) => print('Actual: ' + value.toString()));
+                    final FirebaseUser u =
+                        Provider.of<FirebaseUser>(context, listen: false);
+                    print("Provider:" + u.toString());
+                    SharedPreferences.getInstance().then(
+                      (pref) {
+                        print("Pref: " + pref.getBool('loggedin').toString());
+                      },
+                    );
+                  },
                 ),
                 margin: EdgeInsets.only(top: 20.0),
               ),

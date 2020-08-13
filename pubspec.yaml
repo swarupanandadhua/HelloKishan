@@ -38,6 +38,7 @@ dependencies:
   progress_dialog:
   splashscreen:
   loading_gifs:
+  shared_preferences:
 
   flutter_mobx:
   mobx:

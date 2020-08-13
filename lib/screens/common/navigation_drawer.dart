@@ -1,6 +1,6 @@
 import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/models/models.dart';
 import 'package:farmapp/screens/account/otp_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:farmapp/services/authentication.dart';
@@ -11,7 +11,7 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FarmAppUser u = Provider.of<FarmAppUser>(context, listen: false);
+    final FirebaseUser u = Provider.of<FirebaseUser>(context, listen: false);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
       child: Drawer(
@@ -23,7 +23,7 @@ class NavigationDrawer extends StatelessWidget {
                 height: 120,
                 child: DrawerHeader(
                   child: Text(
-                    u.name,
+                    u?.displayName ?? 'Welcome User',
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,

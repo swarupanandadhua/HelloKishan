@@ -1,11 +1,13 @@
 import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/models/models.dart';
 import 'package:farmapp/screens/account/otp_login.dart';
+import 'package:farmapp/screens/account/profile_update.dart';
 import 'package:farmapp/services/authentication.dart';
 import 'package:farmapp/services/location.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {
@@ -23,7 +25,7 @@ class App extends StatelessWidget {
         StreamProvider<Position>(
           create: (_) => LocationService().location,
         ),
-        StreamProvider<FarmAppUser>(
+        StreamProvider<FirebaseUser>(
           create: (_) => AuthenticationService().user,
         ),
       ],
@@ -54,12 +56,42 @@ class App extends StatelessWidget {
   }
 }
 
-class FarmApp extends StatelessWidget {
+class FarmApp extends StatefulWidget {
+  @override
+  _FarmAppState createState() => _FarmAppState();
+}
+
+class _FarmAppState extends State<FarmApp> {
+  Future<bool> loggedin;
+
+  getLoggedinStatus() async {
+    loggedin = SharedPreferences.getInstance()
+        .then<bool>((pref) => pref.getBool('loggedin'));
+  }
+
+  @override
+  void initState() {
+    getLoggedinStatus();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final FarmAppUser user = Provider.of<FarmAppUser>(context);
+    // final FirebaseUser user = Provider.of<FirebaseUser>(context);
     // return (user == null) ? AuthenticateScreen() : WrapperScreen();
     // return (user != null) ? WrapperScreen() : OTPLoginScreen();
-    return OTPLoginScreen();
+    return FutureBuilder(
+      future: loggedin,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData &&
+            snapshot.data != null &&
+            snapshot.data == true) {
+          return ProfileUpdateScreen();
+        } else {
+          return OTPLoginScreen();
+        }
+      },
+    );
   }
 }

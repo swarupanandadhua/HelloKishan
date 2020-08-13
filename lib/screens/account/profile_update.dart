@@ -91,13 +91,16 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                   // pd.show();
                   await FirebaseAuth.instance.currentUser().then(
                     (value) async {
-                      File file = await ImagePicker.pickImage(
-                          source: ImageSource.gallery);
+                      PickedFile file = await ImagePicker().getImage(
+                        source: ImageSource.gallery,
+                      );
                       pd.show();
                       StorageUploadTask uploadtask = FirebaseStorage.instance
                           .ref()
                           .child('/users/' + u.uid + '.jpg')
-                          .putFile(file);
+                          .putFile(
+                            File(file.path),
+                          );
                       await uploadtask.onComplete.then(
                         (snap) async {
                           dpUrl = await snap.ref.getDownloadURL();

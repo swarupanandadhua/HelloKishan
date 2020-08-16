@@ -1,5 +1,5 @@
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/services/authentication.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,7 +54,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                 margin: EdgeInsets.only(top: 20.0),
               ),
               Container(
-                // TODO: Remove this debug button
+                // TODO 3 : Remove this debug button
                 width: screenSize.width / 2,
                 child: RaisedButton(
                   child: Text('Debug Print User'),

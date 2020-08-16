@@ -1,10 +1,9 @@
-import 'package:farmapp/services/database.dart';
-import 'package:firebase_image/firebase_image.dart';
+import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
+import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
+import 'package:FarmApp/Services/DatabaseService.dart';
+import 'package:FarmApp/Models/Models.dart';
 import 'package:universal_html/html.dart' as HTML;
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-import 'package:farmapp/screens/common/navigation_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:farmapp/models/models.dart';
 
 class SearchScreen extends StatefulWidget {
   final String product;
@@ -92,7 +91,7 @@ class SearchScreenState extends State<SearchScreen> {
                 color: Color(0xff0011),
                 child: ListView.builder(
                   itemBuilder: (_, i) {
-                    return buildSearchItemTile(snap.data[i]);
+                    return SearchResultTile(requirement: snap.data[i]);
                   },
                   itemCount: snap.data.length,
                 ),
@@ -112,46 +111,6 @@ class SearchScreenState extends State<SearchScreen> {
             );
           }
         },
-      ),
-    );
-  }
-
-  Widget buildSearchItemTile(Requirement r) {
-    return Card(
-      elevation: 8.0,
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: ClipOval(
-              child: Image(
-                image: FirebaseImage(r.userImage),
-              ),
-            ),
-            title: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                r.displayString,
-                style: TextStyle(fontSize: 14),
-              ),
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Rate: Rs. ' + r.rate + ' per kg',
-                style: TextStyle(fontSize: 12),
-              ),
-            ),
-            trailing: ClipOval(
-              child: Image(
-                image: FirebaseImage(r.productImage),
-              ),
-            ),
-          ),
-          FlatButton(
-            child: Text('Call ' + r.name),
-            onPressed: () => UrlLauncher.launch('tel:' + r.mobile),
-          ),
-        ],
       ),
     );
   }

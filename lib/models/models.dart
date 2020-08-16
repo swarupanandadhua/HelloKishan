@@ -1,4 +1,4 @@
-import 'package:farmapp/models/constants.dart';
+import 'package:FarmApp/Models/Constants.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -187,5 +187,25 @@ class FarmAppUser {
     map['primary_addr'] = GeoPoint(21.38144, 90.769907);
 
     return map;
+  }
+}
+
+class Address {
+  String name;
+  String line1;
+  String line2;
+  String line3;
+  String postalCode;
+  String state;
+  String country;
+
+  Address() {
+    name = 'Swami Swarupananda Maharaaj';
+    line1 = 'C101, KENS Residency';
+    line2 = '16th D Cross Road';
+    line3 = 'Pai Layout';
+    postalCode = '560016';
+    state = 'Karnataka';
+    country = 'India';
   }
 }

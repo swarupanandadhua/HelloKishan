@@ -1,6 +1,6 @@
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Models.dart' as FarmApp;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/models/models.dart' as FarmApp;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';

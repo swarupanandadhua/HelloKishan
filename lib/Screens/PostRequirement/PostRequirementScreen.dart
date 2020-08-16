@@ -1,6 +1,6 @@
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/models/models.dart';
-import 'package:farmapp/services/database.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Models.dart';
+import 'package:FarmApp/Services/DatabaseService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

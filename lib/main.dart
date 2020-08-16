@@ -1,8 +1,8 @@
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/screens/account/otp_login.dart';
-import 'package:farmapp/screens/account/profile_update.dart';
-import 'package:farmapp/services/authentication.dart';
-import 'package:farmapp/services/location.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/Account/OTPLoginScreen.dart';
+import 'package:FarmApp/Screens/WrapperScreen.dart';
+import 'package:FarmApp/Services/AuthenticationService.dart';
+import 'package:FarmApp/Services/LocationService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,6 +26,7 @@ class App extends StatelessWidget {
           create: (_) => LocationService().location,
         ),
         StreamProvider<FirebaseUser>(
+          /* TODO 1 (BUG): Provider provides null when accessed first time. */
           create: (_) => AuthenticationService().user,
         ),
       ],
@@ -87,7 +88,7 @@ class _FarmAppState extends State<FarmApp> {
             snapshot.hasData &&
             snapshot.data != null &&
             snapshot.data == true) {
-          return ProfileUpdateScreen();
+          return WrapperScreen();
         } else {
           return OTPLoginScreen();
         }

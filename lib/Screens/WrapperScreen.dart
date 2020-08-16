@@ -1,11 +1,11 @@
+import 'package:FarmApp/Screens/Account/AccountScreen.dart';
+import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
+import 'package:FarmApp/Screens/History/HistoryScreen.dart';
+import 'package:FarmApp/Screens/PostRequirement/PostRequirementScreen.dart';
+import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
+import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
+import 'package:FarmApp/Screens/Home/HomeScreen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:farmapp/screens/account/account.dart';
-import 'package:farmapp/screens/common/navigation_drawer.dart';
-import 'package:farmapp/screens/history/history.dart';
-import 'package:farmapp/screens/post_requirement/post_requirement.dart';
-import 'package:farmapp/screens/search/requirement_search.dart';
-import 'package:farmapp/screens/trade/trade.dart';
-import 'package:farmapp/screens/home/home.dart';
 import 'package:flutter/material.dart';
 
 class WrapperScreen extends StatefulWidget {

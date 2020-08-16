@@ -1,5 +1,5 @@
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/services/authentication.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:flutter/material.dart';
 import 'package:validate/validate.dart';
 

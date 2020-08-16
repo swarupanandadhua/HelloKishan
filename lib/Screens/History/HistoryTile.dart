@@ -1,57 +1,14 @@
-import 'package:farmapp/models/models.dart';
-import 'package:farmapp/services/database.dart';
+import 'package:FarmApp/Models/Models.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 
-class HistoryScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => HistoryScreenState();
-}
+class HistoryTile extends StatelessWidget {
+  final Transaction transaction;
 
-class HistoryScreenState extends State<HistoryScreen> {
-  Future<List<Transaction>> transactions;
-
-  @override
-  void initState() {
-    super.initState();
-    transactions = DatabaseService().fetchTransactions();
-  }
+  HistoryTile({this.transaction});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Transaction>>(
-      future: transactions,
-      builder: (_, snap) {
-        if (snap.hasData) {
-          if (snap.data.length > 0) {
-            return Container(
-              color: Color(0xff0011),
-              child: ListView.builder(
-                itemBuilder: (_, i) {
-                  return _buildHistoryTile(snap.data[i]);
-                },
-                itemCount: snap.data.length,
-              ),
-            );
-          } else {
-            return Center(
-              child: Text('No transactions found!'),
-            );
-          }
-        } else if (snap.hasError) {
-          return Center(
-            child: Text('Something went wrong!'),
-          );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildHistoryTile(Transaction t) {
     return Card(
       color: Colors.white,
       elevation: 8.0,
@@ -64,7 +21,7 @@ class HistoryScreenState extends State<HistoryScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image(
-                    image: FirebaseImage(t.secondPartyImageUrl),
+                    image: FirebaseImage(transaction.secondPartyImageUrl),
                     height: 50.0,
                     width: 50.0,
                   ),
@@ -75,14 +32,16 @@ class HistoryScreenState extends State<HistoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    (t.type == TradeType.BUY) ? 'Bought from' : 'Sold to',
+                    (transaction.type == TradeType.BUY)
+                        ? 'Bought from'
+                        : 'Sold to',
                     style: TextStyle(
                       color: Colors.grey[350],
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    t.secondPartyName,
+                    transaction.secondPartyName,
                     style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
@@ -91,7 +50,7 @@ class HistoryScreenState extends State<HistoryScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image(
-                    image: FirebaseImage(t.productImageUrl),
+                    image: FirebaseImage(transaction.productImageUrl),
                     height: 50.0,
                     width: 50.0,
                   ),
@@ -108,9 +67,9 @@ class HistoryScreenState extends State<HistoryScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Rate : ₹${t.rate}/kg'),
-                  Text('Quantity: ${t.qty}kg'),
-                  Text('Total Amount: ₹${t.rate * t.qty}'),
+                  Text('Rate : ₹${transaction.rate}/kg'),
+                  Text('Quantity: ${transaction.qty}kg'),
+                  Text('Total Amount: ₹${transaction.rate * transaction.qty}'),
                 ],
               ),
             ],
@@ -121,7 +80,7 @@ class HistoryScreenState extends State<HistoryScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(t.timestamp.toString()),
+              Text(transaction.timestamp.toString()),
               Icon(Icons.check),
             ],
           ),

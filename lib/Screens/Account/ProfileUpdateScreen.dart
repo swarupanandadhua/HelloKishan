@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/screens/wrapper.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/WrapperScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +86,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               ),
               FlatButton(
                 onPressed: () async {
-                  // TODO: use firebase_picture_uploader  plugin
+                  // TODO 4 : use firebase_picture_uploader  plugin
                   pd.update(message: 'Updating details');
                   // pd.show();
                   await FirebaseAuth.instance.currentUser().then(

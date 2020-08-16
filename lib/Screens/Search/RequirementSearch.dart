@@ -1,5 +1,5 @@
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/screens/search/search.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/Search/SearchScreen.dart';
 import 'package:flutter/material.dart';
 
 class RequirementSearch extends SearchDelegate<String> {

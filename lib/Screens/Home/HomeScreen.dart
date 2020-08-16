@@ -1,4 +1,4 @@
-import 'package:farmapp/models/constants.dart';
+import 'package:FarmApp/Models/Constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,7 @@ class HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Container(
-            // TODO: Remove this debug button
+            // TODO 2: Remove this debug button after resolving TODO 1
             // width: screenSize.width / 2,
             height: 50,
             child: RaisedButton(

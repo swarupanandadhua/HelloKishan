@@ -1,9 +1,9 @@
-import 'package:farmapp/models/constants.dart';
-import 'package:farmapp/screens/account/otp_login.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/Account/OTPLoginScreen.dart';
+import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-import 'package:farmapp/services/authentication.dart';
 import 'package:flutter/material.dart';
 
 class NavigationDrawer extends StatelessWidget {

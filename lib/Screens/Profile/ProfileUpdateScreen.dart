@@ -8,22 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class ProfileUpdateScreen extends StatefulWidget {
+class ProfileUpdateScreenOld extends StatefulWidget {
   final FirebaseUser u;
 
-  ProfileUpdateScreen(this.u);
+  ProfileUpdateScreenOld(this.u);
 
   @override
-  _ProfileUpdateScreenState createState() => _ProfileUpdateScreenState(u);
+  _ProfileUpdateScreenOldState createState() => _ProfileUpdateScreenOldState(u);
 }
 
-class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
+class _ProfileUpdateScreenOldState extends State<ProfileUpdateScreenOld> {
   TextEditingController tc = TextEditingController();
   final FirebaseUser u;
   String name;
   String dpUrl;
 
-  _ProfileUpdateScreenState(this.u);
+  _ProfileUpdateScreenOldState(this.u);
 
   Image dp = Image.asset(
     'assets/images/app_logo.jpg',

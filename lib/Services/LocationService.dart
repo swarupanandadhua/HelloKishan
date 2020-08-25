@@ -41,20 +41,20 @@ class LocationService {
         List<Address> addresses =
             await Geocoder.local.findAddressesFromCoordinates(coordinates);
         Address first = addresses.first;
-        print('-------------------------------------');
-        print(first.addressLine);
-        print(first.adminArea);
-        print(first.coordinates);
-        print(first.countryCode);
-        print(first.countryName);
-        print(first.featureName);
-        print(first.locality);
-        print(first.postalCode);
-        print(first.subAdminArea);
-        print(first.subLocality);
-        print(first.subThoroughfare);
-        print(first.thoroughfare);
-        print('-------------------------------------');
+        debugPrint('-------------------------------------');
+        debugPrint(first.addressLine);
+        debugPrint(first.adminArea);
+        debugPrint(first.coordinates.toString());
+        debugPrint(first.countryCode);
+        debugPrint(first.countryName);
+        debugPrint(first.featureName);
+        debugPrint(first.locality);
+        debugPrint(first.postalCode);
+        debugPrint(first.subAdminArea);
+        debugPrint(first.subLocality);
+        debugPrint(first.subThoroughfare);
+        debugPrint(first.thoroughfare);
+        debugPrint('-------------------------------------');
       });
   }
 }

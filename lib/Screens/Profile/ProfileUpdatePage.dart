@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfileUpdatePage2 extends StatelessWidget {
+class App2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,23 +40,23 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
 
   Image getProfilePicture() {
     if (chosen) {
-      print('Showing Chosen Image');
+      debugPrint('Showing Chosen Image');
       return Image.file(image);
     }
     if (u != null && u.imageUrl != null) {
-      print('Fetching network image');
+      debugPrint('Fetching network image');
       return Image.network(
         u.imageUrl,
         loadingBuilder: (_, child, progress) {
           if (progress == null) {
             return child;
           } else {
-            print('Loading...');
+            debugPrint('Loading...');
             return Image.asset('assets/images/loading.gif');
           }
         },
         errorBuilder: (_, __, ___) {
-          print('Error fetching image');
+          debugPrint('Error fetching image');
           return Image.asset('assets/images/red_cross.png');
         },
       );

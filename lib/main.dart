@@ -15,7 +15,7 @@ void main() {
   // debugPrint = (String message, {int wrapWidth}) {};
 
   // runApp(App());
-  runApp(ProfileUpdatePage2());
+  runApp(App2());
 }
 
 class App extends StatelessWidget {
@@ -86,7 +86,7 @@ class _FarmAppState extends State<FarmApp> {
       builder: (context, snapshot) {
         FirebaseUser u = Provider.of<FirebaseUser>(context);
         if (u == null) {
-          print("----------------user null-------------");
+          debugPrint("----------------user null-------------");
         }
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData &&

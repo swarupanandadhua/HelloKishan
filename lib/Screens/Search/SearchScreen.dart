@@ -84,7 +84,7 @@ class SearchScreenState extends State<SearchScreen> {
       body: FutureBuilder<List<Requirement>>(
         future: requirementsFuture,
         builder: (_, snap) {
-          print(snap);
+          debugPrint(snap.toString());
           if (snap.hasData && snap.data != null) {
             if (snap.data.length > 0) {
               requirements = snap.data;

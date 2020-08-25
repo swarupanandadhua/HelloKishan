@@ -42,13 +42,13 @@ class HomeScreenState extends State<HomeScreen> {
               onPressed: () async {
                 FirebaseAuth.instance
                     .currentUser()
-                    .then((value) => print('Actual: ' + value.toString()));
+                    .then((value) => debugPrint('Actual: ' + value.toString()));
                 FirebaseUser u =
                     Provider.of<FirebaseUser>(context, listen: false);
-                print("Provider:" + u.toString());
+                debugPrint("Provider:" + u.toString());
                 SharedPreferences.getInstance().then(
                   (pref) {
-                    print("Pref: " + pref.getBool('loggedin').toString());
+                    debugPrint("Pref: " + pref.getBool('loggedin').toString());
                   },
                 );
                 await FirebaseAuth.instance.currentUser().then((value) => value
@@ -56,8 +56,8 @@ class HomeScreenState extends State<HomeScreen> {
                 await FirebaseAuth.instance
                     .currentUser()
                     .then((value) => u = value);
-                print(u.displayName);
-                print(u.uid);
+                debugPrint(u.displayName);
+                debugPrint(u.uid);
               },
             ),
             margin: EdgeInsets.only(top: 20.0),

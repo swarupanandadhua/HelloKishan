@@ -63,7 +63,7 @@ class AuthenticationService {
         Navigator.pushAndRemoveUntil(
           ctx,
           MaterialPageRoute(
-            builder: (ctx) => ProfileUpdateScreen(u),
+            builder: (ctx) => ProfileUpdateScreenOld(u),
           ),
           (route) => false,
         );

@@ -1,5 +1,5 @@
 import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Screens/Account/OTPLoginScreen.dart';
+import 'package:FarmApp/Screens/Profile/ProfileUpdatePage.dart';
 import 'package:FarmApp/Screens/WrapperScreen.dart';
 import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
@@ -14,7 +14,8 @@ void main() {
   /* Uncomment following line to enable debug printing */
   // debugPrint = (String message, {int wrapWidth}) {};
 
-  runApp(App());
+  // runApp(App());
+  runApp(ProfileUpdatePage2());
 }
 
 class App extends StatelessWidget {
@@ -63,11 +64,12 @@ class FarmApp extends StatefulWidget {
 }
 
 class _FarmAppState extends State<FarmApp> {
-  Future<bool> loggedin;
+  Future<String> loggedin;
 
   getLoggedinStatus() async {
-    loggedin = SharedPreferences.getInstance()
-        .then<bool>((pref) => pref.getBool('loggedin'));
+    loggedin = SharedPreferences.getInstance().then(
+      (pref) => pref.getString('uid'),
+    );
   }
 
   @override
@@ -78,19 +80,22 @@ class _FarmAppState extends State<FarmApp> {
 
   @override
   Widget build(BuildContext context) {
-    // final FirebaseUser user = Provider.of<FirebaseUser>(context);
-    // return (user == null) ? AuthenticateScreen() : WrapperScreen();
-    // return (user != null) ? WrapperScreen() : OTPLoginScreen();
     return FutureBuilder(
       future: loggedin,
+      /* TODO 5: */
       builder: (context, snapshot) {
+        FirebaseUser u = Provider.of<FirebaseUser>(context);
+        if (u == null) {
+          print("----------------user null-------------");
+        }
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData &&
             snapshot.data != null &&
             snapshot.data == true) {
           return WrapperScreen();
         } else {
-          return OTPLoginScreen();
+          // return OTPLoginScreen();
+          return WrapperScreen();
         }
       },
     );

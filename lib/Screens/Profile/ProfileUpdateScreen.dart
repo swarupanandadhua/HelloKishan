@@ -1,0 +1,134 @@
+import 'dart:io';
+
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/WrapperScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+
+class ProfileUpdateScreen extends StatefulWidget {
+  final FirebaseUser u;
+
+  ProfileUpdateScreen(this.u);
+
+  @override
+  _ProfileUpdateScreenState createState() => _ProfileUpdateScreenState(u);
+}
+
+class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
+  TextEditingController tc = TextEditingController();
+  final FirebaseUser u;
+  String name;
+  String dpUrl;
+
+  _ProfileUpdateScreenState(this.u);
+
+  Image dp = Image.asset(
+    'assets/images/app_logo.jpg',
+    height: 50,
+    width: 50,
+  );
+
+  fetchProfileInfo() async {
+    dpUrl = await FirebaseStorage.instance
+        .ref()
+        .child('/users/' + u.uid + '.jpg')
+        .getDownloadURL();
+    debugPrint('DP_URL:' + dpUrl);
+
+    setState(
+      () {
+        name = u.displayName;
+        tc.text = name;
+        dpUrl = dpUrl;
+        if (dpUrl != null)
+          dp = Image.network(
+            dpUrl,
+            height: 200,
+            width: 200,
+          );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    fetchProfileInfo();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ProgressDialog pd =
+        ProgressDialog(context, type: ProgressDialogType.Normal);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(FARMAPP_NAME),
+      ),
+      body: Center(
+        child: Container(
+          child: Column(
+            children: [
+              Container(
+                child: dp,
+                height: 60,
+                width: 60,
+              ),
+              Container(
+                width: 100,
+                height: 40,
+                child: TextField(
+                  controller: tc,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomSheet: Container(
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          onPressed: () async {
+            // TODO 4 : use firebase_picture_uploader  plugin
+            pd.update(message: 'Updating details');
+            // pd.show();
+            await FirebaseAuth.instance.currentUser().then(
+              (value) async {
+                PickedFile file = await ImagePicker().getImage(
+                  source: ImageSource.gallery,
+                );
+                pd.show();
+                StorageUploadTask uploadtask = FirebaseStorage.instance
+                    .ref()
+                    .child('/users/' + u.uid + '.jpg')
+                    .putFile(
+                      File(file.path),
+                    );
+                await uploadtask.onComplete.then(
+                  (snap) async {
+                    dpUrl = await snap.ref.getDownloadURL();
+                  },
+                );
+                await value.updateProfile(UserUpdateInfo()
+                  ..displayName = tc.text
+                  ..photoUrl = dpUrl);
+                pd.hide();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WrapperScreen(),
+                  ),
+                  (route) => false,
+                );
+              },
+            );
+          },
+          child: Text('Update'),
+        ),
+      ),
+    );
+  }
+}

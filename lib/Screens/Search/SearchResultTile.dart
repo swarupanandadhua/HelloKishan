@@ -1,7 +1,8 @@
 import 'package:FarmApp/Models/Models.dart';
-import 'package:firebase_image/firebase_image.dart';
+import 'package:FarmApp/Screens/Trade/SellRequestScreen.dart';
+// import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+// import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class SearchResultTile extends StatelessWidget {
   final Requirement requirement;
@@ -15,11 +16,11 @@ class SearchResultTile extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: ClipOval(
+/*             leading: ClipOval(
               child: Image(
                 image: FirebaseImage(requirement.userImage),
               ),
-            ),
+            ), */
             title: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -34,15 +35,21 @@ class SearchResultTile extends StatelessWidget {
                 style: TextStyle(fontSize: 12),
               ),
             ),
-            trailing: ClipOval(
+/*             trailing: ClipOval(
               child: Image(
                 image: FirebaseImage(requirement.productImage),
               ),
-            ),
+            ), */
           ),
           FlatButton(
-            child: Text('Call ' + requirement.name),
-            onPressed: () => UrlLauncher.launch('tel:' + requirement.mobile),
+            child: Text('Contact ' + 'NAME'), // requirement.name
+            // onPressed: () => UrlLauncher.launch('tel:' + requirement.mobile),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SellRequestScreen(requirement),
+              ),
+            ),
           ),
         ],
       ),

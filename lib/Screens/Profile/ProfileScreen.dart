@@ -1,4 +1,4 @@
-import 'package:FarmApp/Screens/Account/AddressTile.dart';
+import 'package:FarmApp/Screens/Profile/AddressTile.dart';
 import 'package:FarmApp/Services/DatabaseService.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
-class AccountScreen extends StatefulWidget {
+class ProfileScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => AccountScreenState();
+  State<StatefulWidget> createState() => ProfileScreenState();
 }
 
-class AccountScreenState extends State<AccountScreen> {
+class ProfileScreenState extends State<ProfileScreen> {
   FirebaseUser u;
   Future<String> imageUrl;
 
@@ -161,7 +161,7 @@ class AccountScreenState extends State<AccountScreen> {
                 itemBuilder: (_, i) {
                   if (addresses[i] == null) {
                     return Container(
-                      /* TODO : Create a PLUS icon to add address */
+                      /* TODO 6 : Create a PLUS icon to add address */
                       child: Text('Add Address'),
                     );
                   } else {

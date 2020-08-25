@@ -12,9 +12,9 @@ class OTPLoginScreen extends StatefulWidget {
 }
 
 class OTPLoginScreenState extends State<OTPLoginScreen> {
-  final GlobalKey<FormState> _otpLoginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> otpLoginFormKey = GlobalKey<FormState>();
 
-  String _mobile;
+  String mobile;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          key: this._otpLoginFormKey,
+          key: this.otpLoginFormKey,
           child: ListView(
             children: <Widget>[
               TextFormField(
@@ -42,7 +42,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                   return (value.length == 10) ? null : 'Must be 10 digits';
                 },
                 onSaved: (String value) {
-                  this._mobile = value;
+                  this.mobile = value;
                 },
               ),
               Container(
@@ -82,10 +82,10 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
   }
 
   void submit() async {
-    if (this._otpLoginFormKey.currentState.validate()) {
-      _otpLoginFormKey.currentState.save();
+    if (this.otpLoginFormKey.currentState.validate()) {
+      otpLoginFormKey.currentState.save();
 
-      AuthenticationService().verifyPhoneNumber(this._mobile, context);
+      AuthenticationService().verifyPhoneNumber(this.mobile, context);
     }
   }
 }

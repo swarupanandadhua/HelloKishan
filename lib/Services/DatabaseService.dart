@@ -6,17 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class DatabaseService {
-  Future<void> uploadUser(FarmApp.FarmAppUser u) async {
-    Map<String, dynamic> doc = u.toMap();
-    try {
-      await Firestore.instance
-          .document('/' + FIRESTORE_USER_DB + '/' + u.uid)
-          .setData(doc);
-    } catch (e) {
-      debugPrint(e);
-    }
-  }
-
   Future<void> deleteRequirement(String rid) async {
     try {
       await Firestore.instance
@@ -40,7 +29,7 @@ class DatabaseService {
   }
 
   Stream<List<FarmApp.Requirement>> fetchRequirementsByLocation(
-      String db, double lat, double long, double rad) {
+      String db, double lat, double long, double rad, String product) {
     CollectionReference ref = Firestore.instance.collection(db);
     Geoflutterfire geo = Geoflutterfire();
     GeoFirePoint center = geo.point(
@@ -118,6 +107,18 @@ class DatabaseService {
         .then((doc) {
       return true;
     });
+    return false;
+  }
+
+  Future<bool> initTransaction(FarmApp.Transaction t) async {
+    await Firestore.instance
+        .collection(FIRESTORE_TRANSACTION_DB)
+        .add(t.toMap())
+        .then(
+      (doc) {
+        return true;
+      },
+    );
     return false;
   }
 

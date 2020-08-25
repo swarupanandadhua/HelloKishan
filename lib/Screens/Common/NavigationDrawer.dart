@@ -1,5 +1,5 @@
 import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Screens/Account/OTPLoginScreen.dart';
+import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';

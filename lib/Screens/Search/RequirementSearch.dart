@@ -36,15 +36,25 @@ class RequirementSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final List<String> products = PRODUCTS
+    final List<String> products = PRODUCT_NAMES
         .where(
           (product) => product.toLowerCase().contains(query.toLowerCase()),
         )
         .toList();
     return ListView.builder(
       itemBuilder: (context, i) => ListTile(
-        leading: Icon(Icons.question_answer),
-        title: Text(products[i]),
+        leading: Image(
+          image: AssetImage(PRODUCT_IMAGES[i]),
+          height: 30,
+          width: 30,
+          color: null,
+        ),
+        title: Text(
+          products[i],
+          style: TextStyle(
+            fontSize: 15,
+          ),
+        ),
         onTap: () {
           close(context, null);
           Navigator.push(

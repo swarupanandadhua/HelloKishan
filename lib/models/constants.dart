@@ -1,8 +1,10 @@
+const int APP_COLOR = 0xFF1414FA;
 const String FIRESTORE_URL = 'gs://farmapp-2d60d.appspot.com';
 const String FIRESTORE_REQUIREMENT_DB = 'requirement';
 const String FIRESTORE_TRANSACTION_DB = 'transaction';
+const String FIRESTORE_TOKEN_DB = 'token';
 const String FIRESTORE_USER_DB = 'user';
-const String FARMAPP_LOGO = 'assets/images/app_logo.jpg';
+const String FARMAPP_LOGO = 'assets/images/app_logo.png';
 const String FARMAPP_NAME = 'FarmApp';
 const String HELP_MAIL_LAUNCH_ARG = '''mailto:swarupanandadhua@gmail.com
                                       ?subject=FarmApp%20Help
@@ -10,7 +12,7 @@ const String HELP_MAIL_LAUNCH_ARG = '''mailto:swarupanandadhua@gmail.com
 const String FIRESTORE_BASE_HTTP_URL =
     'https://firebasestorage.googleapis.com/v0/b/farmapp-2d60d.appspot.com/o/';
 
-const List<String> PRODUCTS = [
+const List<String> PRODUCT_NAMES = [
   'আদা (Ginger)',
   'আলু (Potato)',
   'ওল (Elephant Foot Yam)',
@@ -37,6 +39,7 @@ const List<String> PRODUCTS = [
   'পালং শাক (Spinach)',
   'পুঁই শাক (Basil)',
   'পুদিনা পাতা (Mint)',
+  'পেয়ারা (Guava)',
   'পেঁয়াজ (Onion)',
   'পেঁয়াজ পাতা (Leek)',
   'ফুলকপি (Cauliflower)',
@@ -63,4 +66,71 @@ const List<String> PRODUCTS = [
   'সজনে (Drum Stick)',
   'হলুদ (Turmeric)',
   'হেলেঞ্চা শাক (Cress)',
+];
+
+const List<String> PRODUCT_IMAGES = [
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
+  'assets/images/P013.jpg',
 ];

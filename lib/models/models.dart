@@ -1,4 +1,3 @@
-import 'package:FarmApp/Models/Constants.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,35 +38,25 @@ class Requirement {
     this.tradeType,
     this.postedOn,
     this.position,
+    this.userImage,
+    this.productImage,
   }) {
-    if (name == null || name == 'null') name = 'Swarupananda Dhua';
-    if (mobile == null || mobile == 'null') mobile = '+91 9609750449';
-    if (qty == null || qty == 'null') qty = '10';
-    // this.userImage = '$FIRESTORE_URL/user/$uid.jpg';
-    this.userImage = '$FIRESTORE_URL/user/U00000.jpg';
-    // this.productImage = '$FIRESTORE_URL/product/$pid.jpg';
-    this.productImage = '$FIRESTORE_URL/product/P000.jpg';
     this.verb = (tradeType == TradeType.BUY) ? 'Buy' : 'Sell';
     this.displayString = '$name wants to $verb $qty kg $product';
   }
 
   Requirement.fromDocumentSnapshot(DocumentSnapshot doc) {
     uid = doc['user'];
+    userImage = doc['userImage'];
     name = doc['name'];
-    mobile = doc['mobi;e'];
+    mobile = doc['mobile'];
     pid = doc['product'];
     product = doc['product'];
+    productImage = doc['productImage'];
     tradeType = (doc['wants_to'] == 'Buy') ? TradeType.BUY : TradeType.SELL;
     rate = doc['rate'].toString();
     qty = doc['qty'].toString();
 
-    if (name == null || name == 'null') name = 'Swarupananda Dhua';
-    if (mobile == null || mobile == 'null') mobile = '+91 9609750449';
-    if (qty == null || qty == 'null') qty = '10';
-    // this.userImage = '$FIRESTORE_URL/user/$uid.jpg';
-    this.userImage = '$FIRESTORE_URL/user/U00000.jpg';
-    // this.productImage = '$FIRESTORE_URL/product/$pid.jpg';
-    this.productImage = '$FIRESTORE_URL/product/P000.jpg';
     this.verb = (tradeType == TradeType.BUY) ? 'Buy' : 'Sell';
     this.displayString = '$name wants to $verb $qty kg $product';
   }
@@ -97,7 +86,7 @@ class Transaction {
   String firstPartyUid, firstPartyName;
   String secondPartyUid, secondPartyName, secondPartyImageUrl;
   String pid, productName, productImageUrl;
-  double rate, qty, amt;
+  String rate, qty, amt;
   DateTime timestamp;
   TradeType type;
   TransactionStatus status;
@@ -114,32 +103,24 @@ class Transaction {
     this.productImageUrl,
     this.rate,
     this.qty,
-    this.amt,
     this.timestamp,
     this.type,
     this.status,
   }) {
-    if (rate == null) rate = 25.0;
-    if (qty == null) qty = 25.0;
-    if (secondPartyName == null) secondPartyName = 'Swarupananda Dhua';
     if (timestamp == null) timestamp = DateTime.now();
-    if (secondPartyImageUrl == null)
-      secondPartyImageUrl = '$FIRESTORE_URL/user/U00000.jpg';
-    if (productImageUrl == null)
-      productImageUrl = '$FIRESTORE_URL/product/P000.jpg';
+    this.rate = '25.0';
+    this.qty = '26.0';
+    this.amt = (num.tryParse(rate) * num.tryParse(qty)).toString();
   }
 
   Transaction.fromDocumentSnapshot(DocumentSnapshot doc) {
     tid = doc['tid'];
-
-    if (rate == null) rate = 25.0;
-    if (qty == null) qty = 25.0;
-    if (secondPartyName == null) secondPartyName = 'Swarupananda Dhua';
-    if (timestamp == null) timestamp = DateTime.now();
-    if (secondPartyImageUrl == null)
-      secondPartyImageUrl = '$FIRESTORE_URL/user/U00000.jpg';
-    if (productImageUrl == null)
-      productImageUrl = '$FIRESTORE_URL/product/P000.jpg';
+    rate = doc['rate'];
+    qty = doc['qty'];
+    secondPartyName = doc['secondPartyName'];
+    timestamp = doc['timestamp'];
+    secondPartyImageUrl = doc['secondPartyImageUrl'];
+    productImageUrl = doc['productImageUrl'];
   }
 
   Map<String, dynamic> toMap() {
@@ -158,6 +139,7 @@ class Transaction {
 class FarmAppUser {
   String uid, name, nickName, imageUrl;
   String mobile, email, dob;
+  List<String> deviceTokens;
   Geolocation primaryAddr;
 
   FarmAppUser({
@@ -169,13 +151,7 @@ class FarmAppUser {
     this.email,
     this.dob,
     this.primaryAddr,
-  }) {
-    if (uid == null) uid = 'U00000';
-    if (name == null) name = 'Swarupananda Dhua';
-    if (mobile == null) mobile = '+91 9609750449';
-    if (email == null) email = 'swarupanandadhua@gmail.com';
-    if (imageUrl == null) imageUrl = '/user/U00000.jpg';
-  }
+  });
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map<String, dynamic>();

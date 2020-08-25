@@ -11,17 +11,23 @@ dependencies:
   firebase_auth_web:
   cloud_firestore:
   firebase_storage:
-
+  firebase_messaging:
   firebase_image:
+
   shimmer:
-  flutter_bloc:
   octo_image:
+  image_cropper:
   transparent_image:
+  image_picker:
   pin_entry_text_field:
 
   geolocator:
+  geocoder:
   geoflutterfire:
+
+  flutter_bloc:
   provider:
+
   stack_trace: ### For DEBUG purpose only ###
   universal_html:
   url_launcher: ### Starting Phone/Mail Activities ###
@@ -33,7 +39,6 @@ dependencies:
   cupertino_icons:
   flutter_spinkit:
   flutter_typeahead:
-  image_picker:
   progress_dialog:
   splashscreen:
   loading_gifs:

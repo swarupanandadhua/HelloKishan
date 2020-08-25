@@ -1,12 +1,16 @@
-import 'package:FarmApp/Screens/Account/AccountScreen.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/Profile/ProfileScreen.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/History/HistoryScreen.dart';
 import 'package:FarmApp/Screens/PostRequirement/PostRequirementScreen.dart';
 import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WrapperScreen extends StatefulWidget {
   @override
@@ -17,13 +21,13 @@ class _WrapperScreenState extends State<WrapperScreen>
     with SingleTickerProviderStateMixin {
   static List<Widget> _tabs = <Widget>[
     HomeScreen(),
-    AccountScreen(),
+    ProfileScreen(),
     TradeScreen(),
     HistoryScreen(),
   ];
   static List<String> _titles = <String>[
     'Home',
-    'Account',
+    'Profile',
     'Trade',
     'History',
   ];
@@ -47,9 +51,35 @@ class _WrapperScreenState extends State<WrapperScreen>
   ];
 
   TabController _tabController;
+
+  printDeviceToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String fcmToken = pref.getString('fcmToken');
+    if (fcmToken == null) {
+      FirebaseMessaging fcm = FirebaseMessaging();
+      fcmToken = await fcm.getToken();
+      pref.setString('fcmToken', fcmToken);
+      String uid = pref.getString('uid');
+      Map<String, String> data = Map<String, String>();
+      data['token'] = fcmToken;
+      await Firestore.instance
+          .collection(FIRESTORE_TOKEN_DB)
+          .document(uid)
+          .setData(data)
+          .then(
+        (doc) {
+          return true;
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
+    printDeviceToken();
+
     _tabController = TabController(
       initialIndex: 0,
       length: _tabs.length,

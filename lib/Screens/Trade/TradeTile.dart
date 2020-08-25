@@ -2,10 +2,10 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 
-class HistoryTile extends StatelessWidget {
+class TradeTile extends StatelessWidget {
   final Transaction transaction;
 
-  HistoryTile({this.transaction});
+  TradeTile({this.transaction});
 
   @override
   Widget build(BuildContext context) {

@@ -9,22 +9,28 @@ import 'package:geolocator/geolocator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
-class PostRequirementScreen extends StatefulWidget {
-  final String title = 'Search Results';
+class SellRequestScreen extends StatefulWidget {
+  final Requirement requirement;
+  final String title = 'Sell Request';
+
+  SellRequestScreen(this.requirement);
 
   @override
-  PostRequirementScreenState createState() => PostRequirementScreenState();
+  SellRequestScreenState createState() => SellRequestScreenState(requirement);
 }
 
-class PostRequirementScreenState extends State<PostRequirementScreen> {
+class SellRequestScreenState extends State<SellRequestScreen> {
+  SellRequestScreenState(this.requirement);
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final Requirement requirement = Requirement();
+  final Requirement requirement;
   final TextEditingController productTextController = TextEditingController();
 
   FirebaseUser u;
   ProgressDialog submitDialog;
   Position position;
   Size screenSize;
+  Transaction transaction = Transaction();
 
   @override
   void initState() {
@@ -35,9 +41,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
     )..style(message: 'Please wait...');
 
     u = Provider.of<FirebaseUser>(context, listen: false);
-    requirement.uid = (u != null) ? u.uid : 'U00000';
 
-    requirement.position = Provider.of<Position>(context, listen: false);
     super.initState();
   }
 
@@ -47,7 +51,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Post Requirement'),
+        title: Text('Sell Request'),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -68,10 +72,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     child: Text('Sell'),
                   ),
                 ],
-                onChanged: (type) => setState(
-                  () => requirement
-                      .setTradeType(type == TradeType.BUY ? 'buy' : 'sell'),
-                ),
+                onChanged: null,
               ),
               TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -137,7 +138,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                       : 'Enter a valid quantity';
                 },
                 onSaved: (String value) {
-                  this.requirement.qty = value;
+                  this.transaction.qty = value;
                 },
               ),
             ],
@@ -158,7 +159,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save();
       submitDialog.show();
-      await DatabaseService().uploadRequirement(requirement);
+      await DatabaseService().initTransaction(transaction);
       submitDialog.hide();
       Navigator.pop(context);
     }

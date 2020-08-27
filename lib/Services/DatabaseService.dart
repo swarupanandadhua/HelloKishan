@@ -122,7 +122,7 @@ class DatabaseService {
     return false;
   }
 
-  Future<String> getImageUrl(String image) async {
+  Future<String> getPhotoUrl(String image) async {
     return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
 }

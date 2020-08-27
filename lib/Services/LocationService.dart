@@ -31,30 +31,29 @@ class LocationService {
     return null;
   }
 
-  void printAddress() async {
-    Geolocator()
-      ..forceAndroidLocationManager
-      ..getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      ).then((pos) async {
-        final coordinates = Coordinates(pos.latitude, pos.longitude);
-        List<Address> addresses =
-            await Geocoder.local.findAddressesFromCoordinates(coordinates);
-        Address first = addresses.first;
-        debugPrint('-------------------------------------');
-        debugPrint(first.addressLine);
-        debugPrint(first.adminArea);
-        debugPrint(first.coordinates.toString());
-        debugPrint(first.countryCode);
-        debugPrint(first.countryName);
-        debugPrint(first.featureName);
-        debugPrint(first.locality);
-        debugPrint(first.postalCode);
-        debugPrint(first.subAdminArea);
-        debugPrint(first.subLocality);
-        debugPrint(first.subThoroughfare);
-        debugPrint(first.thoroughfare);
-        debugPrint('-------------------------------------');
-      });
+  Future<Address> getAddress() async {
+    Geolocator g = Geolocator();
+    g.forceAndroidLocationManager = true;
+    Position pos =
+        await g.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    final latlong = Coordinates(pos.latitude, pos.longitude);
+    List<Address> addresses =
+        await Geocoder.local.findAddressesFromCoordinates(latlong);
+    Address address = addresses.first;
+    debugPrint('-------------------------------------');
+    debugPrint('addressLine: ' + address.addressLine.toString());
+    debugPrint('adminArea: ' + address.adminArea.toString());
+    debugPrint('coordinates: ' + address.coordinates.toString());
+    debugPrint('countryCode: ' + address.countryCode.toString());
+    debugPrint('countryName: ' + address.countryName.toString());
+    debugPrint('featureName: ' + address.featureName.toString());
+    debugPrint('locality: ' + address.locality.toString());
+    debugPrint('postalCode: ' + address.postalCode.toString());
+    debugPrint('subAdminArea: ' + address.subAdminArea.toString());
+    debugPrint('subLocality: ' + address.subLocality.toString());
+    debugPrint('subThoroughfare: ' + address.subThoroughfare.toString());
+    debugPrint('thoroughfare: ' + address.thoroughfare.toString());
+    debugPrint('-------------------------------------');
+    return address;
   }
 }

@@ -1,10 +1,9 @@
-import 'package:FarmApp/Screens/Profile/AddressTile.dart';
 import 'package:FarmApp/Services/DatabaseService.dart';
-import 'package:FarmApp/Models/Models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:geocoder/geocoder.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -13,13 +12,13 @@ class ProfileScreen extends StatefulWidget {
 
 class ProfileScreenState extends State<ProfileScreen> {
   FirebaseUser u;
-  Future<String> imageUrl;
+  Future<String> photoUrl;
 
   @override
   void initState() {
     u = Provider.of<FirebaseUser>(context, listen: false);
     assert(u != null);
-    imageUrl = DatabaseService().getImageUrl(u.photoUrl);
+    photoUrl = DatabaseService().getPhotoUrl(u.photoUrl);
     super.initState();
   }
 
@@ -45,7 +44,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: <Widget>[
                     FutureBuilder(
-                      future: imageUrl,
+                      future: photoUrl,
                       builder: (_, snap) {
                         if (snap.connectionState == ConnectionState.done &&
                             snap.hasData &&
@@ -67,12 +66,12 @@ class ProfileScreenState extends State<ProfileScreen> {
                               final StorageReference ref = FirebaseStorage
                                   .instance
                                   .ref()
-                                  .child(u.imageUrl);
+                                  .child(u.photoUrl);
                               final StorageUploadTask uploadTask =
                                   ref.putFile(_image);
                               await uploadTask.onComplete;
                               setState(() {
-                                u.imageUrl = u.imageUrl;
+                                u.photoUrl = u.photoUrl;
                               });
                             }, */
                           );
@@ -159,14 +158,10 @@ class ProfileScreenState extends State<ProfileScreen> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (_, i) {
-                  if (addresses[i] == null) {
-                    return Container(
-                      /* TODO 6 : Create a PLUS icon to add address */
-                      child: Text('Add Address'),
-                    );
-                  } else {
-                    return AddressTile(address: addresses[i]);
-                  }
+                  return Container(
+                    /* TODO 6 : Create a PLUS icon to add address */
+                    child: Text('Add Address'),
+                  );
                 },
                 itemCount: addresses.length,
               ),

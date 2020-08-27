@@ -21,7 +21,7 @@ class TradeTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image(
-                    image: FirebaseImage(transaction.secondPartyImageUrl),
+                    image: FirebaseImage(transaction.secondPartyPhotoUrl),
                     height: 50.0,
                     width: 50.0,
                   ),
@@ -50,7 +50,7 @@ class TradeTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image(
-                    image: FirebaseImage(transaction.productImageUrl),
+                    image: FirebaseImage(transaction.productPhotoUrl),
                     height: 50.0,
                     width: 50.0,
                   ),

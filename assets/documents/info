@@ -1,0 +1,9 @@
+FirebaseUser {
+    displayName;
+    phoneNumber;
+    photoUrl;
+    uid;
+}
+Extra needed {
+    Address/Location
+}

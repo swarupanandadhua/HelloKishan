@@ -1,21 +1,12 @@
 import 'dart:io';
 
 import 'package:FarmApp/Models/Models.dart';
+import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
 import 'package:FarmApp/Services/LocationService.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-
-class App2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ProfileUpdatePage(),
-    );
-  }
-}
 
 class ProfileUpdatePage extends StatefulWidget {
   @override
@@ -23,43 +14,61 @@ class ProfileUpdatePage extends StatefulWidget {
 }
 
 class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
-  bool editing = false;
-  File image;
-  FarmAppUser u = FarmAppUser()
-    ..imageUrl =
-        "https://images.unsplash.com/photo-1516496636080-14fb876e029d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=hu-chen-5O6c_pLziXs-unsplash.jpg&w=1920";
-  // "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTeYl9PWu09qHPeDMxNPykM3pZC7n2ZchbfVw&usqp=CAU";
-  bool chosen = false;
-  Image accountLogo = Image.asset('assets/images/account.png');
+  TextEditingController nameEditController = TextEditingController();
+  TextEditingController mobileEditController = TextEditingController();
+  TextEditingController districtEditController = TextEditingController();
+  TextEditingController addressEditController = TextEditingController();
+  TextEditingController pincodeEditController = TextEditingController();
+  TextEditingController stateEditController = TextEditingController();
 
-  @override
-  void initState() {
-    LocationService().printAddress();
-    super.initState();
+  bool editing = false;
+  FarmAppUser user = FarmAppUser()
+    ..photoUrl =
+        // "https://images.unsplash.com/p4fb876e029d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=hu-chen-5O6c_pLziXssplash.jpg&w=1920";
+        "https://images.unsplash.com/photo-1516496636080-14fb876e029d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=hu-chen-5O6c_pLziXs-unsplash.jpg&w=1920";
+
+  File chosenImage;
+  bool imageChosen = false;
+  Image accountLogo = Image.asset('assets/images/account.png');
+  Image oldImage;
+
+  void getCurrentAddress() async {
+    LocationService().getAddress().then((address) {
+      setState(() {
+        addressEditController.text = address?.addressLine;
+        pincodeEditController.text = address?.postalCode;
+        stateEditController.text = address?.adminArea;
+        districtEditController.text = address?.subAdminArea;
+      });
+    });
   }
 
   Image getProfilePicture() {
-    if (chosen) {
+    if (imageChosen) {
       debugPrint('Showing Chosen Image');
-      return Image.file(image);
+      return Image.file(chosenImage);
     }
-    if (u != null && u.imageUrl != null) {
-      debugPrint('Fetching network image');
-      return Image.network(
-        u.imageUrl,
-        loadingBuilder: (_, child, progress) {
-          if (progress == null) {
-            return child;
-          } else {
-            debugPrint('Loading...');
-            return Image.asset('assets/images/loading.gif');
-          }
-        },
-        errorBuilder: (_, __, ___) {
-          debugPrint('Error fetching image');
-          return Image.asset('assets/images/red_cross.png');
-        },
-      );
+    if (user != null && user.photoUrl != null) {
+      if (oldImage == null) {
+        debugPrint('Fetching network image');
+        return oldImage = Image.network(
+          user.photoUrl,
+          loadingBuilder: (_, child, progress) {
+            if (progress == null) {
+              return child;
+            } else {
+              debugPrint('Loading...');
+              return Image.asset('assets/images/loading.gif');
+            }
+          },
+          errorBuilder: (_, __, ___) {
+            debugPrint('Error fetching image');
+            return Image.asset('assets/images/red_cross.png');
+          },
+        );
+      } else {
+        return oldImage;
+      }
     } else {
       return accountLogo;
     }
@@ -67,6 +76,9 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
 
   @override
   Widget build(BuildContext context) {
+    nameEditController.text = user?.displayName;
+    mobileEditController.text = user?.phoneNumber;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile Update'),
@@ -113,10 +125,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            'Parsonal Information',
+                            'Personal Information',
                             style: TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
+                              color: Color(APP_COLOR),
                             ),
                           ),
                         ],
@@ -175,6 +188,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
                     children: <Widget>[
                       Flexible(
                         child: TextField(
+                          controller: nameEditController,
                           decoration: const InputDecoration(
                             hintText: 'Enter your name',
                           ),
@@ -220,8 +234,141 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
                     children: <Widget>[
                       Flexible(
                         child: TextField(
+                          controller: mobileEditController,
                           decoration: const InputDecoration(
                             hintText: 'Enter Mobile Number',
+                          ),
+                          enabled: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 25.0,
+                    right: 25.0,
+                    top: 25.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            'Address Information',
+                            style: TextStyle(
+                              color: Color(APP_COLOR),
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          editing
+                              ? MyIcon(
+                                  onTapCallBack: () => getCurrentAddress(),
+                                  radius: 20.0,
+                                  iconData: Icons.my_location,
+                                )
+                              : Container(),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 25.0,
+                    right: 25.0,
+                    top: 25.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            'Address',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 25.0,
+                    right: 25.0,
+                    top: 2.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Flexible(
+                        child: TextField(
+                          controller: addressEditController,
+                          decoration: const InputDecoration(
+                            hintText: 'House Name, Street, Locality',
+                          ),
+                          enabled: editing,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 25.0,
+                    right: 25.0,
+                    top: 25.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            'District',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 25.0,
+                    right: 25.0,
+                    top: 2.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Flexible(
+                        child: TextField(
+                          controller: districtEditController,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter your district',
                           ),
                           enabled: editing,
                         ),
@@ -280,6 +427,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.0),
                           child: TextField(
+                            controller: pincodeEditController,
                             decoration: const InputDecoration(
                               hintText: 'Enter Pin Code',
                             ),
@@ -290,6 +438,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
                       ),
                       Flexible(
                         child: TextField(
+                          controller: stateEditController,
                           decoration: const InputDecoration(
                             hintText: 'Enter State',
                           ),
@@ -300,7 +449,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
                     ],
                   ),
                 ),
-                editing ? actionButtons() : Container(),
+                editing
+                    ? actionButtons()
+                    : Container(
+                        height: 20.0,
+                      ),
               ],
             ),
           ],
@@ -346,16 +499,20 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
     Navigator.pop(_);
     PickedFile file = await ImagePicker().getImage(
       source: imageSource,
+      maxHeight: 512,
+      maxWidth: 512,
     );
     File img = await ImageCropper.cropImage(
       sourcePath: file.path,
-      maxWidth: 1080,
-      maxHeight: 1080,
-      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      aspectRatio: CropAspectRatio(
+        ratioX: 1.0,
+        ratioY: 1.0,
+      ),
+      compressQuality: 80,
     );
     setState(() {
-      image = img;
-      chosen = true;
+      chosenImage = img;
+      imageChosen = true;
     });
   }
 
@@ -376,9 +533,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdatePage> {
           MyButton(
             text: 'Cancel',
             color: Colors.indigo,
-            onPressedCallBack: () => setState(
-              () => editing = false,
-            ),
+            onPressedCallBack: () => setState(() {
+              editing = false;
+              nameEditController.text = user?.displayName;
+              addressEditController.text = user?.address?.addressLine;
+            }),
           ),
         ],
       ),

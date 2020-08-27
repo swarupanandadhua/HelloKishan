@@ -1,6 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoder/geocoder.dart';
 
 enum TransactionStatus {
   SUCCESSFUL,
@@ -84,8 +85,8 @@ class Requirement {
 class Transaction {
   String tid;
   String firstPartyUid, firstPartyName;
-  String secondPartyUid, secondPartyName, secondPartyImageUrl;
-  String pid, productName, productImageUrl;
+  String secondPartyUid, secondPartyName, secondPartyPhotoUrl;
+  String pid, productName, productPhotoUrl;
   String rate, qty, amt;
   DateTime timestamp;
   TradeType type;
@@ -97,10 +98,10 @@ class Transaction {
     this.firstPartyName,
     this.secondPartyUid,
     this.secondPartyName,
-    this.secondPartyImageUrl,
+    this.secondPartyPhotoUrl,
     this.pid,
     this.productName,
-    this.productImageUrl,
+    this.productPhotoUrl,
     this.rate,
     this.qty,
     this.timestamp,
@@ -119,8 +120,8 @@ class Transaction {
     qty = doc['qty'];
     secondPartyName = doc['secondPartyName'];
     timestamp = doc['timestamp'];
-    secondPartyImageUrl = doc['secondPartyImageUrl'];
-    productImageUrl = doc['productImageUrl'];
+    secondPartyPhotoUrl = doc['secondPartyPhotoUrl'];
+    productPhotoUrl = doc['productPhotoUrl'];
   }
 
   Map<String, dynamic> toMap() {
@@ -137,51 +138,27 @@ class Transaction {
 }
 
 class FarmAppUser {
-  String uid, name, nickName, imageUrl;
-  String mobile, email, dob;
+  String uid, displayName, photoUrl, phoneNumber;
+  String nickName;
   List<String> deviceTokens;
-  Geolocation primaryAddr;
+  Geolocation location;
+  Address address;
 
   FarmAppUser({
     this.uid,
-    this.name,
-    this.nickName,
-    this.imageUrl,
-    this.mobile,
-    this.email,
-    this.dob,
-    this.primaryAddr,
+    this.displayName,
+    this.photoUrl,
+    this.phoneNumber,
   });
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map<String, dynamic>();
     map['uid'] = uid;
-    map['displayName'] = name;
-    map['phoneNumber'] = mobile;
-    map['email'] = email;
-    map['photoUrl'] = imageUrl;
-    map['primary_addr'] = GeoPoint(21.38144, 90.769907);
+    map['displayName'] = displayName;
+    map['photoUrl'] = photoUrl;
+    map['phoneNumber'] = phoneNumber;
+    map['location'] = GeoPoint(21.38144, 90.769907);
 
     return map;
-  }
-}
-
-class Address {
-  String name;
-  String line1;
-  String line2;
-  String line3;
-  String postalCode;
-  String state;
-  String country;
-
-  Address() {
-    name = 'Swami Swarupananda Maharaaj';
-    line1 = 'C101, KENS Residency';
-    line2 = '16th D Cross Road';
-    line3 = 'Pai Layout';
-    postalCode = '560016';
-    state = 'Karnataka';
-    country = 'India';
   }
 }

@@ -3,6 +3,15 @@ const admin = require("firebase-admin");
 
 admin.initializeApp(functions.config().firebase);
 
+exports.createFarmAppUser = functions.auth.user().onCreate((user) => {
+  var farmAppUser = JSON.parse(JSON.stringify(user));
+  return admin.firestore().collection("users").doc(user.uid).set(farmAppUser);
+});
+
+exports.deleteFarmAppUser = functions.auth.user().onDelete((user) => {
+  return admin.firestore().collection("users").doc(user.uid).delete();
+});
+
 exports.transactionAdded = functions.firestore
   .document("/transaction/{transaction}")
   .onCreate((snapshot, context) => {

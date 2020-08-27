@@ -15,7 +15,7 @@ void main() {
   // debugPrint = (String message, {int wrapWidth}) {};
 
   // runApp(App());
-  runApp(App2());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
@@ -40,7 +40,8 @@ class App extends StatelessWidget {
         ),
         home: SplashScreen(
           seconds: 3,
-          navigateAfterSeconds: FarmApp(),
+          navigateAfterSeconds: ProfileUpdatePage(),
+          // navigateAfterSeconds: FarmApp(),
           image: Image.asset(FARMAPP_LOGO),
           photoSize: 100.0,
           title: Text(

@@ -58,16 +58,20 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                 width: screenSize.width / 2,
                 child: RaisedButton(
                   child: Text('Debug Print User'),
-                  onPressed: () {
+                  onPressed: () async {
                     FirebaseAuth.instance.currentUser().then(
-                        (value) => debugPrint('Actual: ' + value.toString()));
-                    final FirebaseUser u =
-                        Provider.of<FirebaseUser>(context, listen: false);
-                    debugPrint("Provider:" + u.toString());
+                          (u) => debugPrint('Actual: ' + u.toString()),
+                        );
+                    debugPrint("Provider:" +
+                        Provider.of<FirebaseUser>(
+                          context,
+                          listen: false,
+                        ).toString());
                     SharedPreferences.getInstance().then(
                       (pref) {
                         debugPrint(
-                            "Pref: " + pref.getBool('loggedin').toString());
+                          "Pref: " + pref.getBool('loggedin').toString(),
+                        );
                       },
                     );
                   },

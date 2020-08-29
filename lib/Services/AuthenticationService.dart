@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
   Stream<FirebaseUser> get user {
@@ -23,8 +23,7 @@ class AuthenticationService {
   Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      SharedPreferences.getInstance()
-          .then<bool>((pref) => pref.setBool('loggedin', false));
+      SharedPrefData.reset('loggedin');
     } catch (e) {
       debugPrint(e);
     }
@@ -57,13 +56,12 @@ class AuthenticationService {
 
     signInCallBack(FirebaseUser u) {
       if (u != null) {
-        SharedPreferences.getInstance().then(
-          (pref) => pref.setString('uid', u.uid),
-        );
+        SharedPrefData.setString('uid', u.uid);
+
         Navigator.pushAndRemoveUntil(
           ctx,
           MaterialPageRoute(
-            builder: (ctx) => ProfileUpdateScreenOld(u),
+            builder: (ctx) => ProfileUpdateScreen(u),
           ),
           (route) => false,
         );

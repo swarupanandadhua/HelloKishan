@@ -6,6 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class DatabaseService {
+  Future<FarmApp.FarmAppUser> getCurrentFarmAppUser(String uid) async {
+    FarmApp.FarmAppUser farmAppUser;
+    await Firestore.instance
+        .collection(FIRESTORE_USER_DB)
+        .document(uid)
+        .get()
+        .then(
+      (snap) {
+        farmAppUser = FarmApp.FarmAppUser(
+          snap.data['uid'],
+          snap.data['displayName'],
+          snap.data['photoUrl'],
+          snap.data['phoneNumber'],
+          snap.data['nickName'],
+          snap.data['address'],
+        );
+      },
+    ).catchError((e) => debugPrint(e.toString()));
+    return farmAppUser;
+  }
+
   Future<void> deleteRequirement(String rid) async {
     try {
       await Firestore.instance

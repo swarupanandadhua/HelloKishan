@@ -6,11 +6,11 @@ import 'package:FarmApp/Screens/PostRequirement/PostRequirementScreen.dart';
 import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class WrapperScreen extends StatefulWidget {
   @override
@@ -53,13 +53,15 @@ class _WrapperScreenState extends State<WrapperScreen>
   TabController _tabController;
 
   printDeviceToken() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String fcmToken = pref.getString('fcmToken');
+    String fcmToken = await SharedPrefData.getFCMToken();
+
     if (fcmToken == null) {
       FirebaseMessaging fcm = FirebaseMessaging();
       fcmToken = await fcm.getToken();
-      pref.setString('fcmToken', fcmToken);
-      String uid = pref.getString('uid');
+
+      SharedPrefData.setString('fcmToken', fcmToken);
+      String uid = await SharedPrefData.getUid();
+
       Map<String, String> data = Map<String, String>();
       data['token'] = fcmToken;
       await Firestore.instance

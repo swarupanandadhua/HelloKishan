@@ -1,13 +1,14 @@
 import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Screens/Profile/ProfileUpdatePage.dart';
+import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
+import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/WrapperScreen.dart';
 import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {
@@ -40,8 +41,7 @@ class App extends StatelessWidget {
         ),
         home: SplashScreen(
           seconds: 3,
-          navigateAfterSeconds: ProfileUpdatePage(),
-          // navigateAfterSeconds: FarmApp(),
+          navigateAfterSeconds: FarmApp(),
           image: Image.asset(FARMAPP_LOGO),
           photoSize: 100.0,
           title: Text(
@@ -65,11 +65,41 @@ class FarmApp extends StatefulWidget {
 }
 
 class _FarmAppState extends State<FarmApp> {
-  Future<String> loggedin;
+  String uid;
+  Future<FirebaseUser> u;
+  bool profileUpdated;
+
+  getFirebaseUser() async {
+    u = FirebaseAuth.instance
+        .currentUser()
+        .then((u) => u)
+        .catchError((e) => debugPrint('Error getting firebase user.'));
+  }
 
   getLoggedinStatus() async {
-    loggedin = SharedPreferences.getInstance().then(
-      (pref) => pref.getString('uid'),
+    SharedPrefData.getUid().then((value) {
+      setState(
+        () {
+          if (value == null) {
+            uid = "NOT_LOGGED_IN";
+          } else {
+            uid = value;
+          }
+        },
+      );
+    });
+    SharedPrefData.getProfileUpdated().then(
+      (value) {
+        setState(
+          () {
+            if (value == null || value == false) {
+              profileUpdated = false;
+            } else {
+              profileUpdated = true;
+            }
+          },
+        );
+      },
     );
   }
 
@@ -79,26 +109,30 @@ class _FarmAppState extends State<FarmApp> {
     super.initState();
   }
 
+  Widget showDialog(String msg) {
+    debugPrint(msg);
+    return Container(
+      child: Center(
+        child: Text(msg),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: loggedin,
-      /* TODO 5: */
-      builder: (context, snapshot) {
-        FirebaseUser u = Provider.of<FirebaseUser>(context);
-        if (u == null) {
-          debugPrint("----------------user null-------------");
-        }
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.hasData &&
-            snapshot.data != null &&
-            snapshot.data == true) {
-          return WrapperScreen();
-        } else {
-          // return OTPLoginScreen();
-          return WrapperScreen();
-        }
-      },
-    );
+    if (uid == null) {
+      return showDialog('Loading Logged in status...');
+    }
+    if (uid == "NOT_LOGGED_IN") {
+      return OTPLoginScreen();
+    }
+
+    if (profileUpdated == null) {
+      return showDialog('Loading profileUpdated...');
+    }
+    if (profileUpdated = false) {
+      return ProfileUpdateScreen(null);
+    }
+    return WrapperScreen();
   }
 }

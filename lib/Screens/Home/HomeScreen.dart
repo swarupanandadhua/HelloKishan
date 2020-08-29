@@ -1,8 +1,8 @@
 import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({
@@ -46,10 +46,8 @@ class HomeScreenState extends State<HomeScreen> {
                 FirebaseUser u =
                     Provider.of<FirebaseUser>(context, listen: false);
                 debugPrint("Provider:" + u.toString());
-                SharedPreferences.getInstance().then(
-                  (pref) {
-                    debugPrint("Pref: " + pref.getBool('loggedin').toString());
-                  },
+                SharedPrefData.getUid().then(
+                  (uid) => debugPrint("Pref: " + uid.toString()),
                 );
                 await FirebaseAuth.instance.currentUser().then((value) => value
                     .updateProfile(UserUpdateInfo()..displayName = 'Fuck'));

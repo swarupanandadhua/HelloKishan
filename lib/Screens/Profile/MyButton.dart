@@ -34,7 +34,7 @@ class MyIcon extends StatelessWidget {
   final onTapCallBack;
   final double radius;
   final IconData iconData;
-  final size;
+  final double size;
 
   MyIcon({this.onTapCallBack, this.radius, this.iconData, this.size = 25.0});
 

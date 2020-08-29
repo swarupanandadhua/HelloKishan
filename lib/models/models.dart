@@ -1,5 +1,4 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:universal_html/html.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoder/geocoder.dart';
 
@@ -140,16 +139,17 @@ class Transaction {
 class FarmAppUser {
   String uid, displayName, photoUrl, phoneNumber;
   String nickName;
-  List<String> deviceTokens;
-  Geolocation location;
   Address address;
+  List<String> deviceTokens;
 
-  FarmAppUser({
+  FarmAppUser(
     this.uid,
     this.displayName,
     this.photoUrl,
     this.phoneNumber,
-  });
+    this.nickName,
+    this.address,
+  );
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map<String, dynamic>();

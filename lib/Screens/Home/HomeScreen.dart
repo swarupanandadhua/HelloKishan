@@ -24,7 +24,7 @@ class HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemBuilder: (_, i) {
                 return Container(
-                  child: Image.asset(FARMAPP_LOGO),
+                  child: Image.asset(APP_LOGO),
                   height: 50,
                   width: 50,
                 );
@@ -35,7 +35,6 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           Container(
             // TODO 2: Remove this debug button after resolving TODO 1
-            // width: screenSize.width / 2,
             height: 50,
             child: RaisedButton(
               child: Text('Debug Print User'),
@@ -46,9 +45,7 @@ class HomeScreenState extends State<HomeScreen> {
                 FirebaseUser u =
                     Provider.of<FirebaseUser>(context, listen: false);
                 debugPrint("Provider:" + u.toString());
-                SharedPrefData.getUid().then(
-                  (uid) => debugPrint("Pref: " + uid.toString()),
-                );
+                debugPrint("Pref: " + SharedPrefData.getUid().toString());
                 await FirebaseAuth.instance.currentUser().then((value) => value
                     .updateProfile(UserUpdateInfo()..displayName = 'Fuck'));
                 await FirebaseAuth.instance

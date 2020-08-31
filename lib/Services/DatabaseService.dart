@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart' as FarmApp;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -143,7 +145,17 @@ class DatabaseService {
     return false;
   }
 
-  Future<String> getPhotoUrl(String image) async {
-    return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
+  Future<String> getPhotoUrl(String path) async {
+    return await FirebaseStorage.instance.ref().child(path).getDownloadURL();
+  }
+
+  Future<String> uploadPhoto(File image, String destination) async {
+    StorageReference ref = FirebaseStorage.instance.ref();
+    StorageUploadTask uploadtask = ref.child(destination).putFile(image);
+    String downloadUrl;
+    await uploadtask.onComplete.then(
+      (snap) async => downloadUrl = await snap.ref.getDownloadURL(),
+    );
+    return downloadUrl;
   }
 }

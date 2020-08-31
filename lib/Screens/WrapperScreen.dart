@@ -1,8 +1,8 @@
 import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Screens/Profile/ProfileScreen.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/History/HistoryScreen.dart';
 import 'package:FarmApp/Screens/PostRequirement/PostRequirementScreen.dart';
+import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
@@ -21,7 +21,7 @@ class _WrapperScreenState extends State<WrapperScreen>
     with SingleTickerProviderStateMixin {
   static List<Widget> _tabs = <Widget>[
     HomeScreen(),
-    ProfileScreen(),
+    ProfileUpdateScreen(null),
     TradeScreen(),
     HistoryScreen(),
   ];
@@ -53,14 +53,14 @@ class _WrapperScreenState extends State<WrapperScreen>
   TabController _tabController;
 
   printDeviceToken() async {
-    String fcmToken = await SharedPrefData.getFCMToken();
+    String fcmToken = SharedPrefData.getFCMToken();
 
     if (fcmToken == null) {
       FirebaseMessaging fcm = FirebaseMessaging();
       fcmToken = await fcm.getToken();
 
       SharedPrefData.setString('fcmToken', fcmToken);
-      String uid = await SharedPrefData.getUid();
+      String uid = SharedPrefData.getUid();
 
       Map<String, String> data = Map<String, String>();
       data['token'] = fcmToken;
@@ -109,7 +109,7 @@ class _WrapperScreenState extends State<WrapperScreen>
       drawer: NavigationDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        elevation: 16.0,
+        elevation: 16,
         child: Icon(Icons.add),
         backgroundColor: Colors.indigo,
         onPressed: () {

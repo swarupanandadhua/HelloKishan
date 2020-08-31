@@ -40,7 +40,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               margin: EdgeInsets.all(7.0),
               alignment: Alignment.topCenter,
               child: Card(
-                elevation: 4.0,
+                elevation: 4,
                 child: Column(
                   children: <Widget>[
                     FutureBuilder(
@@ -169,7 +169,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             Container(
               margin: EdgeInsets.all(7.0),
               child: Card(
-                elevation: 1.0,
+                elevation: 1,
                 child: Row(
                   children: <Widget>[
                     IconButton(
@@ -196,7 +196,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             Container(
               margin: EdgeInsets.all(7.0),
               child: Card(
-                elevation: 1.0,
+                elevation: 1,
                 child: Row(
                   children: <Widget>[
                     IconButton(
@@ -223,7 +223,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             Container(
               margin: EdgeInsets.all(7.0),
               child: Card(
-                elevation: 1.0,
+                elevation: 1,
                 child: Row(
                   children: <Widget>[
                     IconButton(

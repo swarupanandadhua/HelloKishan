@@ -12,7 +12,7 @@ class SearchResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8.0,
+      elevation: 8,
       child: Column(
         children: <Widget>[
           ListTile(

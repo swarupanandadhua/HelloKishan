@@ -1,11 +1,18 @@
 const int APP_COLOR = 0xFF1414FA;
+const int APP_COLOR_ACCENT = 0xFF1414FA;
+const String APP_LOGO = 'assets/images/app_logo.png';
+const String APP_NAME = 'FarmApp';
+
+const String LOADING_GIF = 'assets/images/loading.gif';
+const String ACCOUNT_PNG = 'assets/images/account.png';
+const String RED_CROSS_PNG = 'assets/images/red_cross.png';
+
 const String FIRESTORE_URL = 'gs://farmapp-2d60d.appspot.com';
 const String FIRESTORE_REQUIREMENT_DB = 'requirement';
 const String FIRESTORE_TRANSACTION_DB = 'transaction';
 const String FIRESTORE_TOKEN_DB = 'token';
 const String FIRESTORE_USER_DB = 'user';
-const String FARMAPP_LOGO = 'assets/images/app_logo.png';
-const String FARMAPP_NAME = 'FarmApp';
+
 const String HELP_MAIL_LAUNCH_ARG = '''mailto:swarupanandadhua@gmail.com
                                       ?subject=FarmApp%20Help
                                       &body=Please%20type%20your%20query%20here...''';

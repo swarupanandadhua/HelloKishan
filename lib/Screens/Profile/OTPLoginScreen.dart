@@ -21,7 +21,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(FARMAPP_NAME),
+        title: Text(APP_NAME),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -54,7 +54,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                 margin: EdgeInsets.only(top: 20.0),
               ),
               Container(
-                // TODO 3 : Remove this debug button
+                // TODO 2: Remove this debug button after resolving TODO 1
                 width: screenSize.width / 2,
                 child: RaisedButton(
                   child: Text('Debug Print User'),
@@ -67,9 +67,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                           context,
                           listen: false,
                         ).toString());
-                    SharedPrefData.getUid().then(
-                      (uid) => debugPrint("Pref: " + uid.toString()),
-                    );
+                    debugPrint("Pref: " + SharedPrefData.getUid().toString());
                   },
                 ),
                 margin: EdgeInsets.only(top: 20.0),

@@ -145,9 +145,17 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         ),
       ),
       bottomSheet: Container(
+        height: 60,
         width: MediaQuery.of(context).size.width,
         child: RaisedButton(
-          child: Text('Submit'),
+          color: Color(APP_COLOR),
+          child: Text(
+            'SUBMIT',
+            style: TextStyle(
+              color: Color(0xFFFFFFFF),
+              fontSize: 20,
+            ),
+          ),
           onPressed: this.submit,
         ),
       ),

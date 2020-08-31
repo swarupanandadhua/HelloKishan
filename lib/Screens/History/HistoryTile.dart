@@ -11,7 +11,7 @@ class HistoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
-      elevation: 8.0,
+      elevation: 8,
       child: Column(
         children: <Widget>[
           Row(

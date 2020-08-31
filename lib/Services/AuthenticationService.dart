@@ -11,13 +11,15 @@ class AuthenticationService {
     return FirebaseAuth.instance.onAuthStateChanged;
   }
 
-  Future<FirebaseUser> getCurrentUser() async {
-    try {
-      return await FirebaseAuth.instance.currentUser();
-    } catch (e) {
-      debugPrint(e);
-      return null;
-    }
+  Future<FirebaseUser> getFirebaseUser() async {
+    return FirebaseAuth.instance
+        .currentUser()
+        .then(
+          (u) => u,
+        )
+        .catchError(
+          (e) => debugPrint('Error getting firebase user.'),
+        );
   }
 
   Future<void> signOut() async {
@@ -70,8 +72,6 @@ class AuthenticationService {
       }
     }
 
-    // 8433901047
-    // 9609750449
     pd.update(message: 'Sending OTP...');
     pd.show();
     FirebaseUser u;
@@ -158,10 +158,5 @@ class AuthenticationService {
         u = null;
       },
     );
-/*     u.updateProfile(
-      UserUpdateInfo()
-        ..displayName = 'Hello'
-        ..photoUrl = 'url',
-    ); */
   }
 }

@@ -2,12 +2,16 @@ import 'dart:io';
 
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
 import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:FarmApp/Services/DatabaseService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -22,53 +26,47 @@ class ProfileUpdateScreen extends StatefulWidget {
 }
 
 class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
-  ProfileUpdateScreenState(this.firebaseUser);
-
-  TextEditingController nameEditController = TextEditingController();
-  TextEditingController mobileEditController = TextEditingController();
-  TextEditingController districtEditController = TextEditingController();
-  TextEditingController addressEditController = TextEditingController();
-  TextEditingController pincodeEditController = TextEditingController();
-  TextEditingController stateEditController = TextEditingController();
-
-  TextStyle h1Style = TextStyle(
+  final GlobalKey<FormState> profileDetailsForm = GlobalKey<FormState>();
+  final TextEditingController nameEditC = TextEditingController();
+  final TextEditingController mobileEditC = TextEditingController();
+  final TextEditingController distEditC = TextEditingController();
+  final TextEditingController addressEditC = TextEditingController();
+  final TextEditingController pinEditC = TextEditingController();
+  final TextEditingController stateEditC = TextEditingController();
+  final TextStyle h1Style = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
     color: Color(APP_COLOR),
   );
-
-  TextStyle h2Style = TextStyle(
+  final TextStyle h2Style = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
-
-  bool editing = false;
   FirebaseUser firebaseUser;
   FarmAppUser farmAppUser;
-  /*  = FarmAppUser(
-    'abcdefgh',
-    'Swarupananda Dhua',
-    'https://images.unsplash.com/photo-1516496636080-14fb876e029d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=hu-chen-5O6c_pLziXs-unsplash.jpg&w=1920',
-    '9609750449',
-    'Toton',
-    null,
-  ); */
-
   File chosenImage;
-  bool imageChosen = false;
-  Image accountLogo = Image.asset('assets/images/account.png');
+  final Image accountLogo = Image.asset(ACCOUNT_PNG);
   Image oldImage;
+  bool imageChosen = false;
   bool userLoaded = false;
+  bool profileUpdated;
+  bool editing;
+
+  ProfileUpdateScreenState(this.firebaseUser);
 
   @override
   void initState() {
     loadUser();
+
+    profileUpdated = SharedPrefData.getProfileUpdated();
+    if (profileUpdated == null) profileUpdated = false;
+    editing = !profileUpdated;
     super.initState();
   }
 
   void loadUser() async {
     if (firebaseUser == null) {
-      firebaseUser = await AuthenticationService().getCurrentUser();
+      firebaseUser = await AuthenticationService().getFirebaseUser();
     }
     if (farmAppUser == null) {
       farmAppUser =
@@ -76,16 +74,17 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     }
     setState(() {
       userLoaded = true;
+      mobileEditC.text = firebaseUser.phoneNumber;
     });
   }
 
   void getCurrentAddress() async {
     LocationService().getAddress().then((address) {
       setState(() {
-        addressEditController.text = address?.addressLine;
-        pincodeEditController.text = address?.postalCode;
-        stateEditController.text = address?.adminArea;
-        districtEditController.text = address?.subAdminArea;
+        addressEditC.text = address?.addressLine;
+        pinEditC.text = address?.postalCode;
+        stateEditC.text = address?.adminArea;
+        distEditC.text = address?.subAdminArea;
       });
     });
   }
@@ -105,12 +104,12 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               return child;
             } else {
               debugPrint('Loading...');
-              return Image.asset('assets/images/loading.gif');
+              return Image.asset(LOADING_GIF);
             }
           },
           errorBuilder: (_, __, ___) {
             debugPrint('Error fetching image');
-            return Image.asset('assets/images/red_cross.png');
+            return Image.asset(RED_CROSS_PNG);
           },
         );
       } else {
@@ -121,44 +120,24 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     }
   }
 
-  Stack getProfileStack() {
-    return Stack(
-      alignment: Alignment.bottomRight,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(5),
-          height: 150,
-          width: 150,
-          child: ClipOval(
-            child: getProfilePicture(),
-          ),
-        ),
-        MyIcon(
-          radius: 20,
-          onTapCallBack: () {
-            pickIamge(context);
-          },
-          iconData: Icons.photo_camera,
-        ),
-      ],
-    );
-  }
-
-  Padding getAddressH2() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
+  Widget getDPWidget() {
+    return Center(
+      child: Stack(
+        alignment: Alignment.bottomRight,
         children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'Address',
-                style: h2Style,
-              ),
-            ],
+          Container(
+            height: 150,
+            width: 150,
+            child: ClipOval(
+              child: getProfilePicture(),
+            ),
+          ),
+          MyIcon(
+            radius: 20,
+            onTapCallBack: () {
+              showImagePickerModal(context);
+            },
+            iconData: Icons.photo_camera,
           ),
         ],
       ),
@@ -167,297 +146,223 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    nameEditController.text = farmAppUser?.displayName;
-    mobileEditController.text = farmAppUser?.phoneNumber;
+    nameEditC.text = farmAppUser?.displayName;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile Update'),
-      ),
-      body: !userLoaded
-          ? Container(
-              child: Center(
-                child: Text('Loading User Data...'),
-              ),
-            )
-          : Form(
-              child: ListView(
-                children: <Widget>[
-                  Center(
-                    child: getProfileStack(),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'Personal Information',
-                                  style: h1Style,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                editing
-                                    ? Container()
-                                    : MyIcon(
-                                        onTapCallBack: () => setState(
-                                          () => editing = true,
-                                        ),
-                                        radius: 20,
-                                        iconData: Icons.edit,
-                                      ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'Name',
-                                  style: h2Style,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Flexible(
-                              child: TextFormField(
-                                controller: nameEditController,
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter your name',
-                                ),
-                                enabled: editing,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'Mobile',
-                                  style: h2Style,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Flexible(
-                              child: TextFormField(
-                                controller: mobileEditController,
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter Mobile Number',
-                                ),
-                                enabled: false,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'Address Information',
-                                  style: h1Style,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                editing
-                                    ? MyIcon(
-                                        onTapCallBack: () =>
-                                            getCurrentAddress(),
-                                        radius: 20,
-                                        iconData: Icons.my_location,
-                                      )
-                                    : Container(),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      getAddressH2(),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Flexible(
-                              child: TextFormField(
-                                controller: addressEditController,
-                                decoration: const InputDecoration(
-                                  hintText: 'House Name, Street, Locality',
-                                ),
-                                enabled: editing,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'District',
-                                  style: h2Style,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Flexible(
-                              child: TextFormField(
-                                controller: districtEditController,
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter your district',
-                                ),
-                                enabled: editing,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                child: Text(
-                                  'Pin Code',
-                                  style: h2Style,
-                                ),
-                              ),
-                              flex: 2,
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: Text(
-                                  'State',
-                                  style: h2Style,
-                                ),
-                              ),
-                              flex: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Flexible(
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 10),
-                                child: TextFormField(
-                                  controller: pincodeEditController,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Enter Pin Code',
-                                  ),
-                                  enabled: editing,
-                                ),
-                              ),
-                              flex: 2,
-                            ),
-                            Flexible(
-                              child: TextFormField(
-                                controller: stateEditController,
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter State',
-                                ),
-                                enabled: editing,
-                              ),
-                              flex: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      editing ? actionButtons() : Container(height: 20),
-                    ],
-                  ),
-                ],
+    if (userLoaded) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Profile Update'),
+        ),
+        bottomSheet: Container(
+          height: 60,
+          width: MediaQuery.of(context).size.width,
+          child: RaisedButton(
+            color: Color(APP_COLOR),
+            child: Text(
+              'CONTINUE',
+              style: TextStyle(
+                color: Color(0xFFFFFFFF),
+                fontSize: 20,
               ),
             ),
-    );
+            onPressed: this.saveProfileDetails,
+          ),
+        ),
+        body: Form(
+          key: profileDetailsForm,
+          child: ListView(
+            children: <Widget>[
+              getDPWidget(),
+              Card(
+                elevation: 4,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Personal Information', style: h1Style),
+                          editing
+                              ? Container()
+                              : MyIcon(
+                                  onTapCallBack: () => setState(
+                                    () => editing = true,
+                                  ),
+                                  radius: 20,
+                                  iconData: Icons.edit,
+                                ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text('Name', style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: nameEditC,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your name',
+                        ),
+                        enabled: editing,
+                        validator: (val) {
+                          if (RegExp('[a-zA-Z ]?').hasMatch(val) &&
+                              val.length > 4) {
+                            return null;
+                          } else {
+                            return 'Enter a valid name';
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text('Mobile', style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: mobileEditC,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter Mobile Number',
+                        ),
+                        enabled: false,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                elevation: 4,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Address Information', style: h1Style),
+                          editing
+                              ? MyIcon(
+                                  onTapCallBack: () => getCurrentAddress(),
+                                  radius: 20,
+                                  iconData: Icons.my_location,
+                                )
+                              : Container(),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text('Address', style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: addressEditC,
+                        decoration: const InputDecoration(
+                          hintText: 'House Name, Street, Locality',
+                        ),
+                        enabled: editing,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text('District', style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: distEditC,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your district',
+                        ),
+                        enabled: editing,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text('Pin Code', style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: pinEditC,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter Pin Code',
+                        ),
+                        enabled: editing,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text('State', style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: stateEditC,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter State',
+                        ),
+                        enabled: editing,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // editing ? actionButtons() : Container(),
+              Container(
+                height: 65,
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: LoadingScreen('Loading User Data...'),
+      );
+    }
   }
 
-  void pickIamge(BuildContext context) {
+  void showImagePickerModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
         return Container(
+          padding: EdgeInsets.all(16.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                padding: EdgeInsets.all(20),
                 child: MyIcon(
                   size: 50,
                   onTapCallBack: () => pickAndCropImage(_, ImageSource.camera),
@@ -466,7 +371,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(20),
                 child: MyIcon(
                   size: 50,
                   onTapCallBack: () => pickAndCropImage(_, ImageSource.gallery),
@@ -502,10 +406,51 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     });
   }
 
+  void saveProfileDetails() async {
+    if (profileDetailsForm.currentState.validate()) {
+      String photoUrl;
+      if (imageChosen) {
+        photoUrl = await DatabaseService().uploadPhoto(
+          chosenImage,
+          '/users/' + firebaseUser.uid + '.jpg',
+        );
+      }
+
+      farmAppUser?.photoUrl = photoUrl;
+      farmAppUser?.displayName = nameEditC.text;
+      Address address = Address(
+        subAdminArea: distEditC.text,
+        addressLine: addressEditC.text,
+        postalCode: pinEditC.text,
+        adminArea: stateEditC.text,
+      );
+      farmAppUser?.address = address;
+      await Firestore.instance
+          .document('/users/' + firebaseUser.uid)
+          .setData(farmAppUser.toMap());
+
+      await firebaseUser.updateProfile(
+        UserUpdateInfo()
+          ..displayName = nameEditC.text
+          ..photoUrl = photoUrl,
+      );
+    }
+  }
+
   Widget actionButtons() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(25, 45, 25, 0),
-      child: Row(
+    if (!profileUpdated) {
+      return Container(
+        child: MyButton(
+          onPressedCallBack: () => setState(
+            () => editing = false,
+          ),
+          text: 'Proceed',
+          color: Colors.green,
+        ),
+      );
+    }
+    if (editing) {
+      return Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -519,18 +464,21 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           MyButton(
             text: 'Cancel',
             color: Colors.indigo,
-            onPressedCallBack: () => setState(() {
-              editing = false;
-              nameEditController.text = farmAppUser?.displayName;
-              mobileEditController.text = farmAppUser?.phoneNumber;
-              districtEditController.text = farmAppUser?.address?.subAdminArea;
-              addressEditController.text = farmAppUser?.address?.addressLine;
-              pincodeEditController.text = farmAppUser?.address?.postalCode;
-              stateEditController.text = farmAppUser?.address?.adminArea;
-            }),
+            onPressedCallBack: () => setState(
+              () {
+                editing = false;
+                nameEditC.text = farmAppUser?.displayName;
+                mobileEditC.text = farmAppUser?.phoneNumber;
+                distEditC.text = farmAppUser?.address?.subAdminArea;
+                addressEditC.text = farmAppUser?.address?.addressLine;
+                pinEditC.text = farmAppUser?.address?.postalCode;
+                stateEditC.text = farmAppUser?.address?.adminArea;
+              },
+            ),
           ),
         ],
-      ),
-    );
+      );
+    }
+    return Container(height: 20);
   }
 }

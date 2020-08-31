@@ -1,4 +1,5 @@
 import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/WrapperScreen.dart';
@@ -15,11 +16,23 @@ void main() {
   /* Uncomment following line to enable debug printing */
   // debugPrint = (String message, {int wrapWidth}) {};
 
-  // runApp(App());
   runApp(App());
 }
 
 class App extends StatelessWidget {
+  final Map<int, Color> swatch = {
+    050: Color.fromRGBO(0x14, 0x14, 0xFA, 0.1),
+    100: Color.fromRGBO(0x14, 0x14, 0xFA, 0.2),
+    200: Color.fromRGBO(0x14, 0x14, 0xFA, 0.3),
+    300: Color.fromRGBO(0x14, 0x14, 0xFA, 0.4),
+    400: Color.fromRGBO(0x14, 0x14, 0xFA, 0.5),
+    500: Color.fromRGBO(0x14, 0x14, 0xFA, 0.6),
+    600: Color.fromRGBO(0x14, 0x14, 0xFA, 0.7),
+    700: Color.fromRGBO(0x14, 0x14, 0xFA, 0.8),
+    800: Color.fromRGBO(0x14, 0x14, 0xFA, 0.9),
+    900: Color.fromRGBO(0x14, 0x14, 0xFA, 1.0),
+  };
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -34,18 +47,18 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: FARMAPP_NAME,
+        title: APP_NAME,
         theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          accentColor: Colors.indigoAccent,
+          primarySwatch: MaterialColor(APP_COLOR, swatch),
+          accentColor: Color(APP_COLOR_ACCENT),
         ),
         home: SplashScreen(
           seconds: 3,
           navigateAfterSeconds: FarmApp(),
-          image: Image.asset(FARMAPP_LOGO),
+          image: Image.asset(APP_LOGO),
           photoSize: 100.0,
           title: Text(
-            FARMAPP_NAME,
+            APP_NAME,
             style: TextStyle(
               fontSize: 40.0,
               color: Colors.indigo,
@@ -66,39 +79,25 @@ class FarmApp extends StatefulWidget {
 
 class _FarmAppState extends State<FarmApp> {
   String uid;
-  Future<FirebaseUser> u;
   bool profileUpdated;
 
-  getFirebaseUser() async {
-    u = FirebaseAuth.instance
-        .currentUser()
-        .then((u) => u)
-        .catchError((e) => debugPrint('Error getting firebase user.'));
-  }
-
   getLoggedinStatus() async {
-    SharedPrefData.getUid().then((value) {
-      setState(
-        () {
-          if (value == null) {
-            uid = "NOT_LOGGED_IN";
-          } else {
-            uid = value;
-          }
-        },
-      );
-    });
-    SharedPrefData.getProfileUpdated().then(
-      (value) {
-        setState(
-          () {
-            if (value == null || value == false) {
-              profileUpdated = false;
-            } else {
-              profileUpdated = true;
-            }
-          },
-        );
+    await SharedPrefData.initialize();
+    String _uid = SharedPrefData.getUid();
+    bool _profileUpdated = SharedPrefData.getProfileUpdated();
+    setState(
+      () {
+        if (_uid == null) {
+          uid = "NOT_LOGGED_IN";
+        } else {
+          uid = _uid;
+        }
+
+        if (_profileUpdated == null || _profileUpdated == false) {
+          profileUpdated = false;
+        } else {
+          profileUpdated = true;
+        }
       },
     );
   }
@@ -109,28 +108,19 @@ class _FarmAppState extends State<FarmApp> {
     super.initState();
   }
 
-  Widget showDialog(String msg) {
-    debugPrint(msg);
-    return Container(
-      child: Center(
-        child: Text(msg),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (uid == null) {
-      return showDialog('Loading Logged in status...');
+      return LoadingScreen('Loading Logged in status...');
     }
     if (uid == "NOT_LOGGED_IN") {
       return OTPLoginScreen();
     }
 
     if (profileUpdated == null) {
-      return showDialog('Loading profileUpdated...');
+      return LoadingScreen('Loading profileUpdated...');
     }
-    if (profileUpdated = false) {
+    if (profileUpdated == false) {
       return ProfileUpdateScreen(null);
     }
     return WrapperScreen();

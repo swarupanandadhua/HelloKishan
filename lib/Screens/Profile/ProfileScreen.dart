@@ -18,7 +18,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     u = Provider.of<FirebaseUser>(context, listen: false);
     assert(u != null);
-    photoUrl = DatabaseService().getPhotoUrl(u.photoUrl);
+    photoUrl = DatabaseService.getPhotoUrl(u.photoUrl);
     super.initState();
   }
 

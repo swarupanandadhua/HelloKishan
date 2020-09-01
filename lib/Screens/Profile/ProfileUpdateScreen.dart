@@ -4,11 +4,11 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
+import 'package:FarmApp/Screens/WrapperScreen.dart';
 import 'package:FarmApp/Services/AuthenticationService.dart';
 import 'package:FarmApp/Services/DatabaseService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
@@ -69,12 +69,12 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       firebaseUser = await AuthenticationService().getFirebaseUser();
     }
     if (farmAppUser == null) {
-      farmAppUser =
-          await DatabaseService().getCurrentFarmAppUser(firebaseUser.uid);
+      farmAppUser = await DatabaseService.getFarmAppUser(firebaseUser.uid);
     }
     setState(() {
       userLoaded = true;
       mobileEditC.text = firebaseUser.phoneNumber;
+      nameEditC.text = farmAppUser.displayName;
     });
   }
 
@@ -146,8 +146,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    nameEditC.text = farmAppUser?.displayName;
-
     if (userLoaded) {
       return Scaffold(
         appBar: AppBar(
@@ -410,12 +408,12 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     if (profileDetailsForm.currentState.validate()) {
       String photoUrl;
       if (imageChosen) {
-        photoUrl = await DatabaseService().uploadPhoto(
+        photoUrl = await DatabaseService.uploadPhoto(
           chosenImage,
-          '/users/' + firebaseUser.uid + '.jpg',
+          USERS + firebaseUser.uid + '.jpg',
         );
+        debugPrint('PHOTOURL: ' + photoUrl.toString());
       }
-
       farmAppUser?.photoUrl = photoUrl;
       farmAppUser?.displayName = nameEditC.text;
       Address address = Address(
@@ -425,14 +423,22 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         adminArea: stateEditC.text,
       );
       farmAppUser?.address = address;
-      await Firestore.instance
-          .document('/users/' + firebaseUser.uid)
-          .setData(farmAppUser.toMap());
-
+      await DatabaseService.setFarmAppUser(farmAppUser);
+      debugPrint('FARMAPPUSER UPDATED');
       await firebaseUser.updateProfile(
         UserUpdateInfo()
           ..displayName = nameEditC.text
           ..photoUrl = photoUrl,
+      );
+      debugPrint('FIREBASEUSER UPDATED');
+      SharedPrefData.setProfileUpdated();
+      Navigator.pop(context);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => WrapperScreen(),
+        ),
+        (route) => false,
       );
     }
   }

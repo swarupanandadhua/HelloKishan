@@ -28,7 +28,7 @@ class SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    requirementsFuture = DatabaseService().fetchRequirements(product);
+    requirementsFuture = DatabaseService.fetchRequirements(product);
   }
 
   @override

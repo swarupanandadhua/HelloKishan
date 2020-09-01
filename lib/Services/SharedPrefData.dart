@@ -23,6 +23,10 @@ class SharedPrefData {
     return pref.getBool('profileUpdated');
   }
 
+  static void setProfileUpdated() {
+    pref.setBool('profileUpdated', true);
+  }
+
   static void setString(String key, String value) {
     pref.setString(key, value);
   }

@@ -159,7 +159,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save();
       submitDialog.show();
-      await DatabaseService().initTransaction(transaction);
+      await DatabaseService.initTransaction(transaction);
       submitDialog.hide();
       Navigator.pop(context);
     }

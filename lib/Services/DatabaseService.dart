@@ -8,13 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class DatabaseService {
-  Future<FarmApp.FarmAppUser> getCurrentFarmAppUser(String uid) async {
+  static Future<FarmApp.FarmAppUser> getFarmAppUser(String uid) async {
     FarmApp.FarmAppUser farmAppUser;
-    await Firestore.instance
-        .collection(FIRESTORE_USER_DB)
-        .document(uid)
-        .get()
-        .then(
+    await Firestore.instance.collection(USERS).document(uid).get().then(
       (snap) {
         farmAppUser = FarmApp.FarmAppUser(
           snap.data['uid'],
@@ -29,29 +25,35 @@ class DatabaseService {
     return farmAppUser;
   }
 
-  Future<void> deleteRequirement(String rid) async {
+  static Future<void> setFarmAppUser(FarmApp.FarmAppUser user) async {
+    await Firestore.instance
+        .collection(USERS)
+        .document(user.uid)
+        .setData(user.toMap());
+  }
+
+  static Future<void> deleteRequirement(String rid) async {
     try {
-      await Firestore.instance
-          .document('/' + FIRESTORE_REQUIREMENT_DB + '/' + rid)
-          .delete();
+      await Firestore.instance.collection(REQUIREMENTS).document(rid).delete();
     } catch (e) {
       debugPrint(e);
     }
   }
 
-  Future<void> uploadTransaction(FarmApp.Transaction t) async {
+  static Future<void> uploadTransaction(FarmApp.Transaction t) async {
     Map<String, dynamic> doc = t.toMap();
 
     try {
       await Firestore.instance
-          .document('/' + FIRESTORE_TRANSACTION_DB + '/' + t.tid)
+          .collection(TRANSACTIONS)
+          .document(t.tid)
           .setData(doc);
     } catch (e) {
       debugPrint(e);
     }
   }
 
-  Stream<List<FarmApp.Requirement>> fetchRequirementsByLocation(
+  static Stream<List<FarmApp.Requirement>> fetchRequirementsByLocation(
       String db, double lat, double long, double rad, String product) {
     CollectionReference ref = Firestore.instance.collection(db);
     Geoflutterfire geo = Geoflutterfire();
@@ -85,11 +87,12 @@ class DatabaseService {
     return null;
   }
 
-  Future<List<FarmApp.Requirement>> fetchRequirements(String product) async {
+  static Future<List<FarmApp.Requirement>> fetchRequirements(
+      String prod) async {
     List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
     await Firestore.instance
-        .collection(FIRESTORE_REQUIREMENT_DB)
-        .where('product', isEqualTo: product)
+        .collection(REQUIREMENTS)
+        .where('product', isEqualTo: prod)
         .getDocuments()
         .then(
       (snapshot) {
@@ -106,10 +109,10 @@ class DatabaseService {
     return requirements;
   }
 
-  Future<List<FarmApp.Transaction>> fetchTransactions() async {
+  static Future<List<FarmApp.Transaction>> fetchTransactions() async {
     List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
     await Firestore.instance
-        .collection(FIRESTORE_TRANSACTION_DB)
+        .collection(TRANSACTIONS)
         .getDocuments()
         .then((snapshot) {
       snapshot.documents.forEach((doc) {
@@ -123,9 +126,9 @@ class DatabaseService {
     return transactions;
   }
 
-  Future<bool> uploadRequirement(FarmApp.Requirement r) async {
+  static Future<bool> uploadRequirement(FarmApp.Requirement r) async {
     await Firestore.instance
-        .collection(FIRESTORE_REQUIREMENT_DB)
+        .collection(REQUIREMENTS)
         .add(r.toMap())
         .then((doc) {
       return true;
@@ -133,11 +136,8 @@ class DatabaseService {
     return false;
   }
 
-  Future<bool> initTransaction(FarmApp.Transaction t) async {
-    await Firestore.instance
-        .collection(FIRESTORE_TRANSACTION_DB)
-        .add(t.toMap())
-        .then(
+  static Future<bool> initTransaction(FarmApp.Transaction t) async {
+    await Firestore.instance.collection(TRANSACTIONS).add(t.toMap()).then(
       (doc) {
         return true;
       },
@@ -145,11 +145,11 @@ class DatabaseService {
     return false;
   }
 
-  Future<String> getPhotoUrl(String path) async {
+  static Future<String> getPhotoUrl(String path) async {
     return await FirebaseStorage.instance.ref().child(path).getDownloadURL();
   }
 
-  Future<String> uploadPhoto(File image, String destination) async {
+  static Future<String> uploadPhoto(File image, String destination) async {
     StorageReference ref = FirebaseStorage.instance.ref();
     StorageUploadTask uploadtask = ref.child(destination).putFile(image);
     String downloadUrl;
@@ -157,5 +157,19 @@ class DatabaseService {
       (snap) async => downloadUrl = await snap.ref.getDownloadURL(),
     );
     return downloadUrl;
+  }
+
+  static void saveFCMToken(String uid, String fcmToken) async {
+    Map<String, String> data = Map<String, String>();
+    data['token'] = fcmToken;
+    await Firestore.instance
+        .collection(TOKENS)
+        .document(uid)
+        .setData(data)
+        .then(
+      (doc) {
+        return true;
+      },
+    );
   }
 }

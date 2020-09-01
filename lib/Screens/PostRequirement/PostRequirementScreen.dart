@@ -166,7 +166,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save();
       submitDialog.show();
-      await DatabaseService().uploadRequirement(requirement);
+      await DatabaseService.uploadRequirement(requirement);
       submitDialog.hide();
       Navigator.pop(context);
     }

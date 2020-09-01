@@ -1,4 +1,3 @@
-import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/History/HistoryScreen.dart';
 import 'package:FarmApp/Screens/PostRequirement/PostRequirementScreen.dart';
@@ -6,8 +5,8 @@ import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
+import 'package:FarmApp/Services/DatabaseService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -61,18 +60,7 @@ class _WrapperScreenState extends State<WrapperScreen>
 
       SharedPrefData.setString('fcmToken', fcmToken);
       String uid = SharedPrefData.getUid();
-
-      Map<String, String> data = Map<String, String>();
-      data['token'] = fcmToken;
-      await Firestore.instance
-          .collection(FIRESTORE_TOKEN_DB)
-          .document(uid)
-          .setData(data)
-          .then(
-        (doc) {
-          return true;
-        },
-      );
+      DatabaseService.saveFCMToken(uid, fcmToken);
     }
   }
 

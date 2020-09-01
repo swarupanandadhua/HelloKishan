@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
-class DatabaseService {
+class DBService {
   static Future<FarmApp.FarmAppUser> getFarmAppUser(String uid) async {
     FarmApp.FarmAppUser farmAppUser;
     await Firestore.instance.collection(USERS).document(uid).get().then(

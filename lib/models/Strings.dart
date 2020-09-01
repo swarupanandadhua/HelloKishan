@@ -1,0 +1,10 @@
+const String STRING_APP_NAME = 'FarmApp';
+const String STRING_ENTER_OTP = 'Enter the OTP';
+const String STRING_ENTER_QUANTITY = 'Enter quantity (in kg)';
+const String STRING_FEEDBACK = 'Feedback';
+const String STRING_HELP = 'Help';
+const String STRING_KYC = 'KYC';
+const String STRING_OTP_MUST_6_DIGITS = 'OTP must be 6 digits';
+const String STRING_SETTINGS = 'Settings';
+const String STRING_SIGN_OUT = 'Sign Out';
+const String STRING_WELCOME_USER = 'Welcome User';

@@ -1,6 +1,6 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
-import 'package:FarmApp/Services/DatabaseService.dart';
+import 'package:FarmApp/Services/DBService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -166,7 +166,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save();
       submitDialog.show();
-      await DatabaseService.uploadRequirement(requirement);
+      await DBService.uploadRequirement(requirement);
       submitDialog.hide();
       Navigator.pop(context);
     }

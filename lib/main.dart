@@ -1,9 +1,10 @@
 import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/WrapperScreen.dart';
-import 'package:FarmApp/Services/AuthenticationService.dart';
+import 'package:FarmApp/Services/AuthService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,27 +13,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-void main() {
-  /* Uncomment following line to enable debug printing */
-  // debugPrint = (String message, {int wrapWidth}) {};
+final bool release = false;
 
+void main() {
+  if (release) {
+    debugPrint = (String message, {int wrapWidth}) {};
+  }
   runApp(App());
 }
 
 class App extends StatelessWidget {
-  final Map<int, Color> swatch = {
-    050: Color.fromRGBO(0x14, 0x14, 0xFA, 0.1),
-    100: Color.fromRGBO(0x14, 0x14, 0xFA, 0.2),
-    200: Color.fromRGBO(0x14, 0x14, 0xFA, 0.3),
-    300: Color.fromRGBO(0x14, 0x14, 0xFA, 0.4),
-    400: Color.fromRGBO(0x14, 0x14, 0xFA, 0.5),
-    500: Color.fromRGBO(0x14, 0x14, 0xFA, 0.6),
-    600: Color.fromRGBO(0x14, 0x14, 0xFA, 0.7),
-    700: Color.fromRGBO(0x14, 0x14, 0xFA, 0.8),
-    800: Color.fromRGBO(0x14, 0x14, 0xFA, 0.9),
-    900: Color.fromRGBO(0x14, 0x14, 0xFA, 1.0),
-  };
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -42,14 +32,14 @@ class App extends StatelessWidget {
         ),
         StreamProvider<FirebaseUser>(
           /* TODO 1 (BUG): Provider provides null when accessed first time. */
-          create: (_) => AuthenticationService().user,
+          create: (_) => AuthService().user,
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: APP_NAME,
+        title: STRING_APP_NAME,
         theme: ThemeData(
-          primarySwatch: MaterialColor(APP_COLOR, swatch),
+          primarySwatch: MaterialColor(APP_COLOR, APP_SWATCH),
           accentColor: Color(APP_COLOR_ACCENT),
         ),
         home: SplashScreen(
@@ -58,14 +48,15 @@ class App extends StatelessWidget {
           image: Image.asset(APP_LOGO),
           photoSize: 100.0,
           title: Text(
-            APP_NAME,
+            STRING_APP_NAME,
             style: TextStyle(
               fontSize: 40.0,
-              color: Colors.indigo,
+              color: Color(APP_COLOR),
               fontWeight: FontWeight.bold,
               fontFamily: 'Agne',
             ),
           ),
+          loaderColor: Color(APP_COLOR),
         ),
       ),
     );
@@ -83,21 +74,10 @@ class _FarmAppState extends State<FarmApp> {
 
   getLoggedinStatus() async {
     await SharedPrefData.initialize();
-    String _uid = SharedPrefData.getUid();
-    bool _profileUpdated = SharedPrefData.getProfileUpdated();
     setState(
       () {
-        if (_uid == null) {
-          uid = "NOT_LOGGED_IN";
-        } else {
-          uid = _uid;
-        }
-
-        if (_profileUpdated == null || _profileUpdated == false) {
-          profileUpdated = false;
-        } else {
-          profileUpdated = true;
-        }
+        uid = SharedPrefData.getUid() ?? 'NOT_LOGGED_IN';
+        profileUpdated = SharedPrefData.getProfileUpdated() ?? false;
       },
     );
   }
@@ -113,7 +93,7 @@ class _FarmAppState extends State<FarmApp> {
     if (uid == null) {
       return LoadingScreen('Loading Logged in status...');
     }
-    if (uid == "NOT_LOGGED_IN") {
+    if (uid == 'NOT_LOGGED_IN') {
       return OTPLoginScreen();
     }
 
@@ -121,7 +101,7 @@ class _FarmAppState extends State<FarmApp> {
       return LoadingScreen('Loading profileUpdated...');
     }
     if (profileUpdated == false) {
-      return ProfileUpdateScreen(null);
+      return ProfileUpdateScreen();
     }
     return WrapperScreen();
   }

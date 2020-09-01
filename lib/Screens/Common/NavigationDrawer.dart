@@ -1,6 +1,7 @@
 import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
-import 'package:FarmApp/Services/AuthenticationService.dart';
+import 'package:FarmApp/Services/AuthService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -19,40 +20,46 @@ class NavigationDrawer extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () => debugPrint(StackTrace.current.toString()),
+              // TODO: Show Profile Picture as well
               child: Container(
                 height: 120,
                 child: DrawerHeader(
-                  child: Text(
-                    u?.displayName ?? 'Welcome User',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
+                  child: Column(
+                    children: [
+                      Text(
+                        u?.displayName ?? STRING_WELCOME_USER,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
-                  decoration: BoxDecoration(color: Colors.indigo),
+                  decoration: BoxDecoration(color: Color(APP_COLOR)),
                 ),
               ),
             ),
+            // TODO: Add leading Icons to the followgs...
             ListTile(
-              title: Text('KYC'),
+              title: Text(STRING_KYC),
               onTap: () => debugPrint(StackTrace.current.toString()),
             ),
             ListTile(
-              title: Text('Help'),
-              onTap: () => UrlLauncher.launch(HELP_MAIL_LAUNCH_ARG),
+              title: Text(STRING_HELP),
+              onTap: () => UrlLauncher.launch(HELP_MAIL_ARG),
             ),
             ListTile(
-              title: Text('Settings'),
+              title: Text(STRING_SETTINGS),
               onTap: () => debugPrint(StackTrace.current.toString()),
             ),
             ListTile(
-              title: Text('Feedback'),
+              title: Text(STRING_FEEDBACK),
               onTap: () => debugPrint(StackTrace.current.toString()),
             ),
             ListTile(
-              title: Text('Sign Out'),
+              title: Text(STRING_SIGN_OUT),
               onTap: () async {
-                await AuthenticationService().signOut();
+                await AuthService().signOut();
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

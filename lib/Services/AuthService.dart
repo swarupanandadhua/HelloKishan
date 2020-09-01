@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class AuthenticationService {
+class AuthService {
   Stream<FirebaseUser> get user {
     return FirebaseAuth.instance.onAuthStateChanged;
   }
@@ -63,7 +64,7 @@ class AuthenticationService {
         Navigator.pushAndRemoveUntil(
           ctx,
           MaterialPageRoute(
-            builder: (ctx) => ProfileUpdateScreen(u),
+            builder: (ctx) => ProfileUpdateScreen(),
           ),
           (route) => false,
         );
@@ -94,12 +95,18 @@ class AuthenticationService {
           barrierDismissible: false,
           builder: (ctx) => AlertDialog(
             title: Text('Enter the OTP'),
-            content: TextField(
+            content: TextFormField(
               controller: tc,
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d{0,6}')),
               ],
+              decoration: InputDecoration(
+                hintText: STRING_ENTER_OTP,
+                labelText: STRING_ENTER_OTP,
+              ),
+              validator: (v) =>
+                  (v?.length == 6) ? null : STRING_OTP_MUST_6_DIGITS,
             ),
             actions: [
               FlatButton(

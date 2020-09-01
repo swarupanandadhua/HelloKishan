@@ -1,6 +1,20 @@
-const String APP_NAME = 'FarmApp';
+import 'package:flutter/material.dart';
+
 const int APP_COLOR = 0xFF1414FA;
 const int APP_COLOR_ACCENT = 0xFF1414FA;
+
+const Map<int, Color> APP_SWATCH = {
+  050: Color.fromRGBO(0x14, 0x14, 0xFA, 0.1),
+  100: Color.fromRGBO(0x14, 0x14, 0xFA, 0.2),
+  200: Color.fromRGBO(0x14, 0x14, 0xFA, 0.3),
+  300: Color.fromRGBO(0x14, 0x14, 0xFA, 0.4),
+  400: Color.fromRGBO(0x14, 0x14, 0xFA, 0.5),
+  500: Color.fromRGBO(0x14, 0x14, 0xFA, 0.6),
+  600: Color.fromRGBO(0x14, 0x14, 0xFA, 0.7),
+  700: Color.fromRGBO(0x14, 0x14, 0xFA, 0.8),
+  800: Color.fromRGBO(0x14, 0x14, 0xFA, 0.9),
+  900: Color.fromRGBO(0x14, 0x14, 0xFA, 1.0),
+};
 
 const String APP_LOGO = 'assets/images/app_logo.png';
 const String LOADING_GIF = 'assets/images/loading.gif';
@@ -12,9 +26,10 @@ const String TRANSACTIONS = 'transactions';
 const String TOKENS = 'tokens';
 const String USERS = 'users';
 
-const String HELP_MAIL_LAUNCH_ARG = '''mailto:swarupanandadhua@gmail.com
-                                      ?subject=FarmApp%20Help
-                                      &body=Please%20type%20your%20query%20here...''';
+const String HELP_EMAIL = 'swarupanandadhua@gmail.com';
+const String HELP_SUB = 'subject=FarmApp%20Help';
+const String HELP_BODY = 'body=Please%20type%20your%20query%20here...';
+const String HELP_MAIL_ARG = 'mailto:$HELP_EMAIL?$HELP_SUB&$HELP_BODY';
 
 const List<String> PRODUCT_NAMES = [
   'আদা (Ginger)',

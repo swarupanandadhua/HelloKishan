@@ -1,6 +1,6 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Screens/History/HistoryTile.dart';
-import 'package:FarmApp/Services/DatabaseService.dart';
+import 'package:FarmApp/Services/DBService.dart';
 import 'package:flutter/material.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     super.initState();
-    transactions = DatabaseService.fetchTransactions();
+    transactions = DBService.fetchTransactions();
   }
 
   @override

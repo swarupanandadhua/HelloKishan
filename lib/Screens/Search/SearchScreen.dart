@@ -1,6 +1,6 @@
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
-import 'package:FarmApp/Services/DatabaseService.dart';
+import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:universal_html/html.dart' as HTML;
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    requirementsFuture = DatabaseService.fetchRequirements(product);
+    requirementsFuture = DBService.fetchRequirements(product);
   }
 
   @override

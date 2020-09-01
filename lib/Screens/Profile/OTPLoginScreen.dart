@@ -1,5 +1,5 @@
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Services/AuthenticationService.dart';
+import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Services/AuthService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(APP_NAME),
+        title: Text(STRING_APP_NAME),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -83,7 +83,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     if (this.otpLoginFormKey.currentState.validate()) {
       otpLoginFormKey.currentState.save();
 
-      AuthenticationService().verifyPhoneNumber(this.mobile, context);
+      AuthService().verifyPhoneNumber(this.mobile, context);
     }
   }
 }

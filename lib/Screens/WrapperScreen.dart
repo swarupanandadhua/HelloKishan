@@ -1,11 +1,12 @@
+import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/History/HistoryScreen.dart';
-import 'package:FarmApp/Screens/PostRequirement/PostRequirementScreen.dart';
+import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
-import 'package:FarmApp/Services/DatabaseService.dart';
+import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -20,7 +21,7 @@ class _WrapperScreenState extends State<WrapperScreen>
     with SingleTickerProviderStateMixin {
   static List<Widget> _tabs = <Widget>[
     HomeScreen(),
-    ProfileUpdateScreen(null),
+    ProfileUpdateScreen(), // TODO: Modify in-app profile screen
     TradeScreen(),
     HistoryScreen(),
   ];
@@ -60,7 +61,7 @@ class _WrapperScreenState extends State<WrapperScreen>
 
       SharedPrefData.setString('fcmToken', fcmToken);
       String uid = SharedPrefData.getUid();
-      DatabaseService.saveFCMToken(uid, fcmToken);
+      DBService.saveFCMToken(uid, fcmToken);
     }
   }
 
@@ -99,7 +100,7 @@ class _WrapperScreenState extends State<WrapperScreen>
       floatingActionButton: FloatingActionButton(
         elevation: 16,
         child: Icon(Icons.add),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Color(APP_COLOR),
         onPressed: () {
           Navigator.push(
             context,
@@ -108,12 +109,12 @@ class _WrapperScreenState extends State<WrapperScreen>
         },
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.indigo,
+        color: Color(APP_COLOR),
         height: 50,
         backgroundColor: Colors.white,
         animationCurve: Curves.ease,
         animationDuration: Duration(seconds: 1),
-        buttonBackgroundColor: Colors.indigo,
+        buttonBackgroundColor: Color(APP_COLOR),
         items: _icons,
         onTap: (index) {
           setState(() {

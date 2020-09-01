@@ -5,8 +5,8 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
 import 'package:FarmApp/Screens/WrapperScreen.dart';
-import 'package:FarmApp/Services/AuthenticationService.dart';
-import 'package:FarmApp/Services/DatabaseService.dart';
+import 'package:FarmApp/Services/AuthService.dart';
+import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,15 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class ProfileUpdateScreen extends StatefulWidget {
-  final FirebaseUser firebaseUser;
-
-  ProfileUpdateScreen(this.firebaseUser);
-
   @override
-  ProfileUpdateScreenState createState() =>
-      ProfileUpdateScreenState(firebaseUser);
+  ProfileUpdateScreenState createState() => ProfileUpdateScreenState();
 }
 
 class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
@@ -33,6 +29,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   final TextEditingController addressEditC = TextEditingController();
   final TextEditingController pinEditC = TextEditingController();
   final TextEditingController stateEditC = TextEditingController();
+
   final TextStyle h1Style = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
@@ -42,37 +39,35 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
+
   FirebaseUser firebaseUser;
   FarmAppUser farmAppUser;
+
   File chosenImage;
   final Image accountLogo = Image.asset(ACCOUNT_PNG);
   Image oldImage;
+
   bool imageChosen = false;
   bool userLoaded = false;
   bool profileUpdated;
   bool editing;
 
-  ProfileUpdateScreenState(this.firebaseUser);
-
   @override
   void initState() {
     loadUser();
-
-    profileUpdated = SharedPrefData.getProfileUpdated();
-    if (profileUpdated == null) profileUpdated = false;
+    profileUpdated = SharedPrefData.getProfileUpdated() ?? false;
     editing = !profileUpdated;
+
     super.initState();
   }
 
   void loadUser() async {
-    if (firebaseUser == null) {
-      firebaseUser = await AuthenticationService().getFirebaseUser();
-    }
-    if (farmAppUser == null) {
-      farmAppUser = await DatabaseService.getFarmAppUser(firebaseUser.uid);
-    }
+    firebaseUser = firebaseUser ?? await AuthService().getFirebaseUser();
+    farmAppUser =
+        farmAppUser ?? await DBService.getFarmAppUser(firebaseUser.uid);
+
     setState(() {
-      userLoaded = true;
+      userLoaded = true; // TODO: Bug...memory leak...
       mobileEditC.text = firebaseUser.phoneNumber;
       nameEditC.text = farmAppUser.displayName;
     });
@@ -144,6 +139,51 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     );
   }
 
+  Widget actionButtons() {
+    if (!profileUpdated) {
+      return Container(
+        child: MyButton(
+          onPressedCallBack: () => setState(
+            () => editing = false,
+          ),
+          text: 'Proceed',
+          color: Colors.green,
+        ),
+      );
+    }
+    if (editing) {
+      return Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          MyButton(
+            onPressedCallBack: () => setState(
+              () => editing = false,
+            ),
+            text: 'Save',
+            color: Colors.green,
+          ),
+          MyButton(
+            text: 'Cancel',
+            color: Color(APP_COLOR),
+            onPressedCallBack: () => setState(
+              () {
+                editing = false;
+                nameEditC.text = farmAppUser?.displayName;
+                mobileEditC.text = farmAppUser?.phoneNumber;
+                distEditC.text = farmAppUser?.address?.subAdminArea;
+                addressEditC.text = farmAppUser?.address?.addressLine;
+                pinEditC.text = farmAppUser?.address?.postalCode;
+                stateEditC.text = farmAppUser?.address?.adminArea;
+              },
+            ),
+          ),
+        ],
+      );
+    }
+    return Container(height: 20);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (userLoaded) {
@@ -208,6 +248,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         controller: nameEditC,
                         decoration: const InputDecoration(
                           hintText: 'Enter your name',
+                          labelText: 'Enter your name',
                         ),
                         enabled: editing,
                         validator: (val) {
@@ -234,6 +275,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         controller: mobileEditC,
                         decoration: const InputDecoration(
                           hintText: 'Enter Mobile Number',
+                          labelText: 'Enter Mobile Number',
                         ),
                         enabled: false,
                       ),
@@ -275,6 +317,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         controller: addressEditC,
                         decoration: const InputDecoration(
                           hintText: 'House Name, Street, Locality',
+                          labelText: 'House Name, Street, Locality',
                         ),
                         enabled: editing,
                       ),
@@ -293,6 +336,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         controller: distEditC,
                         decoration: const InputDecoration(
                           hintText: 'Enter your district',
+                          labelText: 'Enter your district',
                         ),
                         enabled: editing,
                       ),
@@ -311,6 +355,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         controller: pinEditC,
                         decoration: const InputDecoration(
                           hintText: 'Enter Pin Code',
+                          labelText: 'Enter Pin Code',
                         ),
                         enabled: editing,
                       ),
@@ -329,6 +374,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         controller: stateEditC,
                         decoration: const InputDecoration(
                           hintText: 'Enter State',
+                          labelText: 'Enter State',
                         ),
                         enabled: editing,
                       ),
@@ -406,9 +452,17 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   void saveProfileDetails() async {
     if (profileDetailsForm.currentState.validate()) {
+      ProgressDialog pd = ProgressDialog(
+        context,
+        type: ProgressDialogType.Normal,
+        isDismissible: false,
+      );
+      pd.update(message: 'Please Wait...');
+      pd.show();
       String photoUrl;
       if (imageChosen) {
-        photoUrl = await DatabaseService.uploadPhoto(
+        pd.update(message: 'Uploading Profile Picture...');
+        photoUrl = await DBService.uploadPhoto(
           chosenImage,
           USERS + firebaseUser.uid + '.jpg',
         );
@@ -423,7 +477,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         adminArea: stateEditC.text,
       );
       farmAppUser?.address = address;
-      await DatabaseService.setFarmAppUser(farmAppUser);
+      pd.update(message: 'Updating Profile Information...');
+      await DBService.setFarmAppUser(farmAppUser);
       debugPrint('FARMAPPUSER UPDATED');
       await firebaseUser.updateProfile(
         UserUpdateInfo()
@@ -432,6 +487,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       );
       debugPrint('FIREBASEUSER UPDATED');
       SharedPrefData.setProfileUpdated();
+      pd.hide();
       Navigator.pop(context);
       Navigator.pushAndRemoveUntil(
         context,
@@ -441,50 +497,5 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         (route) => false,
       );
     }
-  }
-
-  Widget actionButtons() {
-    if (!profileUpdated) {
-      return Container(
-        child: MyButton(
-          onPressedCallBack: () => setState(
-            () => editing = false,
-          ),
-          text: 'Proceed',
-          color: Colors.green,
-        ),
-      );
-    }
-    if (editing) {
-      return Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          MyButton(
-            onPressedCallBack: () => setState(
-              () => editing = false,
-            ),
-            text: 'Save',
-            color: Colors.green,
-          ),
-          MyButton(
-            text: 'Cancel',
-            color: Colors.indigo,
-            onPressedCallBack: () => setState(
-              () {
-                editing = false;
-                nameEditC.text = farmAppUser?.displayName;
-                mobileEditC.text = farmAppUser?.phoneNumber;
-                distEditC.text = farmAppUser?.address?.subAdminArea;
-                addressEditC.text = farmAppUser?.address?.addressLine;
-                pinEditC.text = farmAppUser?.address?.postalCode;
-                stateEditC.text = farmAppUser?.address?.adminArea;
-              },
-            ),
-          ),
-        ],
-      );
-    }
-    return Container(height: 20);
   }
 }

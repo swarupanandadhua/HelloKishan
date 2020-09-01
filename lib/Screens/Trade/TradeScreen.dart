@@ -1,6 +1,6 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Screens/Trade/TradeTile.dart';
-import 'package:FarmApp/Services/DatabaseService.dart';
+import 'package:FarmApp/Services/DBService.dart';
 import 'package:flutter/material.dart';
 
 class TradeScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class TradeScreenState extends State<TradeScreen> {
   @override
   void initState() {
     super.initState();
-    transactions = DatabaseService.fetchTransactions();
+    transactions = DBService.fetchTransactions();
   }
 
   @override

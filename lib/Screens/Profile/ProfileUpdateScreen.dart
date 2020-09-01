@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
 import 'package:FarmApp/Screens/WrapperScreen.dart';
@@ -16,7 +16,42 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+class ProfileUpdateScaffold extends StatelessWidget {
+  final GlobalKey<ProfileUpdateScreenState> profileUpdateScreenState =
+      GlobalKey<ProfileUpdateScreenState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(STRING_PROFILE_UPDATE),
+      ),
+      bottomSheet: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          color: Color(APP_COLOR),
+          child: Text(
+            STRING_PROCEED,
+            style: TextStyle(
+              color: Color(0xFFFFFFFF),
+              fontSize: 20,
+            ),
+          ),
+          onPressed: profileUpdateScreenState.currentState.saveProfileDetails,
+        ),
+      ),
+      body: ProfileUpdateScreen(
+        key: profileUpdateScreenState,
+        editing: true,
+      ),
+    );
+  }
+}
+
 class ProfileUpdateScreen extends StatefulWidget {
+  ProfileUpdateScreen({Key key, bool editing = false}) : super(key: key);
+
   @override
   ProfileUpdateScreenState createState() => ProfileUpdateScreenState();
 }
@@ -49,15 +84,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   bool imageChosen = false;
   bool userLoaded = false;
-  bool profileUpdated;
   bool editing;
 
   @override
   void initState() {
     loadUser();
-    profileUpdated = SharedPrefData.getProfileUpdated() ?? false;
-    editing = !profileUpdated;
-
     super.initState();
   }
 
@@ -140,31 +171,21 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   Widget actionButtons() {
-    if (!profileUpdated) {
-      return Container(
-        child: MyButton(
-          onPressedCallBack: () => setState(
-            () => editing = false,
-          ),
-          text: 'Proceed',
-          color: Colors.green,
-        ),
-      );
-    }
     if (editing) {
       return Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           MyButton(
-            onPressedCallBack: () => setState(
-              () => editing = false,
-            ),
-            text: 'Save',
+            onPressedCallBack: () {
+              setState(() => editing = false);
+              saveProfileDetails();
+            },
+            text: STRING_SAVE,
             color: Colors.green,
           ),
           MyButton(
-            text: 'Cancel',
+            text: STRING_CANCEL,
             color: Color(APP_COLOR),
             onPressedCallBack: () => setState(
               () {
@@ -187,207 +208,187 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   @override
   Widget build(BuildContext context) {
     if (userLoaded) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Profile Update'),
-        ),
-        bottomSheet: Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          child: RaisedButton(
-            color: Color(APP_COLOR),
-            child: Text(
-              'CONTINUE',
-              style: TextStyle(
-                color: Color(0xFFFFFFFF),
-                fontSize: 20,
+      return Form(
+        key: profileDetailsForm,
+        child: ListView(
+          children: <Widget>[
+            getDPWidget(),
+            Card(
+              elevation: 4,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Personal Information', style: h1Style),
+                        editing
+                            ? Container()
+                            : MyIcon(
+                                onTapCallBack: () => setState(
+                                  () => editing = true,
+                                ),
+                                radius: 20,
+                                iconData: Icons.edit,
+                              ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Name', style: h2Style),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                    child: TextFormField(
+                      controller: nameEditC,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your name',
+                        labelText: 'Enter your name',
+                      ),
+                      enabled: editing,
+                      validator: (val) {
+                        if (RegExp('[a-zA-Z ]?').hasMatch(val) &&
+                            val.length > 4) {
+                          return null;
+                        } else {
+                          return 'Enter a valid name';
+                        }
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                    child: Row(
+                      children: [
+                        Text('Mobile', style: h2Style),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                    child: TextFormField(
+                      controller: mobileEditC,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Mobile Number',
+                        labelText: 'Enter Mobile Number',
+                      ),
+                      enabled: false,
+                    ),
+                  ),
+                ],
               ),
             ),
-            onPressed: this.saveProfileDetails,
-          ),
-        ),
-        body: Form(
-          key: profileDetailsForm,
-          child: ListView(
-            children: <Widget>[
-              getDPWidget(),
-              Card(
-                elevation: 4,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('Personal Information', style: h1Style),
-                          editing
-                              ? Container()
-                              : MyIcon(
-                                  onTapCallBack: () => setState(
-                                    () => editing = true,
-                                  ),
-                                  radius: 20,
-                                  iconData: Icons.edit,
-                                ),
-                        ],
-                      ),
+            Card(
+              elevation: 4,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Address Information', style: h1Style),
+                        editing
+                            ? MyIcon(
+                                onTapCallBack: () => getCurrentAddress(),
+                                radius: 20,
+                                iconData: Icons.my_location,
+                              )
+                            : Container(),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('Name', style: h2Style),
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                    child: Row(
+                      children: [
+                        Text('Address', style: h2Style),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                      child: TextFormField(
-                        controller: nameEditC,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your name',
-                          labelText: 'Enter your name',
-                        ),
-                        enabled: editing,
-                        validator: (val) {
-                          if (RegExp('[a-zA-Z ]?').hasMatch(val) &&
-                              val.length > 4) {
-                            return null;
-                          } else {
-                            return 'Enter a valid name';
-                          }
-                        },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                    child: TextFormField(
+                      controller: addressEditC,
+                      decoration: const InputDecoration(
+                        hintText: 'House Name, Street, Locality',
+                        labelText: 'House Name, Street, Locality',
                       ),
+                      enabled: editing,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                      child: Row(
-                        children: [
-                          Text('Mobile', style: h2Style),
-                        ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                    child: Row(
+                      children: [
+                        Text('District', style: h2Style),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                    child: TextFormField(
+                      controller: distEditC,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your district',
+                        labelText: 'Enter your district',
                       ),
+                      enabled: editing,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                      child: TextFormField(
-                        controller: mobileEditC,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter Mobile Number',
-                          labelText: 'Enter Mobile Number',
-                        ),
-                        enabled: false,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                    child: Row(
+                      children: [
+                        Text('Pin Code', style: h2Style),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                    child: TextFormField(
+                      controller: pinEditC,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Pin Code',
+                        labelText: 'Enter Pin Code',
                       ),
+                      enabled: editing,
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                    child: Row(
+                      children: [
+                        Text('State', style: h2Style),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                    child: TextFormField(
+                      controller: stateEditC,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter State',
+                        labelText: 'Enter State',
+                      ),
+                      enabled: editing,
+                    ),
+                  ),
+                ],
               ),
-              Card(
-                elevation: 4,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('Address Information', style: h1Style),
-                          editing
-                              ? MyIcon(
-                                  onTapCallBack: () => getCurrentAddress(),
-                                  radius: 20,
-                                  iconData: Icons.my_location,
-                                )
-                              : Container(),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                      child: Row(
-                        children: [
-                          Text('Address', style: h2Style),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                      child: TextFormField(
-                        controller: addressEditC,
-                        decoration: const InputDecoration(
-                          hintText: 'House Name, Street, Locality',
-                          labelText: 'House Name, Street, Locality',
-                        ),
-                        enabled: editing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                      child: Row(
-                        children: [
-                          Text('District', style: h2Style),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                      child: TextFormField(
-                        controller: distEditC,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your district',
-                          labelText: 'Enter your district',
-                        ),
-                        enabled: editing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                      child: Row(
-                        children: [
-                          Text('Pin Code', style: h2Style),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                      child: TextFormField(
-                        controller: pinEditC,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter Pin Code',
-                          labelText: 'Enter Pin Code',
-                        ),
-                        enabled: editing,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                      child: Row(
-                        children: [
-                          Text('State', style: h2Style),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                      child: TextFormField(
-                        controller: stateEditC,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter State',
-                          labelText: 'Enter State',
-                        ),
-                        enabled: editing,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // editing ? actionButtons() : Container(),
-              Container(
-                height: 65,
-              ),
-            ],
-          ),
+            ),
+            // editing ? actionButtons() : Container(),
+            Container(
+              height: 65,
+            ),
+          ],
         ),
       );
     } else {

@@ -101,7 +101,7 @@ class _FarmAppState extends State<FarmApp> {
       return LoadingScreen('Loading profileUpdated...');
     }
     if (profileUpdated == false) {
-      return ProfileUpdateScreen();
+      return ProfileUpdateScaffold();
     }
     return WrapperScreen();
   }

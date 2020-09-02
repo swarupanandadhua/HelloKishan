@@ -5,11 +5,9 @@ import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/WrapperScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
-import 'package:FarmApp/Services/LocationService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -27,10 +25,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<Position>(
-          create: (_) => LocationService().location,
-        ),
-        StreamProvider<FirebaseUser>(
+        StreamProvider<User>(
           /* TODO 1 (BUG): Provider provides null when accessed first time. */
           create: (_) => AuthService().user,
         ),

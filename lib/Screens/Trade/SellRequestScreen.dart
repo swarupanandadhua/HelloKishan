@@ -26,7 +26,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
   final Requirement requirement;
   final TextEditingController productTextController = TextEditingController();
 
-  FirebaseUser u;
+  User u;
   ProgressDialog submitDialog;
   Position position;
   Size screenSize;
@@ -40,7 +40,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       isDismissible: false,
     )..style(message: 'Please wait...');
 
-    u = Provider.of<FirebaseUser>(context, listen: false);
+    u = Provider.of<User>(context, listen: false);
 
     super.initState();
   }

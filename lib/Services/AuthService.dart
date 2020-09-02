@@ -8,19 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class AuthService {
-  Stream<FirebaseUser> get user {
-    return FirebaseAuth.instance.onAuthStateChanged;
+  Stream<User> get user {
+    return FirebaseAuth.instance.authStateChanges();
   }
 
-  Future<FirebaseUser> getFirebaseUser() async {
-    return FirebaseAuth.instance
-        .currentUser()
-        .then(
-          (u) => u,
-        )
-        .catchError(
-          (e) => debugPrint('Error getting firebase user.'),
-        );
+  User getFirebaseUser() {
+    return FirebaseAuth.instance.currentUser;
   }
 
   Future<void> signOut() async {
@@ -57,7 +50,7 @@ class AuthService {
       );
     }
 
-    signInCallBack(FirebaseUser u) {
+    signInCallBack(User u) {
       if (u != null) {
         SharedPrefData.setString('uid', u.uid);
 
@@ -75,7 +68,7 @@ class AuthService {
 
     pd.update(message: 'Sending OTP...');
     pd.show();
-    FirebaseUser u;
+    User u;
     if (!phone.startsWith('+91')) phone = '+91' + phone;
 
     debugPrint('-----verifyPhoneNumber called-----');
@@ -119,7 +112,7 @@ class AuthService {
             ],
           ),
         );
-        AuthCredential cred = PhoneAuthProvider.getCredential(
+        AuthCredential cred = PhoneAuthProvider.credential(
           verificationId: verificationId,
           smsCode: otp,
         );

@@ -10,15 +10,15 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 class DBService {
   static Future<FarmApp.FarmAppUser> getFarmAppUser(String uid) async {
     FarmApp.FarmAppUser farmAppUser;
-    await Firestore.instance.collection(USERS).document(uid).get().then(
+    await FirebaseFirestore.instance.collection(USERS).doc(uid).get().then(
       (snap) {
         farmAppUser = FarmApp.FarmAppUser(
-          snap.data['uid'],
-          snap.data['displayName'],
-          snap.data['photoUrl'],
-          snap.data['phoneNumber'],
-          snap.data['nickName'],
-          snap.data['address'],
+          snap.data()['uid'],
+          snap.data()['displayName'],
+          snap.data()['photoUrl'],
+          snap.data()['phoneNumber'],
+          snap.data()['nickName'],
+          snap.data()['address'],
         );
       },
     ).catchError((e) => debugPrint(e.toString()));
@@ -26,15 +26,18 @@ class DBService {
   }
 
   static Future<void> setFarmAppUser(FarmApp.FarmAppUser user) async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection(USERS)
-        .document(user.uid)
-        .setData(user.toMap());
+        .doc(user.uid)
+        .set(user.toMap());
   }
 
   static Future<void> deleteRequirement(String rid) async {
     try {
-      await Firestore.instance.collection(REQUIREMENTS).document(rid).delete();
+      await FirebaseFirestore.instance
+          .collection(REQUIREMENTS)
+          .doc(rid)
+          .delete();
     } catch (e) {
       debugPrint(e);
     }
@@ -44,10 +47,10 @@ class DBService {
     Map<String, dynamic> doc = t.toMap();
 
     try {
-      await Firestore.instance
+      await FirebaseFirestore.instance
           .collection(TRANSACTIONS)
-          .document(t.tid)
-          .setData(doc);
+          .doc(t.tid)
+          .set(doc);
     } catch (e) {
       debugPrint(e);
     }
@@ -55,7 +58,7 @@ class DBService {
 
   static Stream<List<FarmApp.Requirement>> fetchRequirementsByLocation(
       String db, double lat, double long, double rad, String product) {
-    CollectionReference ref = Firestore.instance.collection(db);
+    CollectionReference ref = FirebaseFirestore.instance.collection(db);
     Geoflutterfire geo = Geoflutterfire();
     GeoFirePoint center = geo.point(
       latitude: lat,
@@ -90,13 +93,13 @@ class DBService {
   static Future<List<FarmApp.Requirement>> fetchRequirements(
       String prod) async {
     List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection(REQUIREMENTS)
         .where('product', isEqualTo: prod)
-        .getDocuments()
+        .get()
         .then(
       (snapshot) {
-        snapshot.documents.forEach(
+        snapshot.docs.forEach(
           (doc) {
             requirements.insert(
               0,
@@ -111,11 +114,11 @@ class DBService {
 
   static Future<List<FarmApp.Transaction>> fetchTransactions() async {
     List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection(TRANSACTIONS)
-        .getDocuments()
+        .get()
         .then((snapshot) {
-      snapshot.documents.forEach((doc) {
+      snapshot.docs.forEach((doc) {
         transactions.insert(
           0,
           FarmApp.Transaction.fromDocumentSnapshot(doc),
@@ -127,7 +130,7 @@ class DBService {
   }
 
   static Future<bool> uploadRequirement(FarmApp.Requirement r) async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection(REQUIREMENTS)
         .add(r.toMap())
         .then((doc) {
@@ -137,7 +140,10 @@ class DBService {
   }
 
   static Future<bool> initTransaction(FarmApp.Transaction t) async {
-    await Firestore.instance.collection(TRANSACTIONS).add(t.toMap()).then(
+    await FirebaseFirestore.instance
+        .collection(TRANSACTIONS)
+        .add(t.toMap())
+        .then(
       (doc) {
         return true;
       },
@@ -162,11 +168,7 @@ class DBService {
   static void saveFCMToken(String uid, String fcmToken) async {
     Map<String, String> data = Map<String, String>();
     data['token'] = fcmToken;
-    await Firestore.instance
-        .collection(TOKENS)
-        .document(uid)
-        .setData(data)
-        .then(
+    await FirebaseFirestore.instance.collection(TOKENS).doc(uid).set(data).then(
       (doc) {
         return true;
       },

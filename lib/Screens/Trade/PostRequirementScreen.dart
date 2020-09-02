@@ -21,7 +21,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   final Requirement requirement = Requirement();
   final TextEditingController productTextController = TextEditingController();
 
-  FirebaseUser u;
+  User u;
   ProgressDialog submitDialog;
   Position position;
   Size screenSize;
@@ -34,7 +34,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
       isDismissible: false,
     )..style(message: 'Please wait...');
 
-    u = Provider.of<FirebaseUser>(context, listen: false);
+    u = Provider.of<User>(context, listen: false);
     requirement.uid = (u != null) ? u.uid : 'U00000';
 
     requirement.position = Provider.of<Position>(context, listen: false);

@@ -46,16 +46,17 @@ class Requirement {
   }
 
   Requirement.fromDocumentSnapshot(DocumentSnapshot doc) {
-    uid = doc['user'];
-    userImage = doc['userImage'];
-    name = doc['name'];
-    mobile = doc['mobile'];
-    pid = doc['product'];
-    product = doc['product'];
-    productImage = doc['productImage'];
-    tradeType = (doc['wants_to'] == 'Buy') ? TradeType.BUY : TradeType.SELL;
-    rate = doc['rate'].toString();
-    qty = doc['qty'].toString();
+    Map<String, dynamic> data = doc.data();
+    uid = data['user'];
+    userImage = data['userImage'];
+    name = data['name'];
+    mobile = data['mobile'];
+    pid = data['product'];
+    product = data['product'];
+    productImage = data['productImage'];
+    tradeType = (data['wants_to'] == 'Buy') ? TradeType.BUY : TradeType.SELL;
+    rate = data['rate'].toString();
+    qty = data['qty'].toString();
 
     this.verb = (tradeType == TradeType.BUY) ? 'Buy' : 'Sell';
     this.displayString = '$name wants to $verb $qty kg $product';
@@ -108,19 +109,18 @@ class Transaction {
     this.status,
   }) {
     if (timestamp == null) timestamp = DateTime.now();
-    this.rate = '25.0';
-    this.qty = '26.0';
     this.amt = (num.tryParse(rate) * num.tryParse(qty)).toString();
   }
 
   Transaction.fromDocumentSnapshot(DocumentSnapshot doc) {
-    tid = doc['tid'];
-    rate = doc['rate'];
-    qty = doc['qty'];
-    secondPartyName = doc['secondPartyName'];
-    timestamp = doc['timestamp'];
-    secondPartyPhotoUrl = doc['secondPartyPhotoUrl'];
-    productPhotoUrl = doc['productPhotoUrl'];
+    Map<String, dynamic> data = doc.data();
+    tid = data['tid'];
+    rate = data['rate'];
+    qty = data['qty'];
+    secondPartyName = data['secondPartyName'];
+    timestamp = data['timestamp'];
+    secondPartyPhotoUrl = data['secondPartyPhotoUrl'];
+    productPhotoUrl = data['productPhotoUrl'];
   }
 
   Map<String, dynamic> toMap() {
@@ -157,7 +157,7 @@ class FarmAppUser {
     map['displayName'] = displayName;
     map['photoUrl'] = photoUrl;
     map['phoneNumber'] = phoneNumber;
-    map['location'] = GeoPoint(21.38144, 90.769907);
+    map['location'] = GeoPoint(21.38144, 90.769907); // TODO
 
     return map;
   }

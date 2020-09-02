@@ -12,7 +12,7 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseUser u = Provider.of<FirebaseUser>(context, listen: false);
+    final User u = Provider.of<User>(context, listen: false);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
       child: Drawer(

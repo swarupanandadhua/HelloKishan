@@ -59,11 +59,10 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                 child: RaisedButton(
                   child: Text('Debug Print User'),
                   onPressed: () async {
-                    FirebaseAuth.instance.currentUser().then(
-                          (u) => debugPrint('Actual: ' + u.toString()),
-                        );
+                    debugPrint('Actual: ' +
+                        FirebaseAuth.instance.currentUser.toString());
                     debugPrint("Provider:" +
-                        Provider.of<FirebaseUser>(
+                        Provider.of<User>(
                           context,
                           listen: false,
                         ).toString());

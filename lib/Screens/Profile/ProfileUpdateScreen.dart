@@ -75,7 +75,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     fontWeight: FontWeight.bold,
   );
 
-  FirebaseUser firebaseUser;
+  User firebaseUser;
   FarmAppUser farmAppUser;
 
   File chosenImage;
@@ -93,7 +93,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void loadUser() async {
-    firebaseUser = firebaseUser ?? await AuthService().getFirebaseUser();
+    firebaseUser = firebaseUser ?? AuthService().getFirebaseUser();
     farmAppUser =
         farmAppUser ?? await DBService.getFarmAppUser(firebaseUser.uid);
 
@@ -482,9 +482,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       await DBService.setFarmAppUser(farmAppUser);
       debugPrint('FARMAPPUSER UPDATED');
       await firebaseUser.updateProfile(
-        UserUpdateInfo()
-          ..displayName = nameEditC.text
-          ..photoUrl = photoUrl,
+        displayName: nameEditC.text,
+        photoURL: photoUrl,
       );
       debugPrint('FIREBASEUSER UPDATED');
       SharedPrefData.setProfileUpdated();

@@ -39,20 +39,11 @@ class HomeScreenState extends State<HomeScreen> {
             child: RaisedButton(
               child: Text('Debug Print User'),
               onPressed: () async {
-                FirebaseAuth.instance
-                    .currentUser()
-                    .then((value) => debugPrint('Actual: ' + value.toString()));
-                FirebaseUser u =
-                    Provider.of<FirebaseUser>(context, listen: false);
+                debugPrint(
+                    'Actual: ' + FirebaseAuth.instance.currentUser.toString());
+                User u = Provider.of<User>(context, listen: false);
                 debugPrint("Provider:" + u.toString());
                 debugPrint("Pref: " + SharedPrefData.getUid().toString());
-                await FirebaseAuth.instance.currentUser().then((value) => value
-                    .updateProfile(UserUpdateInfo()..displayName = 'Fuck'));
-                await FirebaseAuth.instance
-                    .currentUser()
-                    .then((value) => u = value);
-                debugPrint(u.displayName);
-                debugPrint(u.uid);
               },
             ),
             margin: EdgeInsets.only(top: 20.0),

@@ -3,42 +3,18 @@ import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
-  Stream<Position> get location {
-    Geolocator()
-      ..forceAndroidLocationManager
-      ..getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      ).then(
-        (pos) {
-          return pos;
-        },
-      );
-    return null;
-  }
-
   Future<Position> fetchLocation() async {
-    Geolocator()
-      ..forceAndroidLocationManager
-      ..getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      ).then(
-        (pos) {
-          debugPrint('Latitude: ' + pos.latitude.toString());
-          debugPrint('Longitude: ' + pos.longitude.toString());
-          return pos;
-        },
-      );
-    return null;
+    return await GeolocatorPlatform.instance.getCurrentPosition(
+      forceAndroidLocationManager: true,
+      desiredAccuracy: LocationAccuracy.best,
+    );
   }
 
   Future<Address> getAddress() async {
-    Geolocator g = Geolocator();
-    g.forceAndroidLocationManager = true;
-    Position pos =
-        await g.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
-    final latlong = Coordinates(pos.latitude, pos.longitude);
-    List<Address> addresses =
-        await Geocoder.local.findAddressesFromCoordinates(latlong);
+    Position pos = await fetchLocation();
+    List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(
+      Coordinates(pos.latitude, pos.longitude),
+    );
     Address address = addresses.first;
     debugPrint('-------------------------------------');
     debugPrint('addressLine: ' + address.addressLine.toString());

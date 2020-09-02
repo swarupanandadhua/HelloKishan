@@ -1,5 +1,8 @@
-import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Models.dart';
+import 'package:FarmApp/Models/Products.dart';
+import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -79,11 +82,16 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   controller: productTextController,
                 ),
                 suggestionsCallback: (pattern) async {
-                  return PRODUCT_NAMES.where(
-                    (p) {
-                      return p.toLowerCase().contains(pattern.toLowerCase());
-                    },
-                  ).toList();
+                  const int LANG = 0; // EN
+                  List<String> suggestions = List<String>();
+                  for (int i = 0; i < PRODUCTS.length; i++) {
+                    if (PRODUCTS[i][LANG]
+                        .toLowerCase()
+                        .contains(pattern.toLowerCase())) {
+                      suggestions.add(PRODUCTS[i][LANG]);
+                    }
+                  }
+                  return suggestions;
                 },
                 itemBuilder: (_, suggestion) {
                   return ListTile(
@@ -97,11 +105,6 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 onSuggestionSelected: (String suggestion) {
                   productTextController.text = suggestion;
                 },
-                validator: (val) {
-                  return PRODUCT_NAMES.contains(val)
-                      ? null
-                      : 'Please select a valid product name.';
-                },
                 onSaved: (val) {
                   this.requirement.product = val;
                 },
@@ -112,12 +115,10 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
                 decoration: InputDecoration(
-                  hintText: 'Price/kg',
-                  labelText: 'Enter the price per kg',
+                  hintText: STRING_ENTER_PRICE_PER_KG,
+                  labelText: STRING_ENTER_PRICE_PER_KG,
                 ),
-                validator: (v) {
-                  return (num.tryParse(v) > 0) ? null : 'Enter a valid price';
-                },
+                validator: Validator.price,
                 onSaved: (String value) {
                   this.requirement.rate = value;
                 },
@@ -128,14 +129,10 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
                 ],
                 decoration: InputDecoration(
-                  hintText: 'Quantity',
-                  labelText: 'Enter how much you want (in kg)',
+                  hintText: 'Enter quantity in kg',
+                  labelText: 'Enter quantity in kg',
                 ),
-                validator: (v) {
-                  return (num.tryParse(v) > 0)
-                      ? null
-                      : 'Enter a valid quantity';
-                },
+                validator: Validator.quantity,
                 onSaved: (String value) {
                   this.requirement.qty = value;
                 },

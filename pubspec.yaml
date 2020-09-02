@@ -31,7 +31,6 @@ dependencies:
   stack_trace: ### For DEBUG purpose only ###
   universal_html:
   url_launcher: ### Starting Phone/Mail Activities ###
-  validate:
 
   animated_text_kit:
   numeric_keyboard:

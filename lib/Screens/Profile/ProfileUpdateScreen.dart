@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'package:FarmApp/Models/Assets.dart';
+import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
+import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
-import 'package:FarmApp/Screens/WrapperScreen.dart';
+import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
@@ -79,7 +82,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   FarmAppUser farmAppUser;
 
   File chosenImage;
-  final Image accountLogo = Image.asset(ACCOUNT_PNG);
+  final Image accountLogo = Image.asset(ASSET_ACCOUNT);
   Image oldImage;
 
   bool imageChosen = false;
@@ -130,12 +133,12 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               return child;
             } else {
               debugPrint('Loading...');
-              return Image.asset(LOADING_GIF);
+              return Image.asset(ASSET_LOADING);
             }
           },
           errorBuilder: (_, __, ___) {
             debugPrint('Error fetching image');
-            return Image.asset(RED_CROSS_PNG);
+            return Image.asset(ASSET_RED_CROSS);
           },
         );
       } else {
@@ -222,7 +225,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Personal Information', style: h1Style),
+                        Text(STRING_PERSONAL_INFORMATION, style: h1Style),
                         editing
                             ? Container()
                             : MyIcon(
@@ -240,7 +243,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('Name', style: h2Style),
+                        Text(STRING_NAME, style: h2Style),
                       ],
                     ),
                   ),
@@ -249,25 +252,18 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     child: TextFormField(
                       controller: nameEditC,
                       decoration: const InputDecoration(
-                        hintText: 'Enter your name',
-                        labelText: 'Enter your name',
+                        hintText: STRING_ENTER_YOUR_NAME,
+                        labelText: STRING_ENTER_YOUR_NAME,
                       ),
                       enabled: editing,
-                      validator: (val) {
-                        if (RegExp('[a-zA-Z ]?').hasMatch(val) &&
-                            val.length > 4) {
-                          return null;
-                        } else {
-                          return 'Enter a valid name';
-                        }
-                      },
+                      validator: Validator.name,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
                     child: Row(
                       children: [
-                        Text('Mobile', style: h2Style),
+                        Text(STRING_MOBILE, style: h2Style),
                       ],
                     ),
                   ),
@@ -276,9 +272,10 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     child: TextFormField(
                       controller: mobileEditC,
                       decoration: const InputDecoration(
-                        hintText: 'Enter Mobile Number',
-                        labelText: 'Enter Mobile Number',
+                        hintText: STRING_ENTER_MOBILE_NUMBER,
+                        labelText: STRING_ENTER_MOBILE_NUMBER,
                       ),
+                      validator: Validator.mobile,
                       enabled: false,
                     ),
                   ),
@@ -356,10 +353,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     child: TextFormField(
                       controller: pinEditC,
                       decoration: const InputDecoration(
-                        hintText: 'Enter Pin Code',
-                        labelText: 'Enter Pin Code',
+                        hintText: STRING_ENTER_PIN_CODE,
+                        labelText: STRING_ENTER_PIN_CODE,
                       ),
                       enabled: editing,
+                      validator: Validator.pincode,
                     ),
                   ),
                   Padding(
@@ -385,9 +383,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               ),
             ),
             // editing ? actionButtons() : Container(),
-            Container(
-              height: 65,
-            ),
+            Container(height: 65),
           ],
         ),
       );
@@ -465,7 +461,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         pd.update(message: 'Uploading Profile Picture...');
         photoUrl = await DBService.uploadPhoto(
           chosenImage,
-          USERS + firebaseUser.uid + '.jpg',
+          DB_USERS + firebaseUser.uid + '.jpg',
         );
         debugPrint('PHOTOURL: ' + photoUrl.toString());
       }
@@ -492,7 +488,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (_) => WrapperScreen(),
+          builder: (_) => Wrapper(),
         ),
         (route) => false,
       );

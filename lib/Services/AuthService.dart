@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -98,8 +99,7 @@ class AuthService {
                 hintText: STRING_ENTER_OTP,
                 labelText: STRING_ENTER_OTP,
               ),
-              validator: (v) =>
-                  (v?.length == 6) ? null : STRING_OTP_MUST_6_DIGITS,
+              validator: Validator.otp,
             ),
             actions: [
               FlatButton(

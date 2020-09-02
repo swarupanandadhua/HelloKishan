@@ -1,4 +1,4 @@
-import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemBuilder: (_, i) {
                 return Container(
-                  child: Image.asset(APP_LOGO),
+                  child: Image.asset(ASSET_APP_LOGO),
                   height: 50,
                   width: 50,
                 );

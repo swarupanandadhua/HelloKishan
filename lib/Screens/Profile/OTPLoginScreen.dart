@@ -1,4 +1,5 @@
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/AuthService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,20 +36,16 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                   FilteringTextInputFormatter.allow(RegExp(r'^\d{0,10}')),
                 ],
                 decoration: InputDecoration(
-                  hintText: 'Mobile No.',
-                  labelText: 'Enter your 10 digit mobile No.',
+                  hintText: STRING_ENTER_MOBILE_NUMBER,
+                  labelText: STRING_ENTER_MOBILE_NUMBER,
                 ),
-                validator: (String value) {
-                  return (value.length == 10) ? null : 'Must be 10 digits';
-                },
-                onSaved: (String value) {
-                  this.mobile = value;
-                },
+                validator: Validator.mobile,
+                onSaved: (value) => this.mobile = value,
               ),
               Container(
                 width: screenSize.width / 2,
                 child: RaisedButton(
-                  child: Text('Send OTP'),
+                  child: Text(STRING_SEND_OTP),
                   onPressed: this.submit,
                 ),
                 margin: EdgeInsets.only(top: 20.0),
@@ -81,7 +78,6 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
   void submit() async {
     if (this.otpLoginFormKey.currentState.validate()) {
       otpLoginFormKey.currentState.save();
-
       AuthService().verifyPhoneNumber(this.mobile, context);
     }
   }

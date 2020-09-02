@@ -1,4 +1,4 @@
-import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Screens/Search/SearchScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -36,21 +36,23 @@ class RequirementSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final List<String> products = PRODUCT_NAMES
-        .where(
-          (product) => product.toLowerCase().contains(query.toLowerCase()),
-        )
-        .toList();
+    const int LANG = 0; // EN
+    List<List<String>> products = List<List<String>>();
+    for (int i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i][LANG].toLowerCase().contains(query.toLowerCase())) {
+        products.add(PRODUCTS[i]);
+      }
+    }
     return ListView.builder(
       itemBuilder: (context, i) => ListTile(
         leading: Image(
-          image: AssetImage(PRODUCT_IMAGES[i]),
+          image: AssetImage(products[i][2]),
           height: 30,
           width: 30,
           color: null,
         ),
         title: Text(
-          products[i],
+          products[i][LANG],
           style: TextStyle(
             fontSize: 15,
           ),
@@ -61,7 +63,8 @@ class RequirementSearch extends SearchDelegate<String> {
             context,
             MaterialPageRoute(
               builder: (_) => SearchScreen(
-                products[i], // .replaceAll(RegExp('[^A-Za-z]'), ''),
+                products[i]
+                    [LANG], // TODO: .replaceAll(RegExp('[^A-Za-z]'), ''),
               ),
             ),
           );

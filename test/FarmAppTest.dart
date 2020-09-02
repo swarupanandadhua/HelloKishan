@@ -11,7 +11,7 @@ void main() {
 
 Future<void> testFarmApp(WidgetTester tester) async {
   // Build our app and trigger a frame.
-  await tester.pumpWidget(App());
+  await tester.pumpWidget(FarmApp());
 
   // Verify that our counter starts at 0.
   expect(find.text('0'), findsOneWidget);

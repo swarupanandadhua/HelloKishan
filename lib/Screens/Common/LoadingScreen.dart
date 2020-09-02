@@ -1,4 +1,4 @@
-import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Assets.dart';
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatelessWidget {
@@ -12,7 +12,7 @@ class LoadingScreen extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            Image.asset(LOADING_GIF),
+            Image.asset(ASSET_LOADING),
             Text(msg),
           ],
         ),

@@ -1,4 +1,5 @@
-import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Colors.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/History/HistoryScreen.dart';
 import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
@@ -7,29 +8,26 @@ import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
 import 'package:FarmApp/Services/DBService.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-class WrapperScreen extends StatefulWidget {
+class Wrapper extends StatefulWidget {
   @override
-  _WrapperScreenState createState() => _WrapperScreenState();
+  WrapperState createState() => WrapperState();
 }
 
-class _WrapperScreenState extends State<WrapperScreen>
-    with SingleTickerProviderStateMixin {
-  static List<Widget> _tabs = <Widget>[
+class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
+  static List<Widget> tabs = <Widget>[
     HomeScreen(),
-    ProfileUpdateScreen(), // TODO: Modify in-app profile screen
+    ProfileUpdateScreen(),
     TradeScreen(),
     HistoryScreen(),
   ];
   static List<String> _titles = <String>[
-    'Home',
-    'Profile',
-    'Trade',
-    'History',
+    STRING_HOME,
+    STRING_PROFILE,
+    STRING_TRADE,
+    STRING_HISTORY,
   ];
   static List<Widget> _icons = [
     Icon(
@@ -50,39 +48,32 @@ class _WrapperScreenState extends State<WrapperScreen>
     Icon(Icons.history, size: 30, color: Colors.white),
   ];
 
-  TabController _tabController;
+  TabController tabController;
 
-  printDeviceToken() async {
-    String fcmToken = SharedPrefData.getFCMToken();
-
-    if (fcmToken == null) {
-      FirebaseMessaging fcm = FirebaseMessaging();
-      fcmToken = await fcm.getToken();
-
-      SharedPrefData.setString('fcmToken', fcmToken);
-      String uid = SharedPrefData.getUid();
-      DBService.saveFCMToken(uid, fcmToken);
-    }
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
   void initState() {
-    super.initState();
+    DBService.printDeviceToken();
 
-    printDeviceToken();
-
-    _tabController = TabController(
+    tabController = TabController(
       initialIndex: 0,
-      length: _tabs.length,
+      length: tabs.length,
       vsync: this,
     );
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_tabController.index]),
+        title: Text(_titles[tabController.index]),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -116,18 +107,14 @@ class _WrapperScreenState extends State<WrapperScreen>
         animationDuration: Duration(seconds: 1),
         buttonBackgroundColor: Color(APP_COLOR),
         items: _icons,
-        onTap: (index) {
-          setState(() {
-            _tabController.animateTo(index);
-          });
-        },
+        onTap: (index) => setState(() => tabController.animateTo(index)),
       ),
       body: Container(
         color: Colors.white,
         child: TabBarView(
-          children: _tabs,
+          children: tabs,
           physics: NeverScrollableScrollPhysics(),
-          controller: _tabController,
+          controller: tabController,
         ),
       ),
     );

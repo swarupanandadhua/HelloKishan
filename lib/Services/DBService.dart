@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart' as FarmApp;
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -10,7 +12,7 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 class DBService {
   static Future<FarmApp.FarmAppUser> getFarmAppUser(String uid) async {
     FarmApp.FarmAppUser farmAppUser;
-    await FirebaseFirestore.instance.collection(USERS).doc(uid).get().then(
+    await FirebaseFirestore.instance.collection(DB_USERS).doc(uid).get().then(
       (snap) {
         farmAppUser = FarmApp.FarmAppUser(
           snap.data()['uid'],
@@ -27,7 +29,7 @@ class DBService {
 
   static Future<void> setFarmAppUser(FarmApp.FarmAppUser user) async {
     await FirebaseFirestore.instance
-        .collection(USERS)
+        .collection(DB_USERS)
         .doc(user.uid)
         .set(user.toMap());
   }
@@ -35,7 +37,7 @@ class DBService {
   static Future<void> deleteRequirement(String rid) async {
     try {
       await FirebaseFirestore.instance
-          .collection(REQUIREMENTS)
+          .collection(DB_REQUIREMENTS)
           .doc(rid)
           .delete();
     } catch (e) {
@@ -48,7 +50,7 @@ class DBService {
 
     try {
       await FirebaseFirestore.instance
-          .collection(TRANSACTIONS)
+          .collection(DB_TRANSACTIONS)
           .doc(t.tid)
           .set(doc);
     } catch (e) {
@@ -94,7 +96,7 @@ class DBService {
       String prod) async {
     List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
     await FirebaseFirestore.instance
-        .collection(REQUIREMENTS)
+        .collection(DB_REQUIREMENTS)
         .where('product', isEqualTo: prod)
         .get()
         .then(
@@ -115,7 +117,7 @@ class DBService {
   static Future<List<FarmApp.Transaction>> fetchTransactions() async {
     List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
     await FirebaseFirestore.instance
-        .collection(TRANSACTIONS)
+        .collection(DB_TRANSACTIONS)
         .get()
         .then((snapshot) {
       snapshot.docs.forEach((doc) {
@@ -131,7 +133,7 @@ class DBService {
 
   static Future<bool> uploadRequirement(FarmApp.Requirement r) async {
     await FirebaseFirestore.instance
-        .collection(REQUIREMENTS)
+        .collection(DB_REQUIREMENTS)
         .add(r.toMap())
         .then((doc) {
       return true;
@@ -141,7 +143,7 @@ class DBService {
 
   static Future<bool> initTransaction(FarmApp.Transaction t) async {
     await FirebaseFirestore.instance
-        .collection(TRANSACTIONS)
+        .collection(DB_TRANSACTIONS)
         .add(t.toMap())
         .then(
       (doc) {
@@ -168,10 +170,27 @@ class DBService {
   static void saveFCMToken(String uid, String fcmToken) async {
     Map<String, String> data = Map<String, String>();
     data['token'] = fcmToken;
-    await FirebaseFirestore.instance.collection(TOKENS).doc(uid).set(data).then(
+    await FirebaseFirestore.instance
+        .collection(DB_TOKENS)
+        .doc(uid)
+        .set(data)
+        .then(
       (doc) {
         return true;
       },
     );
+  }
+
+  static printDeviceToken() async {
+    String fcmToken = SharedPrefData.getFCMToken();
+
+    if (fcmToken == null) {
+      FirebaseMessaging fcm = FirebaseMessaging();
+      fcmToken = await fcm.getToken();
+
+      SharedPrefData.setString('fcmToken', fcmToken);
+      String uid = SharedPrefData.getUid();
+      DBService.saveFCMToken(uid, fcmToken);
+    }
   }
 }

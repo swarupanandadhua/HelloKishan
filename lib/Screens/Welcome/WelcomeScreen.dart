@@ -29,8 +29,9 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   void initState() {
-    Firebase.initializeApp(); // TODO: await until this completes
-    getLoggedinStatus(); // TDOO: await until this completes
+    Firebase.initializeApp(); // TODO 1: await until this completes
+    getLoggedinStatus(); // TDOO 2: await until this completes
+    // TODO 3 : await until 3sec is complete
     super.initState();
   }
 

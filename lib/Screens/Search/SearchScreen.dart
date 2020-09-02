@@ -1,3 +1,4 @@
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
@@ -14,28 +15,24 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  final String title = 'Serach Results';
-  final String product;
-
-  Future<List<Requirement>> requirementsFuture;
-
-  HTML.Location location;
-
-  List<Requirement> requirements;
-
   SearchScreenState(this.product);
+
+  final String product;
+  Future<List<Requirement>> requirementsFuture;
+  HTML.Location location; // TODO
+  List<Requirement> requirements;
 
   @override
   void initState() {
-    super.initState();
     requirementsFuture = DBService.fetchRequirements(product);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(STRING_SEARCH_RESULTS),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -44,17 +41,17 @@ class SearchScreenState extends State<SearchScreen> {
           PopupMenuButton<String>(
             onSelected: (option) {
               switch (option) {
-                case 'Sort by distance':
+                case STRING_SORT_BY_DISTANCE:
                   debugPrint(StackTrace.current.toString());
                   break;
-                case 'Highest Price First':
+                case STRING_HIGHEST_PRICE_FIRST:
                   if (requirements != null) {
                     setState(() {
                       requirements.sort((a, b) => (a.rate.compareTo(b.rate)));
                     });
                   }
                   break;
-                case 'Lowest Price First':
+                case STRING_LOWEST_PRICE_FIRST:
                   if (requirements != null) {
                     setState(() {
                       requirements.sort((b, a) => (a.rate.compareTo(b.rate)));
@@ -67,9 +64,9 @@ class SearchScreenState extends State<SearchScreen> {
             },
             itemBuilder: (_) {
               return {
-                'Sort by distance',
-                'Highest Price First',
-                'Lowest Price First',
+                STRING_SORT_BY_DISTANCE,
+                STRING_HIGHEST_PRICE_FIRST,
+                STRING_LOWEST_PRICE_FIRST,
               }.map((String option) {
                 return PopupMenuItem<String>(
                   value: option,
@@ -99,12 +96,12 @@ class SearchScreenState extends State<SearchScreen> {
               );
             } else {
               return Center(
-                child: Text('Nothing found!'),
+                child: Text(STRING_NOTHING_FOUND),
               );
             }
           } else if (snap.hasError) {
             return Center(
-              child: Text('Something went wrong!'),
+              child: Text(STRING_SOMETHING_WENT_WRONG),
             );
           } else {
             return Center(

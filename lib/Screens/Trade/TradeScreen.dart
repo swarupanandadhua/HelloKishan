@@ -1,4 +1,5 @@
 import 'package:FarmApp/Models/Models.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Trade/TradeTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +36,12 @@ class TradeScreenState extends State<TradeScreen> {
             );
           } else {
             return Center(
-              child: Text('No transactions found!'),
+              child: Text(STRING_NO_TRANSACTIONS_FOUND),
             );
           }
         } else if (snap.hasError) {
           return Center(
-            child: Text('Something went wrong!'),
+            child: Text(STRING_SOMETHING_WENT_WRONG),
           );
         } else {
           return Center(

@@ -20,7 +20,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class ProfileUpdateScaffold extends StatelessWidget {
-  final GlobalKey<ProfileUpdateScreenState> profileUpdateScreenState =
+  final GlobalKey<ProfileUpdateScreenState> profileUpdateKey =
       GlobalKey<ProfileUpdateScreenState>();
 
   @override
@@ -41,11 +41,11 @@ class ProfileUpdateScaffold extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          onPressed: profileUpdateScreenState.currentState.saveProfileDetails,
+          onPressed: () => profileUpdateKey?.currentState?.saveProfileDetails(),
         ),
       ),
       body: ProfileUpdateScreen(
-        key: profileUpdateScreenState,
+        key: profileUpdateKey,
         editing: true,
       ),
     );
@@ -53,13 +53,22 @@ class ProfileUpdateScaffold extends StatelessWidget {
 }
 
 class ProfileUpdateScreen extends StatefulWidget {
-  ProfileUpdateScreen({Key key, bool editing = false}) : super(key: key);
+  final Key key;
+  final bool editing;
+
+  ProfileUpdateScreen({this.key, this.editing = false}) : super(key: key);
 
   @override
-  ProfileUpdateScreenState createState() => ProfileUpdateScreenState();
+  ProfileUpdateScreenState createState() =>
+      ProfileUpdateScreenState(key: key, editing: editing);
 }
 
 class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
+  final Key key;
+  bool editing;
+
+  ProfileUpdateScreenState({this.key, this.editing = false});
+
   final GlobalKey<FormState> profileDetailsForm = GlobalKey<FormState>();
   final TextEditingController nameEditC = TextEditingController();
   final TextEditingController mobileEditC = TextEditingController();
@@ -87,7 +96,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   bool imageChosen = false;
   bool userLoaded = false;
-  bool editing;
 
   @override
   void initState() {
@@ -218,168 +226,174 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
             getDPWidget(),
             Card(
               elevation: 4,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(STRING_PERSONAL_INFORMATION, style: h1Style),
-                        editing
-                            ? Container()
-                            : MyIcon(
-                                onTapCallBack: () => setState(
-                                  () => editing = true,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(STRING_PERSONAL_INFORMATION, style: h1Style),
+                          editing
+                              ? Container()
+                              : MyIcon(
+                                  onTapCallBack: () => setState(
+                                    () => editing = true,
+                                  ),
+                                  radius: 20,
+                                  iconData: Icons.edit,
                                 ),
-                                radius: 20,
-                                iconData: Icons.edit,
-                              ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(STRING_NAME, style: h2Style),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: TextFormField(
-                      controller: nameEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_ENTER_YOUR_NAME,
-                        labelText: STRING_ENTER_YOUR_NAME,
+                        ],
                       ),
-                      enabled: editing,
-                      validator: Validator.name,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text(STRING_MOBILE, style: h2Style),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: TextFormField(
-                      controller: mobileEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_ENTER_MOBILE_NUMBER,
-                        labelText: STRING_ENTER_MOBILE_NUMBER,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(STRING_NAME, style: h2Style),
+                        ],
                       ),
-                      validator: Validator.mobile,
-                      enabled: false,
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: nameEditC,
+                        decoration: const InputDecoration(
+                          hintText: STRING_ENTER_YOUR_NAME,
+                          labelText: STRING_ENTER_YOUR_NAME,
+                        ),
+                        enabled: editing,
+                        validator: Validator.name,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text(STRING_MOBILE, style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: mobileEditC,
+                        decoration: const InputDecoration(
+                          hintText: STRING_ENTER_MOBILE_NUMBER,
+                          labelText: STRING_ENTER_MOBILE_NUMBER,
+                        ),
+                        validator: Validator.mobile,
+                        enabled: false,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Card(
               elevation: 4,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('Address Information', style: h1Style),
-                        editing
-                            ? MyIcon(
-                                onTapCallBack: () => getCurrentAddress(),
-                                radius: 20,
-                                iconData: Icons.my_location,
-                              )
-                            : Container(),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text('Address', style: h2Style),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: TextFormField(
-                      controller: addressEditC,
-                      decoration: const InputDecoration(
-                        hintText: 'House Name, Street, Locality',
-                        labelText: 'House Name, Street, Locality',
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(STRING_ADDRESS_INFORMATION, style: h1Style),
+                          editing
+                              ? MyIcon(
+                                  onTapCallBack: () => getCurrentAddress(),
+                                  radius: 20,
+                                  iconData: Icons.my_location,
+                                )
+                              : Container(),
+                        ],
                       ),
-                      enabled: editing,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text('District', style: h2Style),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: TextFormField(
-                      controller: distEditC,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your district',
-                        labelText: 'Enter your district',
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text(STRING_ADDRESS, style: h2Style),
+                        ],
                       ),
-                      enabled: editing,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text('Pin Code', style: h2Style),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: TextFormField(
-                      controller: pinEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_ENTER_PIN_CODE,
-                        labelText: STRING_ENTER_PIN_CODE,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: addressEditC,
+                        decoration: const InputDecoration(
+                          hintText: STRING_HOUSE_STREET_LOCALITY,
+                          labelText: STRING_HOUSE_STREET_LOCALITY,
+                        ),
+                        enabled: editing,
                       ),
-                      enabled: editing,
-                      validator: Validator.pincode,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text('State', style: h2Style),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: TextFormField(
-                      controller: stateEditC,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter State',
-                        labelText: 'Enter State',
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text(STRING_DISTRICT, style: h2Style),
+                        ],
                       ),
-                      enabled: editing,
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: distEditC,
+                        decoration: const InputDecoration(
+                          hintText: STRING_ENTER_YOUR_DISTRICT,
+                          labelText: STRING_ENTER_YOUR_DISTRICT,
+                        ),
+                        enabled: editing,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text(STRING_PIN_CODE, style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: pinEditC,
+                        decoration: const InputDecoration(
+                          hintText: STRING_ENTER_PIN_CODE,
+                          labelText: STRING_ENTER_PIN_CODE,
+                        ),
+                        enabled: editing,
+                        validator: Validator.pincode,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: Row(
+                        children: [
+                          Text(STRING_STATE, style: h2Style),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: TextFormField(
+                        controller: stateEditC,
+                        decoration: const InputDecoration(
+                          hintText: STRING_ENTER_STATE,
+                          labelText: STRING_ENTER_STATE,
+                        ),
+                        enabled: editing,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             // editing ? actionButtons() : Container(),
@@ -389,7 +403,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       );
     } else {
       return Scaffold(
-        body: LoadingScreen('Loading User Data...'),
+        body: LoadingScreen(STRING_LOADING_USER_DATA),
       );
     }
   }
@@ -449,16 +463,17 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   void saveProfileDetails() async {
     if (profileDetailsForm.currentState.validate()) {
+      debugPrint('PROCEED clicked'); // TODO: Not hitting this line
       ProgressDialog pd = ProgressDialog(
         context,
         type: ProgressDialogType.Normal,
         isDismissible: false,
       );
-      pd.update(message: 'Please Wait...');
+      pd.update(message: STRING_PLEASE_WAIT);
       pd.show();
       String photoUrl;
       if (imageChosen) {
-        pd.update(message: 'Uploading Profile Picture...');
+        pd.update(message: STRING_UPLOADING_PROFILE_PICTURE);
         photoUrl = await DBService.uploadPhoto(
           chosenImage,
           DB_USERS + firebaseUser.uid + '.jpg',
@@ -474,7 +489,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         adminArea: stateEditC.text,
       );
       farmAppUser?.address = address;
-      pd.update(message: 'Updating Profile Information...');
+      pd.update(message: STRING_UPDATING_PROFILE_INFO);
       await DBService.setFarmAppUser(farmAppUser);
       debugPrint('FARMAPPUSER UPDATED');
       await firebaseUser.updateProfile(

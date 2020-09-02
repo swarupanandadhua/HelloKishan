@@ -2,7 +2,7 @@ import 'package:FarmApp/Models/Strings.dart';
 
 class Validator {
   static String quantity(String val) {
-    return (num.tryParse(val) > 0) ? null : 'Enter a valid quantity';
+    return (num.tryParse(val) > 0) ? null : STRING_ENTER_VALID_QUANTITY;
   }
 
   static String otp(String val) {
@@ -10,13 +10,12 @@ class Validator {
   }
 
   static String name(String val) {
-    return (RegExp('[a-zA-Z ]?').hasMatch(val) && val.length > 4)
-        ? null
-        : 'Enter a valid name';
+    // TODO: Move `RegExp('[a-zA-Z ]?').hasMatch(val)` to TextFormField
+    return (val.length >= 5) ? null : STRING_ENTER_VALID_NAME;
   }
 
   static String mobile(String val) {
-    return (val.length == 10) ? null : 'Must be 10 digits';
+    return (val.length == 10) ? null : STRING_MUST_BE_10_DIGITS;
   }
 
   static String pincode(String val) {
@@ -24,6 +23,6 @@ class Validator {
   }
 
   static String price(String val) {
-    return (num.tryParse(val) > 0) ? null : 'Enter a valid price';
+    return (num.tryParse(val) > 0) ? null : STRING_ENTER_VALID_PRICE;
   }
 }

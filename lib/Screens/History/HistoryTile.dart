@@ -1,4 +1,5 @@
 import 'package:FarmApp/Models/Models.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:flutter/material.dart';
 
@@ -33,8 +34,8 @@ class HistoryTile extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     (transaction.type == TradeType.BUY)
-                        ? 'Bought from'
-                        : 'Sold to',
+                        ? STRING_BOUGHT_FROM
+                        : STRING_SOLD_TO,
                     style: TextStyle(
                       color: Colors.grey[350],
                       fontWeight: FontWeight.w500,
@@ -67,9 +68,9 @@ class HistoryTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Rate : ₹${transaction.rate}/kg'),
-                  Text('Quantity: ${transaction.qty}kg'),
-                  Text('Total Amount: ₹${transaction.amt}'),
+                  Text('$STRING_RATE : ₹${transaction.rate}/kg'),
+                  Text('$STRING_QUANTITY: ${transaction.qty} kg'),
+                  Text('$STRING_TOTAL_AMOUNT: ₹${transaction.amt}'),
                 ],
               ),
             ],

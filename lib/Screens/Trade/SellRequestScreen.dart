@@ -22,7 +22,7 @@ class SellRequestScreen extends StatefulWidget {
 class SellRequestScreenState extends State<SellRequestScreen> {
   SellRequestScreenState(this.requirement);
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> sellRequestKey = GlobalKey<FormState>();
   final Requirement requirement;
   final TextEditingController productTextController = TextEditingController();
 
@@ -38,7 +38,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
-    )..style(message: 'Please wait...');
+    )..style(message: STRING_PLEASE_WAIT);
 
     u = Provider.of<User>(context, listen: false);
 
@@ -51,14 +51,15 @@ class SellRequestScreenState extends State<SellRequestScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sell Request'),
+        title: Text(STRING_SELL_REQUEST),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          key: this._formKey,
+          key: this.sellRequestKey,
           child: ListView(
             children: <Widget>[
+              // TODO
               Text('I want to ${requirement.verb} ...'),
               Text('${requirement.product}'),
               Text('Price : ${requirement.rate}'),
@@ -74,7 +75,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                 validator: Validator.quantity,
                 onSaved: (val) => this.transaction.qty = val,
               ),
-              Text('TODO Address'),
+              Text('Address'), // TODO
             ],
           ),
         ),
@@ -85,7 +86,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         child: RaisedButton(
           color: Color(APP_COLOR),
           child: Text(
-            'CONTINUE',
+            STRING_PROCEED,
             style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 20,
@@ -98,8 +99,8 @@ class SellRequestScreenState extends State<SellRequestScreen> {
   }
 
   void submit() async {
-    if (this._formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (this.sellRequestKey.currentState.validate()) {
+      sellRequestKey.currentState.save();
       submitDialog.show();
       await DBService.initTransaction(transaction);
       submitDialog.hide();

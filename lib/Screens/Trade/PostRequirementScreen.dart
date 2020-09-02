@@ -20,7 +20,7 @@ class PostRequirementScreen extends StatefulWidget {
 }
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> postRequirementKey = GlobalKey<FormState>();
   final Requirement requirement = Requirement();
   final TextEditingController productTextController = TextEditingController();
 
@@ -35,9 +35,9 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
-    )..style(message: 'Please wait...');
+    )..style(message: STRING_PLEASE_WAIT);
 
-    u = Provider.of<User>(context, listen: false);
+    u = Provider.of<User>(context, listen: false); // TODO
     requirement.uid = (u != null) ? u.uid : 'U00000';
 
     requirement.position = Provider.of<Position>(context, listen: false);
@@ -50,35 +50,37 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Post Requirement'),
+        title: Text(STRING_POST_REQUIREMENT),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          key: this._formKey,
+          key: this.postRequirementKey,
           child: ListView(
             children: <Widget>[
               DropdownButtonFormField(
+                validator: null, // TODO
                 value: requirement.tradeType,
-                hint: Text('I want to...'),
+                hint: Text('I want to...'), // TODO
                 items: [
                   DropdownMenuItem(
                     value: TradeType.BUY,
-                    child: Text('Buy'),
+                    child: Text(STRING_BUY),
                   ),
                   DropdownMenuItem(
                     value: TradeType.SELL,
-                    child: Text('Sell'),
+                    child: Text(STRING_SELL),
                   ),
                 ],
                 onChanged: (type) => setState(
-                  () => requirement
-                      .setTradeType(type == TradeType.BUY ? 'buy' : 'sell'),
+                  () => requirement.setTradeType(
+                      type == TradeType.BUY ? STRING_SELL : STRING_SELL),
                 ),
               ),
               TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(labelText: 'Select a product'),
+                  decoration:
+                      InputDecoration(labelText: STRING_SELECT_A_PRODUCT),
                   controller: productTextController,
                 ),
                 suggestionsCallback: (pattern) async {
@@ -129,8 +131,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
                 ],
                 decoration: InputDecoration(
-                  hintText: 'Enter quantity in kg',
-                  labelText: 'Enter quantity in kg',
+                  hintText: STRING_ENTER_QUANTITY,
+                  labelText: STRING_ENTER_QUANTITY,
                 ),
                 validator: Validator.quantity,
                 onSaved: (String value) {
@@ -147,7 +149,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         child: RaisedButton(
           color: Color(APP_COLOR),
           child: Text(
-            'SUBMIT',
+            STRING_POST,
             style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 20,
@@ -160,8 +162,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   }
 
   void submit() async {
-    if (this._formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (this.postRequirementKey.currentState.validate()) {
+      postRequirementKey.currentState.save();
       submitDialog.show();
       await DBService.uploadRequirement(requirement);
       submitDialog.hide();

@@ -1,5 +1,5 @@
 import 'package:FarmApp/Models/Colors.dart';
-import 'package:FarmApp/Screens/Welcome/WelcomeScreen.dart';
+import 'package:FarmApp/Screens/Home/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
 final bool release = false;
@@ -20,7 +20,8 @@ class FarmApp extends StatelessWidget {
         accentColor: Color(APP_COLOR_ACCENT),
       ),
       home: Scaffold(
-        body: WelcomeScreen(),
+        body: HomeScreen(),
+        // body: WelcomeScreen(),
       ),
     );
   }

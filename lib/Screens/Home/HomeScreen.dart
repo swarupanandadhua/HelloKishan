@@ -1,14 +1,8 @@
-import 'package:FarmApp/Models/Assets.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Products.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({
-    key,
-  }) : super(key: key);
-
   @override
   HomeScreenState createState() => HomeScreenState();
 }
@@ -17,38 +11,31 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Container(
-            height: 80,
-            child: ListView.builder(
-              itemBuilder: (_, i) {
-                return Container(
-                  child: Image.asset(ASSET_APP_LOGO),
-                  height: 50,
-                  width: 50,
-                );
-              },
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
+      child: GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 5.0,
+          mainAxisSpacing: 5.0,
+        ),
+        itemCount: PRODUCTS.length,
+        itemBuilder: (_, i) {
+          List<String> p = PRODUCTS[i];
+          return Card(
+            child: Column(
+              children: [
+                ClipOval(
+                  child: Image.asset(
+                    p[2],
+                    width: 120,
+                    height: 120,
+                  ),
+                ),
+                Text(p[LANGUAGE.CURRENT], style: TextStyle(fontSize: 18)),
+              ],
             ),
-          ),
-          Container(
-            // TODO 2: Remove this debug button after resolving TODO 1
-            height: 50,
-            child: RaisedButton(
-              child: Text('Debug Print User'),
-              onPressed: () async {
-                debugPrint(
-                    'Actual: ' + FirebaseAuth.instance.currentUser.toString());
-                User u = Provider.of<User>(context, listen: false);
-                debugPrint("Provider:" + u.toString());
-                debugPrint("Pref: " + SharedPrefData.getUid().toString());
-              },
-            ),
-            margin: EdgeInsets.only(top: 20.0),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

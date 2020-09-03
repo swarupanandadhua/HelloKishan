@@ -1,4 +1,5 @@
 import 'package:FarmApp/Models/Colors.dart';
+import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
@@ -84,13 +85,12 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   controller: productTextController,
                 ),
                 suggestionsCallback: (pattern) async {
-                  const int LANG = 0; // EN
                   List<String> suggestions = List<String>();
                   for (int i = 0; i < PRODUCTS.length; i++) {
-                    if (PRODUCTS[i][LANG]
+                    if (PRODUCTS[i][LANGUAGE.CURRENT]
                         .toLowerCase()
                         .contains(pattern.toLowerCase())) {
-                      suggestions.add(PRODUCTS[i][LANG]);
+                      suggestions.add(PRODUCTS[i][LANGUAGE.CURRENT]);
                     }
                   }
                   return suggestions;

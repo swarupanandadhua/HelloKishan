@@ -17,7 +17,7 @@ class DBService {
         farmAppUser = FarmApp.FarmAppUser(
           snap.data()['uid'],
           snap.data()['displayName'],
-          snap.data()['photoUrl'],
+          snap.data()['photoURL'],
           snap.data()['phoneNumber'],
           snap.data()['nickName'],
           snap.data()['address'],
@@ -82,7 +82,7 @@ class DBService {
           (doc) {
             requirements.insert(
               0,
-              FarmApp.Requirement.fromDocumentSnapshot(doc),
+              FarmApp.Requirement.fromDocumentSnapshot(doc.id, doc.data()),
             );
           },
         );
@@ -105,7 +105,7 @@ class DBService {
           (doc) {
             requirements.insert(
               0,
-              FarmApp.Requirement.fromDocumentSnapshot(doc),
+              FarmApp.Requirement.fromDocumentSnapshot(doc.id, doc.data()),
             );
           },
         );
@@ -115,68 +115,55 @@ class DBService {
   }
 
   static Future<List<FarmApp.Transaction>> fetchTransactions() async {
+    String uid = SharedPrefData.getUid();
     List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
     await FirebaseFirestore.instance
         .collection(DB_TRANSACTIONS)
+        .where('firstPartyUid', isEqualTo: uid)
+        .orderBy('timestamp')
+        .limit(20)
         .get()
-        .then((snapshot) {
-      snapshot.docs.forEach((doc) {
-        transactions.insert(
-          0,
-          FarmApp.Transaction.fromDocumentSnapshot(doc),
+        .then(
+      (snapshot) {
+        snapshot.docs.forEach(
+          (doc) {
+            transactions.insert(
+              0,
+              FarmApp.Transaction.fromMap(doc.id, doc.data()),
+            );
+          },
         );
-      });
-    });
-
+      },
+    );
     return transactions;
   }
 
-  static Future<bool> uploadRequirement(FarmApp.Requirement r) async {
-    await FirebaseFirestore.instance
-        .collection(DB_REQUIREMENTS)
-        .add(r.toMap())
-        .then((doc) {
-      return true;
-    });
-    return false;
+  static Future<void> uploadRequirement(FarmApp.Requirement r) async {
+    await FirebaseFirestore.instance.collection(DB_REQUIREMENTS).add(r.toMap());
   }
 
-  static Future<bool> initTransaction(FarmApp.Transaction t) async {
-    await FirebaseFirestore.instance
-        .collection(DB_TRANSACTIONS)
-        .add(t.toMap())
-        .then(
-      (doc) {
-        return true;
-      },
-    );
-    return false;
+  static Future<void> initTransaction(FarmApp.Transaction t) async {
+    await FirebaseFirestore.instance.collection(DB_TRANSACTIONS).add(t.toMap());
   }
 
-  static Future<String> getPhotoUrl(String path) async {
+  static Future<String> getPhotoURL(String path) async {
     return await FirebaseStorage.instance.ref().child(path).getDownloadURL();
   }
 
   static Future<String> uploadPhoto(File image, String destination) async {
     StorageReference ref = FirebaseStorage.instance.ref();
     StorageUploadTask uploadtask = ref.child(destination).putFile(image);
-    String downloadUrl;
+    String downloadURL;
     await uploadtask.onComplete.then(
-      (snap) async => downloadUrl = await snap.ref.getDownloadURL(),
+      (snap) async => downloadURL = await snap.ref.getDownloadURL(),
     );
-    return downloadUrl;
+    return downloadURL;
   }
 
-  static void saveFCMToken(String uid, String fcmToken) async {
-    Map<String, String> data = Map<String, String>();
-    data['token'] = fcmToken;
-    await FirebaseFirestore.instance
-        .collection(DB_TOKENS)
-        .doc(uid)
-        .set(data)
-        .then(
-      (doc) {
-        return true;
+  static Future<void> saveFCMToken(String uid, String fcmToken) async {
+    await FirebaseFirestore.instance.collection(DB_TOKENS).doc(uid).set(
+      {
+        'token': fcmToken,
       },
     );
   }

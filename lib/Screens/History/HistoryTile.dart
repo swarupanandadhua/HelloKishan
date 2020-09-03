@@ -1,18 +1,23 @@
+import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Models.dart';
+import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:firebase_image/firebase_image.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:flutter/material.dart';
+
+// TODO: TradeTile and HistoryTile can be shared
 
 class HistoryTile extends StatelessWidget {
   final Transaction transaction;
 
-  HistoryTile({this.transaction});
+  HistoryTile(this.transaction);
 
   @override
   Widget build(BuildContext context) {
+    String tradeType =
+        (SharedPrefData.getUid() == transaction.sellerUid) ? 'Sold' : 'Bought';
+
     return Card(
-      color: Colors.white,
-      elevation: 8,
       child: Column(
         children: <Widget>[
           Row(
@@ -21,10 +26,13 @@ class HistoryTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
-                  child: Image(
-                    image: FirebaseImage(transaction.secondPartyPhotoUrl),
+                  child: Image.network(
+                    (tradeType == 'Sold')
+                        ? transaction.buyerPhoto
+                        : transaction.sellerPhoto,
                     height: 50.0,
                     width: 50.0,
+                    errorBuilder: (_, err, stack) => Image.asset(ASSET_ACCOUNT),
                   ),
                 ),
               ),
@@ -33,16 +41,16 @@ class HistoryTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    (transaction.type == TradeType.BUY)
-                        ? STRING_BOUGHT_FROM
-                        : STRING_SOLD_TO,
+                    (tradeType == 'Sold') ? STRING_SOLD_TO : STRING_BOUGHT_FROM,
                     style: TextStyle(
                       color: Colors.grey[350],
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    transaction.secondPartyName,
+                    (tradeType == 'Sold')
+                        ? transaction.buyerName
+                        : transaction.sellerName,
                     style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
@@ -50,10 +58,12 @@ class HistoryTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
-                  child: Image(
-                    image: FirebaseImage(transaction.productPhotoUrl),
+                  child: Image.network(
+                    PRODUCTS[int.parse(transaction.pid)][2],
                     height: 50.0,
                     width: 50.0,
+                    errorBuilder: (_, err, stack) =>
+                        Image.asset(ASSET_APP_LOGO),
                   ),
                 ),
               ),

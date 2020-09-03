@@ -1,8 +1,11 @@
 import 'package:FarmApp/Models/Colors.dart';
+import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
+import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,17 +23,16 @@ class SellRequestScreen extends StatefulWidget {
 }
 
 class SellRequestScreenState extends State<SellRequestScreen> {
-  SellRequestScreenState(this.requirement);
+  SellRequestScreenState(this.r);
 
   final GlobalKey<FormState> sellRequestKey = GlobalKey<FormState>();
-  final Requirement requirement;
-  final TextEditingController productTextController = TextEditingController();
+  final Requirement r;
+  final TextEditingController qtyC = TextEditingController();
 
   User u;
   ProgressDialog submitDialog;
   Position position;
   Size screenSize;
-  Transaction transaction = Transaction();
 
   @override
   void initState() {
@@ -60,10 +62,11 @@ class SellRequestScreenState extends State<SellRequestScreen> {
           child: ListView(
             children: <Widget>[
               // TODO
-              Text('I want to ${requirement.verb} ...'),
-              Text('${requirement.product}'),
-              Text('Price : ${requirement.rate}'),
+              Text('I want to ${r.tradeType} ...'),
+              Text('${PRODUCTS[int.parse(r.pid)][LANGUAGE.CURRENT]}'),
+              Text('Price : ${r.rate}'),
               TextFormField(
+                controller: qtyC,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
@@ -73,7 +76,6 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                   labelText: STRING_ENTER_QUANTITY,
                 ),
                 validator: Validator.quantity,
-                onSaved: (val) => this.transaction.qty = val,
               ),
               Text('Address'), // TODO
             ],
@@ -102,7 +104,21 @@ class SellRequestScreenState extends State<SellRequestScreen> {
     if (this.sellRequestKey.currentState.validate()) {
       sellRequestKey.currentState.save();
       submitDialog.show();
-      await DBService.initTransaction(transaction);
+      Transaction t = Transaction(
+        SharedPrefData.getUid(),
+        SharedPrefData.getName(),
+        SharedPrefData.getPhotoURL(),
+        r.uid,
+        r.name,
+        r.photoURL,
+        r.pid,
+        r.rate,
+        qtyC.text,
+        (double.parse(r.rate) * double.parse(qtyC.text)).toString(),
+        DateTime.now(),
+        TransactionStatus.REQUESTED,
+      );
+      await DBService.initTransaction(t);
       submitDialog.hide();
       Navigator.pop(context);
     }

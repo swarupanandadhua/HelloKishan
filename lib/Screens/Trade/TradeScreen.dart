@@ -16,6 +16,7 @@ class TradeScreenState extends State<TradeScreen> {
   void initState() {
     super.initState();
     transactions = DBService.fetchTransactions();
+    // TODO: Filter only REQUESTED, ACCEPTED,
   }
 
   @override
@@ -29,7 +30,7 @@ class TradeScreenState extends State<TradeScreen> {
               color: Color(0xff0011),
               child: ListView.builder(
                 itemBuilder: (_, i) {
-                  return TradeTile(transaction: snap.data[i]);
+                  return TradeTile(snap.data[i]);
                 },
                 itemCount: snap.data.length,
               ),

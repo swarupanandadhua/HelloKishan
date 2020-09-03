@@ -29,7 +29,7 @@ class HistoryScreenState extends State<HistoryScreen> {
               color: Color(0xff0011),
               child: ListView.builder(
                 itemBuilder: (_, i) {
-                  return HistoryTile(transaction: snap.data[i]);
+                  return HistoryTile(snap.data[i]);
                 },
                 itemCount: snap.data.length,
               ),

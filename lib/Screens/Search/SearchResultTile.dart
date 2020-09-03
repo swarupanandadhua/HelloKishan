@@ -11,7 +11,6 @@ class SearchResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8,
       child: Column(
         children: <Widget>[
           ListTile(
@@ -21,7 +20,7 @@ class SearchResultTile extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                requirement.displayString,
+                requirement.tradeType,
                 style: TextStyle(fontSize: 14),
               ),
             ),
@@ -36,10 +35,8 @@ class SearchResultTile extends StatelessWidget {
               child: Image.asset(ASSET_APP_LOGO),
             ),
           ),
-          // TODO
           FlatButton(
-            child: Text('Contact ' + 'NAME'), // requirement.name
-            // onPressed: () => UrlLauncher.launch('tel:' + requirement.mobile),
+            child: Text('Contact ' + requirement.name),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(

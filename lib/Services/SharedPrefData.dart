@@ -11,21 +11,13 @@ class SharedPrefData {
     }
   }
 
-  static String getUid() {
-    return pref.getString('uid');
-  }
+  static String getUid() => pref.getString('uid');
 
-  static String getFCMToken() {
-    return pref.getString('fcmToken');
-  }
+  static String getFCMToken() => pref.getString('fcmToken');
 
-  static bool getProfileUpdated() {
-    return pref.getBool('profileUpdated');
-  }
+  static bool getProfileUpdated() => pref.getBool('profileUpdated');
 
-  static void setProfileUpdated() {
-    pref.setBool('profileUpdated', true);
-  }
+  static void setProfileUpdated() => pref.setBool('profileUpdated', true);
 
   static void setString(String key, String value) {
     pref.setString(key, value);
@@ -35,7 +27,9 @@ class SharedPrefData {
     pref.setBool(key, value);
   }
 
-  static void reset(String key) {
-    pref.remove(key);
-  }
+  static void reset(String key) => pref.remove(key);
+
+  static String getName() => pref.getString('name');
+
+  static String getPhotoURL() => pref.getString('photoURL');
 }

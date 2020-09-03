@@ -131,11 +131,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       debugPrint('Showing Chosen Image');
       return Image.file(chosenImage);
     }
-    if (farmAppUser != null && farmAppUser.photoUrl != null) {
+    if (farmAppUser != null && farmAppUser.photoURL != null) {
       if (oldImage == null) {
         debugPrint('Fetching network image');
         return oldImage = Image.network(
-          farmAppUser.photoUrl,
+          farmAppUser.photoURL,
           loadingBuilder: (_, child, progress) {
             if (progress == null) {
               return child;
@@ -225,7 +225,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           children: <Widget>[
             getDPWidget(),
             Card(
-              elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -294,7 +293,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               ),
             ),
             Card(
-              elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -471,16 +469,16 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       );
       pd.update(message: STRING_PLEASE_WAIT);
       pd.show();
-      String photoUrl;
+      String photoURL;
       if (imageChosen) {
         pd.update(message: STRING_UPLOADING_PROFILE_PICTURE);
-        photoUrl = await DBService.uploadPhoto(
+        photoURL = await DBService.uploadPhoto(
           chosenImage,
           DB_USERS + firebaseUser.uid + '.jpg',
         );
-        debugPrint('PHOTOURL: ' + photoUrl.toString());
+        debugPrint('PHOTOURL: ' + photoURL.toString());
       }
-      farmAppUser?.photoUrl = photoUrl;
+      farmAppUser?.photoURL = photoURL;
       farmAppUser?.displayName = nameEditC.text;
       Address address = Address(
         subAdminArea: distEditC.text,
@@ -494,7 +492,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       debugPrint('FARMAPPUSER UPDATED');
       await firebaseUser.updateProfile(
         displayName: nameEditC.text,
-        photoURL: photoUrl,
+        photoURL: photoURL,
       );
       debugPrint('FIREBASEUSER UPDATED');
       SharedPrefData.setProfileUpdated();

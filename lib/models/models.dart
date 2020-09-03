@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoder/geocoder.dart';
 
 enum TransactionStatus {
+  REQUESTED, // Requested by 1st P  // --> (Accept/Reject, Cancel)
+  ACCEPTED, // Accepted by 2nd P    // --> (Complete)
+  REJECTED, // Rejected by 2nd P    // --> ()
+  CANCELLED, // 1st P changed mind  // --> ()
   SUCCESSFUL,
-  FAILED, // Technical Error
-  WAITING,
-  DECLINED, // Rejected by Other Party
-  CANCELLED, // Changed Mind
 }
 
 enum TradeType {
@@ -17,135 +17,121 @@ enum TradeType {
 
 class Requirement {
   String rid;
-  String uid, name, nick, userImage, mobile;
-  String pid, product, productImage;
-  String qty, rate;
-  TradeType tradeType;
-  Timestamp postedOn;
+  String uid, name, photoURL;
+  String pid;
+  String rate, qty;
+  String tradeType;
+  DateTime timestamp;
   Position position;
-  String displayString, verb;
 
-  Requirement({
+  Requirement(
     this.rid,
     this.uid,
     this.name,
-    this.nick,
-    this.mobile,
     this.pid,
-    this.product,
     this.qty,
     this.rate,
     this.tradeType,
-    this.postedOn,
+    this.timestamp,
     this.position,
-    this.userImage,
-    this.productImage,
-  }) {
-    this.verb = (tradeType == TradeType.BUY) ? 'Buy' : 'Sell';
-    this.displayString = '$name wants to $verb $qty kg $product';
-  }
+    this.photoURL,
+  );
 
-  Requirement.fromDocumentSnapshot(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data();
-    uid = data['user'];
-    userImage = data['userImage'];
+  Requirement.fromDocumentSnapshot(String id, Map<String, dynamic> data) {
+    rid = id;
+    uid = data['uid'];
+    photoURL = data['photoURL'];
     name = data['name'];
-    mobile = data['mobile'];
-    pid = data['product'];
-    product = data['product'];
-    productImage = data['productImage'];
-    tradeType = (data['wants_to'] == 'Buy') ? TradeType.BUY : TradeType.SELL;
-    rate = data['rate'].toString();
-    qty = data['qty'].toString();
-
-    this.verb = (tradeType == TradeType.BUY) ? 'Buy' : 'Sell';
-    this.displayString = '$name wants to $verb $qty kg $product';
+    pid = data['pid'];
+    tradeType = data['tradeType'];
+    rate = data['rate'];
+    qty = data['qty'];
   }
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = Map<String, dynamic>();
-    map['uid'] = uid;
-    map['product'] = product;
-    map['rate'] = rate;
-    map['qty'] = qty;
-    return map;
-  }
-
-  void setTradeType(String type) {
-    if (type == 'Buy') {
-      tradeType = TradeType.BUY;
-    } else if (type == 'Sell') {
-      tradeType = TradeType.SELL;
-    } else {
-      assert(false);
-    }
+    return {
+      'uid': uid,
+      'photoURL': photoURL,
+      'name': name,
+      'pid': pid,
+      'tradeType': tradeType,
+      'rate': rate,
+      'qty': qty,
+    };
   }
 }
 
 class Transaction {
   String tid;
-  String firstPartyUid, firstPartyName;
-  String secondPartyUid, secondPartyName, secondPartyPhotoUrl;
-  String pid, productName, productPhotoUrl;
+  String sellerUid, sellerName, sellerPhoto;
+  String buyerUid, buyerName, buyerPhoto;
+  String pid;
   String rate, qty, amt;
   DateTime timestamp;
-  TradeType type;
   TransactionStatus status;
 
-  Transaction({
-    this.tid,
-    this.firstPartyUid,
-    this.firstPartyName,
-    this.secondPartyUid,
-    this.secondPartyName,
-    this.secondPartyPhotoUrl,
+  Transaction(
+    this.sellerUid,
+    this.sellerName,
+    this.sellerPhoto,
+    this.buyerUid,
+    this.buyerName,
+    this.buyerPhoto,
     this.pid,
-    this.productName,
-    this.productPhotoUrl,
     this.rate,
     this.qty,
+    this.amt,
     this.timestamp,
-    this.type,
     this.status,
-  }) {
+  ) {
     if (timestamp == null) timestamp = DateTime.now();
-    this.amt = (num.tryParse(rate) * num.tryParse(qty)).toString();
+    this.amt = (double.parse(rate) * double.parse(qty)).toString();
   }
 
-  Transaction.fromDocumentSnapshot(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data();
-    tid = data['tid'];
+  Transaction.fromMap(String id, Map<String, dynamic> data) {
+    tid = id;
+    sellerUid = data['sellerUid'];
+    sellerName = data['sellerName'];
+    sellerPhoto = data['sellerPhoto'];
+    buyerUid = data['buyerUid'];
+    buyerName = data['buyerName'];
+    buyerPhoto = data['buyerPhoto'];
+    pid = data['pid'];
     rate = data['rate'];
     qty = data['qty'];
-    secondPartyName = data['secondPartyName'];
+    amt = data['amt'];
     timestamp = data['timestamp'];
-    secondPartyPhotoUrl = data['secondPartyPhotoUrl'];
-    productPhotoUrl = data['productPhotoUrl'];
+    status = data['status'];
   }
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = Map<String, dynamic>();
-    map['secondPartyName'] = secondPartyName;
-    map['rate'] = rate;
-    map['qty'] = qty;
-    map['amt'] = amt;
-    map['tid'] = tid;
-    map['firstPartyName'] = firstPartyName;
-    map['productName'] = productName;
-    return map;
+    return {
+      'sellerUid': sellerUid,
+      'sellerName': sellerName,
+      'sellerPhoto': sellerPhoto,
+      'buyerUid': buyerUid,
+      'buyerName': buyerName,
+      'buyerPhoto': buyerPhoto,
+      'pid': pid,
+      'rate': rate,
+      'qty': qty,
+      'amt': amt,
+      'timestamp': timestamp,
+      'status': status,
+    };
   }
 }
 
 class FarmAppUser {
-  String uid, displayName, photoUrl, phoneNumber;
+  String uid, displayName, photoURL, phoneNumber;
   String nickName;
-  Address address;
+  Address address; // TODO: Should we store this is DB ???
   List<String> deviceTokens;
 
   FarmAppUser(
     this.uid,
     this.displayName,
-    this.photoUrl,
+    this.photoURL,
     this.phoneNumber,
     this.nickName,
     this.address,
@@ -155,7 +141,7 @@ class FarmAppUser {
     Map<String, dynamic> map = Map<String, dynamic>();
     map['uid'] = uid;
     map['displayName'] = displayName;
-    map['photoUrl'] = photoUrl;
+    map['photoURL'] = photoURL;
     map['phoneNumber'] = phoneNumber;
     map['location'] = GeoPoint(21.38144, 90.769907); // TODO
 

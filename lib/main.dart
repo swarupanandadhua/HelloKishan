@@ -18,6 +18,15 @@ class FarmApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: MaterialColor(APP_COLOR, APP_SWATCH),
         accentColor: Color(APP_COLOR_ACCENT),
+        cardTheme: CardTheme(
+          clipBehavior: Clip.none, // TODO: Play with it
+          color: Colors.white,
+          shadowColor: Colors.grey[300], // TODO: Play with it
+          elevation: 8,
+          margin: EdgeInsets.all(4.0), // TODO: Play with it
+          shape: RoundedRectangleBorder(), // TODO: Play with it
+        ),
+        dividerColor: Colors.grey[600],
       ),
       home: Scaffold(
         body: HomeScreen(),

@@ -5,16 +5,15 @@ import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:provider/provider.dart';
 
 class PostRequirementScreen extends StatefulWidget {
-  final String title = 'Search Results';
+  final String title = STRING_SEARCH_RESULTS;
 
   @override
   PostRequirementScreenState createState() => PostRequirementScreenState();
@@ -22,28 +21,15 @@ class PostRequirementScreen extends StatefulWidget {
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {
   final GlobalKey<FormState> postRequirementKey = GlobalKey<FormState>();
-  final Requirement requirement = Requirement();
-  final TextEditingController productTextController = TextEditingController();
+  final TextEditingController productC = TextEditingController();
+  final TextEditingController priceC = TextEditingController();
+  final TextEditingController qtyC = TextEditingController();
 
-  User u;
-  ProgressDialog submitDialog;
+  int pid;
+
   Position position;
   Size screenSize;
-
-  @override
-  void initState() {
-    submitDialog = ProgressDialog(
-      context,
-      type: ProgressDialogType.Normal,
-      isDismissible: false,
-    )..style(message: STRING_PLEASE_WAIT);
-
-    u = Provider.of<User>(context, listen: false); // TODO
-    requirement.uid = (u != null) ? u.uid : 'U00000';
-
-    requirement.position = Provider.of<Position>(context, listen: false);
-    super.initState();
-  }
+  String wantsTo;
 
   @override
   Widget build(BuildContext context) {
@@ -61,28 +47,25 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
             children: <Widget>[
               DropdownButtonFormField(
                 validator: null, // TODO
-                value: requirement.tradeType,
+                value: wantsTo,
                 hint: Text('I want to...'), // TODO
                 items: [
                   DropdownMenuItem(
-                    value: TradeType.BUY,
+                    value: STRING_BUY,
                     child: Text(STRING_BUY),
                   ),
                   DropdownMenuItem(
-                    value: TradeType.SELL,
+                    value: STRING_SELL,
                     child: Text(STRING_SELL),
                   ),
                 ],
-                onChanged: (type) => setState(
-                  () => requirement.setTradeType(
-                      type == TradeType.BUY ? STRING_SELL : STRING_SELL),
-                ),
+                onChanged: null,
               ),
               TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
                   decoration:
                       InputDecoration(labelText: STRING_SELECT_A_PRODUCT),
-                  controller: productTextController,
+                  controller: productC,
                 ),
                 suggestionsCallback: (pattern) async {
                   List<String> suggestions = List<String>();
@@ -101,17 +84,13 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     title: Text(suggestion),
                   );
                 },
-                transitionBuilder: (_, suggestionsBox, controller) {
-                  return suggestionsBox;
-                },
+                transitionBuilder: (_, suggestionsBox, ac) => suggestionsBox,
                 onSuggestionSelected: (String suggestion) {
-                  productTextController.text = suggestion;
-                },
-                onSaved: (val) {
-                  this.requirement.product = val;
+                  productC.text = suggestion;
                 },
               ),
               TextFormField(
+                controller: priceC,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
@@ -121,11 +100,9 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   labelText: STRING_ENTER_PRICE_PER_KG,
                 ),
                 validator: Validator.price,
-                onSaved: (String value) {
-                  this.requirement.rate = value;
-                },
               ),
               TextFormField(
+                controller: qtyC,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
@@ -135,9 +112,6 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   labelText: STRING_ENTER_QUANTITY,
                 ),
                 validator: Validator.quantity,
-                onSaved: (String value) {
-                  this.requirement.qty = value;
-                },
               ),
             ],
           ),
@@ -163,7 +137,24 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
 
   void submit() async {
     if (this.postRequirementKey.currentState.validate()) {
-      postRequirementKey.currentState.save();
+      final Requirement requirement = Requirement(
+        null, // rid
+        SharedPrefData.getUid(),
+        SharedPrefData.getName(),
+        null, // TODO: pid
+        qtyC.text,
+        priceC.text,
+        null, // TODO : TradeType
+        DateTime.now(),
+        null, // TODO: position
+        SharedPrefData.getPhotoURL(),
+      );
+      ProgressDialog submitDialog = ProgressDialog(
+        context,
+        type: ProgressDialogType.Normal,
+        isDismissible: false,
+      );
+      submitDialog.update(message: STRING_PLEASE_WAIT);
       submitDialog.show();
       await DBService.uploadRequirement(requirement);
       submitDialog.hide();

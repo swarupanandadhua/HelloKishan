@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 // TODO: TradeTile and HistoryTile can be shared
 
 class HistoryTile extends StatelessWidget {
-  final Transaction transaction;
+  final Transaction t;
 
-  HistoryTile(this.transaction);
+  HistoryTile(this.t);
 
   @override
   Widget build(BuildContext context) {
     String tradeType =
-        (SharedPrefData.getUid() == transaction.sellerUid) ? 'Sold' : 'Bought';
+        (SharedPrefData.getUid() == t.sellerUid) ? 'Sold' : 'Bought';
 
     return Card(
       child: Column(
@@ -27,9 +27,7 @@ class HistoryTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.network(
-                    (tradeType == 'Sold')
-                        ? transaction.buyerPhoto
-                        : transaction.sellerPhoto,
+                    (tradeType == 'Sold') ? t.buyerPhoto : t.sellerPhoto,
                     height: 50.0,
                     width: 50.0,
                     errorBuilder: (_, err, stack) => Image.asset(ASSET_ACCOUNT),
@@ -48,9 +46,7 @@ class HistoryTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    (tradeType == 'Sold')
-                        ? transaction.buyerName
-                        : transaction.sellerName,
+                    (tradeType == 'Sold') ? t.buyerName : t.sellerName,
                     style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
@@ -59,7 +55,7 @@ class HistoryTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.network(
-                    PRODUCTS[int.parse(transaction.pid)][2],
+                    PRODUCTS[int.parse(t.pid)][2],
                     height: 50.0,
                     width: 50.0,
                     errorBuilder: (_, err, stack) =>
@@ -78,9 +74,9 @@ class HistoryTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('$STRING_RATE : ₹${transaction.rate}/kg'),
-                  Text('$STRING_QUANTITY: ${transaction.qty} kg'),
-                  Text('$STRING_TOTAL_AMOUNT: ₹${transaction.amt}'),
+                  Text('$STRING_RATE : ₹${t.rate}/kg'),
+                  Text('$STRING_QUANTITY: ${t.qty} kg'),
+                  Text('$STRING_TOTAL_AMOUNT: ₹${t.amt}'),
                 ],
               ),
             ],
@@ -91,7 +87,7 @@ class HistoryTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(transaction.timestamp.toString()),
+              Text(t.timestamp.toString()),
               Icon(Icons.check),
             ],
           ),

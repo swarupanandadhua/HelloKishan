@@ -27,7 +27,7 @@ class HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SearchScreen(p[LANGUAGE.ENGLISH]),
+                  builder: (_) => SearchScreen(p),
                 ),
               );
             },

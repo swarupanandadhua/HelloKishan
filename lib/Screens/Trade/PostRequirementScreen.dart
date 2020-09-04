@@ -25,6 +25,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   final TextEditingController priceC = TextEditingController();
   final TextEditingController qtyC = TextEditingController();
 
+  List<String> selectedProduct;
+
   int pid;
 
   Position position;
@@ -46,7 +48,9 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           child: ListView(
             children: <Widget>[
               DropdownButtonFormField(
-                validator: null, // TODO
+                validator: (val) => ((val == 'Buy') || (val == 'Sell'))
+                    ? null
+                    : 'Please select Buy of Sell', // TODO
                 value: wantsTo,
                 hint: Text('I want to...'), // TODO
                 items: [
@@ -59,34 +63,44 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     child: Text(STRING_SELL),
                   ),
                 ],
-                onChanged: null,
+                onChanged: (val) => wantsTo = val,
               ),
               TypeAheadFormField(
+                // User must select something, not write
+                validator: (v) => (selectedProduct != null)
+                    ? null
+                    : STRING_SELECT_PRODUCT_FROM_LIST,
                 textFieldConfiguration: TextFieldConfiguration(
                   decoration:
                       InputDecoration(labelText: STRING_SELECT_A_PRODUCT),
                   controller: productC,
                 ),
                 suggestionsCallback: (pattern) async {
-                  List<String> suggestions = List<String>();
+                  List<List<String>> suggestions = List<List<String>>();
                   for (int i = 0; i < PRODUCTS.length; i++) {
                     if (PRODUCTS[i][LANGUAGE.CURRENT]
                         .toLowerCase()
                         .contains(pattern.toLowerCase())) {
-                      suggestions.add(PRODUCTS[i][LANGUAGE.CURRENT]);
+                      suggestions.add(PRODUCTS[i]);
                     }
                   }
                   return suggestions;
                 },
-                itemBuilder: (_, suggestion) {
+                itemBuilder: (_, product) {
                   return ListTile(
-                    leading: Icon(Icons.question_answer),
-                    title: Text(suggestion),
+                    leading: Image.asset(
+                      product[2],
+                      height: 30,
+                      width: 30,
+                      color: null,
+                    ),
+                    title: Text(product[LANGUAGE.CURRENT]),
                   );
                 },
                 transitionBuilder: (_, suggestionsBox, ac) => suggestionsBox,
-                onSuggestionSelected: (String suggestion) {
-                  productC.text = suggestion;
+                onSuggestionSelected: (List<String> suggestion) {
+                  selectedProduct = suggestion;
+                  productC.text = suggestion[LANGUAGE.CURRENT];
                 },
               ),
               TextFormField(
@@ -129,22 +143,22 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
               fontSize: 20,
             ),
           ),
-          onPressed: this.submit,
+          onPressed: postRequirement,
         ),
       ),
     );
   }
 
-  void submit() async {
-    if (this.postRequirementKey.currentState.validate()) {
+  void postRequirement() async {
+    if (postRequirementKey.currentState.validate()) {
       final Requirement requirement = Requirement(
         null, // rid
         SharedPrefData.getUid(),
         SharedPrefData.getName(),
-        null, // TODO: pid
+        selectedProduct[3],
         qtyC.text,
         priceC.text,
-        null, // TODO : TradeType
+        wantsTo,
         DateTime.now(),
         null, // TODO: position
         SharedPrefData.getPhotoURL(),

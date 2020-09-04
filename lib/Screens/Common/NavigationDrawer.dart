@@ -3,17 +3,13 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
+import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:flutter/material.dart';
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    final User u = Provider.of<User>(context, listen: false);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
       child: Drawer(
@@ -28,7 +24,8 @@ class NavigationDrawer extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        u?.displayName ?? STRING_WELCOME_USER,
+                        // TODO: Remove WELCOME_USER
+                        SharedPrefData.getName() ?? STRING_WELCOME_USER,
                         style: TextStyle(
                           fontSize: 22,
                           color: Colors.white,

@@ -47,8 +47,8 @@ class RequirementSearch extends SearchDelegate<String> {
     }
     return ListView.builder(
       itemBuilder: (context, i) => ListTile(
-        leading: Image(
-          image: AssetImage(products[i][2]),
+        leading: Image.asset(
+          products[i][2],
           height: 30,
           width: 30,
           color: null,
@@ -65,7 +65,7 @@ class RequirementSearch extends SearchDelegate<String> {
             context,
             MaterialPageRoute(
               builder: (_) => SearchScreen(
-                products[i][LANGUAGE.CURRENT],
+                products[i],
                 // TODO: .replaceAll(RegExp('[^A-Za-z]'), ''),
               ),
             ),

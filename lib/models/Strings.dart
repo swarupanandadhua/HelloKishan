@@ -34,6 +34,10 @@ const String STRING_MUST_BE_10_DIGITS = 'Must be 10 digits';
 const String STRING_ENTER_VALID_QUANTITY = 'Enter a valid quantity';
 const String STRING_NO_TRANSACTIONS_FOUND = 'No transactions found!';
 const String STRING_SOMETHING_WENT_WRONG = 'Something went wrong!';
+const String STRING_NO_BUYER_OR_SELLER_FOUND_FOR =
+    'No buyer or seller found for ';
+const String STRING_SELECT_PRODUCT_FROM_LIST =
+    'Please select a product from list';
 const String STRING_BOUGHT_FROM = 'Bought from';
 const String STRING_SOLD_TO = 'Sold to';
 const String STRING_RATE = 'Rate';

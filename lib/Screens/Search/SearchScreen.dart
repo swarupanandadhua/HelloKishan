@@ -1,3 +1,4 @@
+import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
@@ -7,24 +8,22 @@ import 'package:universal_html/html.dart' as HTML;
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
-  final String product;
+  final List<String> product;
   SearchScreen(this.product);
 
   @override
-  SearchScreenState createState() => SearchScreenState(product);
+  SearchScreenState createState() => SearchScreenState();
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  SearchScreenState(this.product);
-
-  final String product;
   Future<List<Requirement>> requirementsFuture;
   HTML.Location location; // TODO
   List<Requirement> requirements;
 
   @override
   void initState() {
-    requirementsFuture = DBService.fetchRequirements(product);
+    requirementsFuture =
+        DBService.fetchRequirements(widget.product[LANGUAGE.ENGLISH]);
     super.initState();
   }
 
@@ -96,7 +95,8 @@ class SearchScreenState extends State<SearchScreen> {
               );
             } else {
               return Center(
-                child: Text(STRING_NOTHING_FOUND),
+                child: Text(STRING_NO_BUYER_OR_SELLER_FOUND_FOR +
+                    widget.product[LANGUAGE.CURRENT]),
               );
             }
           } else if (snap.hasError) {

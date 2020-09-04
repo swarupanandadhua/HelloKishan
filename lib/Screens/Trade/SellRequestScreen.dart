@@ -116,7 +116,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         qtyC.text,
         (double.parse(r.rate) * double.parse(qtyC.text)).toString(),
         DateTime.now(),
-        TransactionStatus.REQUESTED,
+        STATUS_REQUESTED,
       );
       await DBService.initTransaction(t);
       submitDialog.hide();

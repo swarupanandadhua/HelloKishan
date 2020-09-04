@@ -29,6 +29,8 @@ class SharedPrefData {
 
   static void reset(String key) => pref.remove(key);
 
+  static void setName(String name) => pref.setString('name', name);
+
   static String getName() => pref.getString('name');
 
   static String getPhotoURL() => pref.getString('photoURL');

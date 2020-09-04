@@ -5,14 +5,72 @@ import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:flutter/material.dart';
 
-class TradeTile extends StatelessWidget {
-  final Transaction transaction;
-  TradeTile(this.transaction);
+class TradeTile extends StatefulWidget {
+  final Transaction t;
+  TradeTile(this.t);
+
+  @override
+  TradeTileState createState() => TradeTileState();
+}
+
+class TradeTileState extends State<TradeTile> {
+  Widget getActionButtons() {
+    bool requested = (widget.t.status == STATUS_REQUESTED);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Column(
+          children: [
+            requested
+                ? Row(
+                    children: [
+                      Image.asset(
+                        // accept
+                        ASSET_GREEN_TICK,
+                        height: 30,
+                        width: 30,
+                        color: null,
+                      ),
+                      Image.asset(
+                        // reject
+                        ASSET_RED_CROSS,
+                        height: 30,
+                        width: 30,
+                        color: null,
+                      ),
+                    ],
+                  )
+                : Text('Accepted'),
+          ],
+        ),
+        Column(
+          children: [
+            requested
+                ? Image.asset(
+                    // cancel
+                    ASSET_RED_CROSS,
+                    height: 30,
+                    width: 30,
+                    color: null,
+                  )
+                : Image.asset(
+                    // complete
+                    ASSET_GREEN_TICK,
+                    height: 30,
+                    width: 30,
+                    color: null,
+                  ),
+          ],
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    String tradeType =
-        (SharedPrefData.getUid() == transaction.sellerUid) ? 'Sold' : 'Bought';
+    String uid = SharedPrefData.getUid();
+    String tradeType = (uid == widget.t.sellerUid) ? 'Sold' : 'Bought';
 
     return Card(
       child: Column(
@@ -25,8 +83,8 @@ class TradeTile extends StatelessWidget {
                 child: ClipOval(
                   child: Image.network(
                     (tradeType == 'Sold')
-                        ? transaction.buyerPhoto
-                        : transaction.sellerPhoto,
+                        ? widget.t.buyerPhoto
+                        : widget.t.sellerPhoto,
                     height: 50.0,
                     width: 50.0,
                     errorBuilder: (_, err, stack) => Image.asset(ASSET_ACCOUNT),
@@ -46,8 +104,8 @@ class TradeTile extends StatelessWidget {
                   ),
                   Text(
                     (tradeType == 'Sold')
-                        ? transaction.buyerName
-                        : transaction.sellerName,
+                        ? widget.t.buyerName
+                        : widget.t.sellerName,
                     style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
@@ -56,7 +114,7 @@ class TradeTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.asset(
-                    PRODUCTS[int.parse(transaction.pid)][2],
+                    PRODUCTS[int.parse(widget.t.pid)][2],
                     height: 50.0,
                     width: 50.0,
                   ),
@@ -72,9 +130,9 @@ class TradeTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // TODO
-                  Text('Rate : ₹${transaction.rate}/kg'),
-                  Text('Quantity: ${transaction.qty}kg'),
-                  Text('Total Amount: ₹${transaction.amt}'),
+                  Text('Rate : ₹${widget.t.rate}/kg'),
+                  Text('Quantity: ${widget.t.qty}kg'),
+                  Text('Total Amount: ₹${widget.t.amt}'),
                 ],
               ),
             ],
@@ -85,12 +143,12 @@ class TradeTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(transaction.timestamp.toString()),
+              Text(widget.t.timestamp.toString()),
               Icon(Icons.check),
             ],
           ),
           Divider(),
-          // TODO: Action Buttons
+          getActionButtons(),
         ],
       ),
     );

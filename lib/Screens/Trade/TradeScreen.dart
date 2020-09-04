@@ -15,8 +15,7 @@ class TradeScreenState extends State<TradeScreen> {
   @override
   void initState() {
     super.initState();
-    transactions = DBService.fetchTransactions();
-    // TODO: Filter only REQUESTED, ACCEPTED,
+    transactions = DBService.fetchTransactions('TRADE');
   }
 
   @override

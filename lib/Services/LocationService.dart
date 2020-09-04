@@ -3,14 +3,15 @@ import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
-  Future<Position> fetchLocation() async {
+  static Future<Position> fetchLocation() async {
+    // TODO: Bug: Request for location access....
     return await GeolocatorPlatform.instance.getCurrentPosition(
       forceAndroidLocationManager: true,
       desiredAccuracy: LocationAccuracy.best,
     );
   }
 
-  Future<Address> getAddress() async {
+  static Future<Address> getAddress() async {
     Position pos = await fetchLocation();
     List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(
       Coordinates(pos.latitude, pos.longitude),

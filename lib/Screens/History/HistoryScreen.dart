@@ -15,7 +15,7 @@ class HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     super.initState();
-    transactions = DBService.fetchTransactions();
+    transactions = DBService.fetchTransactions('HISTORY');
   }
 
   @override

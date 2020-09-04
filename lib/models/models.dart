@@ -2,13 +2,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoder/geocoder.dart';
 
-enum TransactionStatus {
-  REQUESTED, // Requested by 1st P  // --> (Accept/Reject, Cancel)
-  ACCEPTED, // Accepted by 2nd P    // --> (Complete)
-  REJECTED, // Rejected by 2nd P    // --> ()
-  CANCELLED, // 1st P changed mind  // --> ()
-  SUCCESSFUL,
-}
+const String STATUS_REQUESTED = 'REQUESTED'; // --> (Accept/Reject, Cancel)
+const String STATUS_ACCEPTED = 'ACCEPTED'; // --> (Complete)
+const String STATUS_REJECTED = 'REJECTED';
+const String STATUS_CANCELLED = 'CANCELLED';
+const String STATUS_SUCCESSFUL = 'SUCCESSFUL';
 
 enum TradeType {
   SELL,
@@ -68,7 +66,7 @@ class Transaction {
   String pid;
   String rate, qty, amt;
   DateTime timestamp;
-  TransactionStatus status;
+  String status;
 
   Transaction(
     this.sellerUid,

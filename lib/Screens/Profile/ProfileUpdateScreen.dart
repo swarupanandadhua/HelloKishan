@@ -116,7 +116,15 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void getCurrentAddress() async {
-    LocationService().getAddress().then((address) {
+    ProgressDialog pd = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+    );
+    pd.update(message: 'Getting Location...');
+    pd.show();
+    await LocationService.getAddress().then((address) {
+      debugPrint(address.toString());
       setState(() {
         addressEditC.text = address?.addressLine;
         pinEditC.text = address?.postalCode;
@@ -124,6 +132,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         distEditC.text = address?.subAdminArea;
       });
     });
+    pd.hide();
   }
 
   Image getProfilePicture() {
@@ -280,11 +289,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                       child: TextFormField(
                         controller: mobileEditC,
-                        decoration: const InputDecoration(
-                          hintText: STRING_ENTER_MOBILE_NUMBER,
-                          labelText: STRING_ENTER_MOBILE_NUMBER,
-                        ),
-                        validator: Validator.mobile,
                         enabled: false,
                       ),
                     ),
@@ -330,6 +334,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           labelText: STRING_HOUSE_STREET_LOCALITY,
                         ),
                         enabled: editing,
+                        validator: Validator.addressLine,
                       ),
                     ),
                     Padding(
@@ -349,6 +354,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           labelText: STRING_ENTER_YOUR_DISTRICT,
                         ),
                         enabled: editing,
+                        validator: Validator.district,
                       ),
                     ),
                     Padding(
@@ -388,13 +394,13 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           labelText: STRING_ENTER_STATE,
                         ),
                         enabled: editing,
+                        validator: Validator.state,
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            // editing ? actionButtons() : Container(),
             Container(height: 65),
           ],
         ),
@@ -461,7 +467,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   void saveProfileDetails() async {
     if (profileDetailsForm.currentState.validate()) {
-      debugPrint('PROCEED clicked'); // TODO: Not hitting this line
+      profileDetailsForm.currentState.save();
+      debugPrint('PROCEED clicked');
       ProgressDialog pd = ProgressDialog(
         context,
         type: ProgressDialogType.Normal,

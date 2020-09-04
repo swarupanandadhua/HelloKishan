@@ -24,6 +24,7 @@ dependencies:
   geolocator:
   geocoder:
   geoflutterfire:
+  location:
 
   flutter_bloc:
   provider:

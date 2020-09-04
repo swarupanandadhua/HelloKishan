@@ -114,12 +114,27 @@ class DBService {
     return requirements;
   }
 
-  static Future<List<FarmApp.Transaction>> fetchTransactions() async {
+  static Future<List<FarmApp.Transaction>> fetchTransactions(
+      String screen) async {
+    List<String> status;
+    if (screen == 'HISTORY') {
+      status = [
+        FarmApp.STATUS_REJECTED,
+        FarmApp.STATUS_CANCELLED,
+        FarmApp.STATUS_SUCCESSFUL,
+      ];
+    } else {
+      status = [
+        FarmApp.STATUS_REQUESTED,
+        FarmApp.STATUS_ACCEPTED,
+      ];
+    }
     String uid = SharedPrefData.getUid();
     List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
     await FirebaseFirestore.instance
         .collection(DB_TRANSACTIONS)
-        .where('firstPartyUid', isEqualTo: uid)
+        .where('sellerUid', isEqualTo: uid)
+        .where('status', whereIn: status)
         .orderBy('timestamp')
         .limit(20)
         .get()

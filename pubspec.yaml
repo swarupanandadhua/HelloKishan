@@ -21,10 +21,10 @@ dependencies:
   pin_entry_text_field:
   introduction_screen:
 
-  geolocator:
   geocoder:
   geoflutterfire:
-  location:
+  location: #Use this instead of geolocator
+  geolocator:
 
   flutter_bloc:
   provider:

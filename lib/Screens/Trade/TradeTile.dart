@@ -87,6 +87,9 @@ class TradeTileState extends State<TradeTile> {
                         : widget.t.sellerPhoto,
                     height: 50.0,
                     width: 50.0,
+                    loadingBuilder: (_, c, prog) {
+                      return (prog == null) ? c : Image.asset(ASSET_LOADING);
+                    },
                     errorBuilder: (_, err, stack) => Image.asset(ASSET_ACCOUNT),
                   ),
                 ),
@@ -143,7 +146,7 @@ class TradeTileState extends State<TradeTile> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(widget.t.timestamp.toString()),
+              Text(widget.t.timestamp.toDate().toString()),
               Icon(Icons.check),
             ],
           ),

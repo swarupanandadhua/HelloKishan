@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Strings.dart';
@@ -16,9 +18,20 @@ class WelcomeScreen extends StatefulWidget {
 class WelcomeScreenState extends State<WelcomeScreen> {
   String uid;
   bool profileUpdated;
+  bool counted = false;
 
-  getLoggedinStatus() async {
-    await SharedPrefData.initialize();
+  var firebaseApp;
+  var sharedPref;
+
+  void doPreprocessing() async {
+    firebaseApp = Firebase.initializeApp();
+    sharedPref = SharedPrefData.initialize();
+    Timer(Duration(seconds: 3), doPostProcessing);
+  }
+
+  doPostProcessing() async {
+    await firebaseApp;
+    await sharedPref;
     setState(
       () {
         uid = SharedPrefData.getUid() ?? 'NOT_LOGGED_IN';
@@ -29,9 +42,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   void initState() {
-    Firebase.initializeApp(); // TODO 1: await until this completes
-    getLoggedinStatus(); // TDOO 2: await until this completes
-    // TODO 3 : await until 3sec is complete
+    doPreprocessing();
     super.initState();
   }
 
@@ -50,7 +61,6 @@ class WelcomeScreenState extends State<WelcomeScreen> {
       return Wrapper();
     }
 
-    final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       child: Center(
         child: Column(
@@ -61,9 +71,10 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: ClipOval(
                 child: Image.asset(
+                  // TODO: Bug: Not showing
                   ASSET_APP_LOGO,
-                  height: screenWidth * 0.7,
-                  width: screenWidth * 0.7,
+                  height: 100,
+                  width: 100,
                 ),
               ),
             ),
@@ -81,10 +92,11 @@ class WelcomeScreenState extends State<WelcomeScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ClipOval(
+                // TODO: Bug: Not showing
                 child: Image.asset(
                   ASSET_LOADING,
-                  height: screenWidth * 0.3,
-                  width: screenWidth * 0.3,
+                  height: 30,
+                  width: 30,
                 ),
               ),
             ),

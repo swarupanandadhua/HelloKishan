@@ -92,12 +92,11 @@ class DBService {
     return null;
   }
 
-  static Future<List<FarmApp.Requirement>> fetchRequirements(
-      String prod) async {
+  static Future<List<FarmApp.Requirement>> fetchRequirements(String pid) async {
     List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
     await FirebaseFirestore.instance
         .collection(DB_REQUIREMENTS)
-        .where('product', isEqualTo: prod)
+        .where('pid', isEqualTo: pid)
         .get()
         .then(
       (snapshot) {
@@ -130,23 +129,19 @@ class DBService {
       ];
     }
     String uid = SharedPrefData.getUid();
-    List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
-    await FirebaseFirestore.instance
+    QuerySnapshot snap = await FirebaseFirestore.instance
         .collection(DB_TRANSACTIONS)
         .where('sellerUid', isEqualTo: uid)
         .where('status', whereIn: status)
         .orderBy('timestamp')
         .limit(20)
-        .get()
-        .then(
-      (snapshot) {
-        snapshot.docs.forEach(
-          (doc) {
-            transactions.insert(
-              0,
-              FarmApp.Transaction.fromMap(doc.id, doc.data()),
-            );
-          },
+        .get();
+    List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
+
+    snap.docs.forEach(
+      (doc) {
+        transactions.add(
+          FarmApp.Transaction.fromMap(doc.id, doc.data()),
         );
       },
     );

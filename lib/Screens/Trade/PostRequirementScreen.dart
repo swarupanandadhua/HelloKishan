@@ -6,6 +6,7 @@ import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -88,11 +89,14 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 },
                 itemBuilder: (_, product) {
                   return ListTile(
-                    leading: Image.asset(
-                      product[2],
-                      height: 30,
-                      width: 30,
-                      color: null,
+                    // TODO: Move to ProductDropDownTile.dart
+                    leading: ClipOval(
+                      child: Image.asset(
+                        product[2],
+                        height: 30,
+                        width: 30,
+                        color: null,
+                      ),
                     ),
                     title: Text(product[LANGUAGE.CURRENT]),
                   );
@@ -159,7 +163,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         qtyC.text,
         priceC.text,
         wantsTo,
-        DateTime.now(),
+        Timestamp.now(),
         null, // TODO: position
         SharedPrefData.getPhotoURL(),
       );

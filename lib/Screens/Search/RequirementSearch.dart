@@ -1,5 +1,6 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Products.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Search/SearchScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -31,8 +32,11 @@ class RequirementSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    debugPrint(StackTrace.current.toString());
-    return Text('TODO');
+    return Container(
+      child: Center(
+        child: Text(STRING_SELECT_PRODUCT_FROM_LIST),
+      ),
+    );
   }
 
   @override
@@ -47,11 +51,14 @@ class RequirementSearch extends SearchDelegate<String> {
     }
     return ListView.builder(
       itemBuilder: (context, i) => ListTile(
-        leading: Image.asset(
-          products[i][2],
-          height: 30,
-          width: 30,
-          color: null,
+        // TODO: Move to ProductDropDownTile.dart
+        leading: ClipOval(
+          child: Image.asset(
+            products[i][2],
+            height: 30,
+            width: 30,
+            color: null,
+          ),
         ),
         title: Text(
           products[i][LANGUAGE.CURRENT],

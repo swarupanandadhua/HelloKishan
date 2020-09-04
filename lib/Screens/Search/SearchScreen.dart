@@ -22,8 +22,8 @@ class SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    requirementsFuture =
-        DBService.fetchRequirements(widget.product[LANGUAGE.ENGLISH]);
+    // INFO: product[3] stores 'pid'
+    requirementsFuture = DBService.fetchRequirements(widget.product[3]);
     super.initState();
   }
 
@@ -88,7 +88,7 @@ class SearchScreenState extends State<SearchScreen> {
                 color: Color(0xff0011),
                 child: ListView.builder(
                   itemBuilder: (_, i) {
-                    return SearchResultTile(requirement: snap.data[i]);
+                    return SearchResultTile(r: snap.data[i]);
                   },
                   itemCount: snap.data.length,
                 ),

@@ -33,5 +33,7 @@ class SharedPrefData {
 
   static String getName() => pref.getString('name');
 
+  static void setPhotoURL(String url) => pref.setString('photoURL', url);
+
   static String getPhotoURL() => pref.getString('photoURL');
 }

@@ -59,6 +59,7 @@ const String STRING_HIGHEST_PRICE_FIRST = 'Highest Price First';
 const String STRING_LOWEST_PRICE_FIRST = 'Lowest Price First';
 const String STRING_SEARCH_RESULTS = 'Search Results';
 const String STRING_POST_REQUIREMENT = 'Post Requirement';
+const String STRING_SENDING_REQUEST = 'Sending Request...';
 const String STRING_BUY = 'Buy';
 const String STRING_SELL = 'Sell';
 const String STRING_SELECT_A_PRODUCT = 'Select a product';

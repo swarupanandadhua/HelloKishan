@@ -19,7 +19,7 @@ class Requirement {
   String pid;
   String rate, qty;
   String tradeType;
-  DateTime timestamp;
+  Timestamp timestamp;
   Position position;
 
   Requirement(
@@ -65,7 +65,7 @@ class Transaction {
   String buyerUid, buyerName, buyerPhoto;
   String pid;
   String rate, qty, amt;
-  DateTime timestamp;
+  Timestamp timestamp;
   String status;
 
   Transaction(
@@ -82,7 +82,6 @@ class Transaction {
     this.timestamp,
     this.status,
   ) {
-    if (timestamp == null) timestamp = DateTime.now();
     this.amt = (double.parse(rate) * double.parse(qty)).toString();
   }
 

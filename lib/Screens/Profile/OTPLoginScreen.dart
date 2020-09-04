@@ -1,3 +1,4 @@
+import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/Debug.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
@@ -25,9 +26,14 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          key: this.otpLoginFormKey,
+          key: otpLoginFormKey,
           child: ListView(
             children: <Widget>[
+              Image.asset(
+                ASSET_APP_LOGO,
+                height: 150,
+                width: 150,
+              ),
               TextFormField(
                 keyboardType: TextInputType.number,
                 inputFormatters: [
@@ -38,13 +44,13 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                   labelText: STRING_ENTER_MOBILE_NUMBER,
                 ),
                 validator: Validator.mobile,
-                onSaved: (value) => this.mobile = value,
+                onSaved: (value) => mobile = value,
               ),
               Container(
                 width: screenSize.width / 2,
                 child: RaisedButton(
                   child: Text(STRING_SEND_OTP),
-                  onPressed: this.submit,
+                  onPressed: verify,
                 ),
                 margin: EdgeInsets.only(top: 20.0),
               ),
@@ -56,10 +62,10 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     );
   }
 
-  void submit() async {
-    if (this.otpLoginFormKey.currentState.validate()) {
+  void verify() async {
+    if (otpLoginFormKey.currentState.validate()) {
       otpLoginFormKey.currentState.save();
-      AuthService().verifyPhoneNumber(this.mobile, context);
+      AuthService().verifyPhoneNumber(mobile, context);
     }
   }
 }

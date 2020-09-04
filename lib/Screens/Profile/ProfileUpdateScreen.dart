@@ -109,7 +109,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         farmAppUser ?? await DBService.getFarmAppUser(firebaseUser.uid);
 
     setState(() {
-      userLoaded = true; // TODO: Bug...memory leak...
+      // TODO: Bug: setState() called after dispose(): ProfileUpdateScreenState
+      userLoaded = true;
       mobileEditC.text = firebaseUser.phoneNumber;
       nameEditC.text = farmAppUser.displayName;
     });
@@ -401,7 +402,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                 ),
               ),
             ),
-            Container(height: 65),
+            actionButtons(),
+            Container(height: 60),
           ],
         ),
       );
@@ -459,10 +461,12 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       ),
       compressQuality: 80,
     );
-    setState(() {
-      chosenImage = img;
-      imageChosen = true;
-    });
+    if (img != null) {
+      setState(() {
+        chosenImage = img;
+        imageChosen = true;
+      });
+    }
   }
 
   void saveProfileDetails() async {
@@ -502,6 +506,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         photoURL: photoURL,
       );
       debugPrint('FIREBASEUSER UPDATED');
+      SharedPrefData.setName(nameEditC.text);
+      SharedPrefData.setPhotoURL(photoURL);
       SharedPrefData.setProfileUpdated();
       pd.hide();
       Navigator.pop(context);

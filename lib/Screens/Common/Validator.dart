@@ -1,48 +1,25 @@
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:flutter/cupertino.dart';
 
 class Validator {
   static String price(String val) {
-    String s = (num.tryParse(val) > 0) ? null : STRING_ENTER_VALID_PRICE;
-    if (s != null) {
-      debugPrint("Validation Failed");
-    }
-    return s;
+    return (num.tryParse(val) > 0) ? null : STRING_ENTER_VALID_PRICE;
   }
 
   static String quantity(String val) {
-    String s = (double.parse(val) > 0) ? null : STRING_ENTER_VALID_QUANTITY;
-    if (s != null) {
-      debugPrint("Validation Failed");
-    }
-    return s;
+    return (double.parse(val) > 0) ? null : STRING_ENTER_VALID_QUANTITY;
   }
 
   static String otp(String val) {
-    String s = (val?.length == 6) ? null : STRING_OTP_MUST_6_DIGITS;
-    if (s != null) {
-      debugPrint("Validation Failed");
-    }
-    return s;
+    return (val?.length == 6) ? null : STRING_OTP_MUST_6_DIGITS;
   }
 
   static String name(String val) {
     // TODO: Move `RegExp('[a-zA-Z ]?').hasMatch(val)` to TextFormField
-    String s =
-        (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_NAME;
-    if (s != null) {
-      debugPrint("Validation Failed");
-    }
-    return s;
+    return (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_NAME;
   }
 
   static String mobile(String val) {
-    String s =
-        (val != null && val.length == 10) ? null : STRING_MUST_BE_10_DIGITS;
-    if (s != null) {
-      debugPrint("Validation Failed");
-    }
-    return s;
+    return (val != null && val.length == 10) ? null : STRING_MUST_BE_10_DIGITS;
   }
 
   static String addressLine(String val) {

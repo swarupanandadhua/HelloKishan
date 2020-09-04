@@ -12,7 +12,6 @@ class SearchResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('XXXXXXX: ' + r.photoURL);
     return Card(
       child: Column(
         children: <Widget>[

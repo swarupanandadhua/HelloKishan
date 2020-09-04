@@ -72,16 +72,13 @@ class AuthService {
     User u;
     if (!phone.startsWith('+91')) phone = '+91' + phone;
 
-    debugPrint('-----verifyPhoneNumber called-----');
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       codeSent: (verificationId, [forceResendingToken]) {
-        debugPrint('-----codeSent called-----');
         pd.update(message: 'Auto reading OTP...');
       },
       timeout: Duration(seconds: 30),
       codeAutoRetrievalTimeout: (verificationId) async {
-        debugPrint('-----codeAutoRetrievalTimeout called-----');
         if (pd.isShowing()) pd.hide();
         TextEditingController tc = TextEditingController();
         String otp = await showDialog<String>(
@@ -140,18 +137,15 @@ class AuthService {
       verificationCompleted: (cred) async {
         pd.update(message: 'Signing in...');
         if (!pd.isShowing()) pd.show();
-        debugPrint('-----verificationCompleted called-----');
         await FirebaseAuth.instance.signInWithCredential(cred).then(
           (authResult) {
             if (pd.isShowing()) pd.hide();
             u = authResult?.user;
-            // showMyInfoDialog(ctx, (u == null) ? 'Sign in failed' : 'Signed in');
             signInCallBack(u);
           },
         );
       },
       verificationFailed: (error) {
-        debugPrint('-----verificationFailed called-----');
         debugPrint(error.message);
         if (pd.isShowing()) pd.hide();
         showMyInfoDialog(ctx, 'Verification failed');

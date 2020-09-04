@@ -125,7 +125,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     pd.update(message: 'Getting Location...');
     pd.show();
     await LocationService.getAddress().then((address) {
-      debugPrint(address.toString());
       setState(() {
         addressEditC.text = address?.addressLine;
         pinEditC.text = address?.postalCode;
@@ -146,18 +145,10 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         debugPrint('Fetching network image');
         return oldImage = Image.network(
           farmAppUser.photoURL,
-          loadingBuilder: (_, child, progress) {
-            if (progress == null) {
-              return child;
-            } else {
-              debugPrint('Loading...');
-              return Image.asset(ASSET_LOADING);
-            }
+          loadingBuilder: (_, child, prog) {
+            return (prog == null) ? child : Image.asset(ASSET_LOADING);
           },
-          errorBuilder: (_, __, ___) {
-            debugPrint('Error fetching image');
-            return Image.asset(ASSET_RED_CROSS);
-          },
+          errorBuilder: (_, __, ___) => Image.asset(ASSET_RED_CROSS),
         );
       } else {
         return oldImage;
@@ -472,7 +463,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   void saveProfileDetails() async {
     if (profileDetailsForm.currentState.validate()) {
       profileDetailsForm.currentState.save();
-      debugPrint('PROCEED clicked');
       ProgressDialog pd = ProgressDialog(
         context,
         type: ProgressDialogType.Normal,
@@ -500,12 +490,10 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       farmAppUser?.address = address;
       pd.update(message: STRING_UPDATING_PROFILE_INFO);
       await DBService.setFarmAppUser(farmAppUser);
-      debugPrint('FARMAPPUSER UPDATED');
       await firebaseUser.updateProfile(
         displayName: nameEditC.text,
         photoURL: photoURL,
       );
-      debugPrint('FIREBASEUSER UPDATED');
       SharedPrefData.setName(nameEditC.text);
       SharedPrefData.setPhotoURL(photoURL);
       SharedPrefData.setProfileUpdated();

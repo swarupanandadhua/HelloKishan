@@ -104,16 +104,18 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void loadUser() async {
-    firebaseUser = firebaseUser ?? AuthService().getFirebaseUser();
-    farmAppUser =
-        farmAppUser ?? await DBService.getFarmAppUser(firebaseUser.uid);
+    if (SharedPrefData.getUid() == null) {
+      firebaseUser = firebaseUser ?? AuthService().getFirebaseUser();
+      farmAppUser =
+          farmAppUser ?? await DBService.getFarmAppUser(firebaseUser.uid);
 
-    setState(() {
-      // TODO: Bug: setState() called after dispose(): ProfileUpdateScreenState
-      userLoaded = true;
-      mobileEditC.text = firebaseUser.phoneNumber;
-      nameEditC.text = farmAppUser.displayName;
-    });
+      setState(() {
+        // TODO: Bug: setState() called after dispose(): ProfileUpdateScreenState
+        userLoaded = true;
+        mobileEditC.text = firebaseUser.phoneNumber;
+        nameEditC.text = farmAppUser.displayName;
+      });
+    }
   }
 
   void getCurrentAddress() async {
@@ -495,7 +497,12 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         photoURL: photoURL,
       );
       SharedPrefData.setName(nameEditC.text);
+      SharedPrefData.setMobile(firebaseUser.phoneNumber);
       SharedPrefData.setPhotoURL(photoURL);
+      SharedPrefData.setAddressLine(addressEditC.text);
+      SharedPrefData.setDistrict(distEditC.text);
+      SharedPrefData.setPincode(pinEditC.text);
+      SharedPrefData.setState(stateEditC.text);
       SharedPrefData.setProfileUpdated();
       pd.hide();
       Navigator.pop(context);

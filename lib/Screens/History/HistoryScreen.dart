@@ -10,18 +10,18 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class HistoryScreenState extends State<HistoryScreen> {
-  Future<List<Transaction>> transactions;
+  Stream<List<Transaction>> transactions;
 
   @override
   void initState() {
     super.initState();
-    transactions = DBService.fetchTransactions('HISTORY');
+    transactions = DBService.fetchTransactionsStream('HISTORY');
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Transaction>>(
-      future: transactions,
+    return StreamBuilder<List<Transaction>>(
+      stream: transactions,
       builder: (_, snap) {
         if (snap.hasData) {
           if (snap.data.length > 0) {

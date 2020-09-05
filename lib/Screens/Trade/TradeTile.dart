@@ -4,74 +4,105 @@ import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class TradeTile extends StatefulWidget {
   final Transaction t;
   TradeTile(this.t);
 
   @override
-  TradeTileState createState() => TradeTileState();
+  TradeTileState createState() => TradeTileState(t);
 }
 
 class TradeTileState extends State<TradeTile> {
-  Widget getActionButtons() {
-    bool requested = (widget.t.status == STATUS_REQUESTED);
+  Transaction t;
+  String name;
+  String photoURL;
+  String tradeDescription;
+  String timestamp;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          children: [
-            requested
-                ? Row(
-                    children: [
-                      Image.asset(
-                        // accept
-                        ASSET_GREEN_TICK,
-                        height: 30,
-                        width: 30,
-                        color: null,
-                      ),
-                      Image.asset(
-                        // reject
-                        ASSET_RED_CROSS,
-                        height: 30,
-                        width: 30,
-                        color: null,
-                      ),
-                    ],
-                  )
-                : Text('Accepted'),
-          ],
-        ),
-        Column(
-          children: [
-            requested
-                ? Image.asset(
-                    // cancel
-                    ASSET_RED_CROSS,
-                    height: 30,
-                    width: 30,
-                    color: null,
-                  )
-                : Image.asset(
-                    // complete
-                    ASSET_GREEN_TICK,
-                    height: 30,
-                    width: 30,
-                    color: null,
-                  ),
-          ],
-        ),
-      ],
+  TradeTileState(this.t) {
+    String uid = SharedPrefData.getUid();
+    if (uid == t.sellerUid) {
+      name = t.sellerName;
+      photoURL = t.sellerPhoto;
+      tradeDescription = STRING_SELLING_TO;
+    } else {
+      name = t.buyerName;
+      photoURL = t.buyerPhoto;
+      tradeDescription = STRING_BUYING_FROM;
+    }
+    DateTime d = t.timestamp.toDate();
+    timestamp =
+        '${d.day.toString()}-${d.month.toString()}-${d.year.toString()}  ${d.hour.toString()}:${d.minute.toString()}:${d.second.toString()}';
+  }
+
+  void updateTransactionStatus(String status) async {
+    ProgressDialog pd = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
     );
+    pd.update(message: 'Updating...');
+    pd.show();
+    await t.setStatus(status);
+    pd.hide();
+    debugPrint('Updated Transaction : ' + status);
+    setState(() {
+      t = t;
+    });
+  }
+
+  Widget getActionButtons() {
+    if (t.status == STATUS_REQUESTED) {
+      if (t.sellerUid == SharedPrefData.getUid()) {
+        // Seller can Accept/Reject
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FlatButton.icon(
+              onPressed: () => updateTransactionStatus(STATUS_REJECTED),
+              icon: Icon(Icons.cancel),
+              label: Text('REJECT'),
+            ),
+            FlatButton.icon(
+              onPressed: () => updateTransactionStatus(STATUS_ACCEPTED),
+              icon: Icon(Icons.check),
+              label: Text('ACCEPT'),
+            ),
+          ],
+        );
+      } else {
+        return Row(
+          children: [
+            Text('REQUESTED'),
+            FlatButton.icon(
+              onPressed: () => updateTransactionStatus(STATUS_CANCELLED),
+              icon: Icon(Icons.cancel),
+              label: Text('CANCEL'),
+            ),
+          ],
+        );
+      }
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text('Accepted'),
+          FlatButton.icon(
+            onPressed: () => updateTransactionStatus(STATUS_SUCCESSFUL),
+            icon: Icon(Icons.check_circle),
+            label: Text('COMPLETE'),
+          ),
+        ],
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String uid = SharedPrefData.getUid();
-    String tradeType = (uid == widget.t.sellerUid) ? 'Sold' : 'Bought';
-
+    if ((t.status != STATUS_ACCEPTED) && (t.status != STATUS_REQUESTED)) {
+      return Container();
+    }
     return Card(
       child: Column(
         children: <Widget>[
@@ -82,15 +113,21 @@ class TradeTileState extends State<TradeTile> {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.network(
-                    (tradeType == 'Sold')
-                        ? widget.t.buyerPhoto
-                        : widget.t.sellerPhoto,
+                    photoURL,
                     height: 50.0,
                     width: 50.0,
-                    loadingBuilder: (_, c, prog) {
-                      return (prog == null) ? c : Image.asset(ASSET_LOADING);
-                    },
-                    errorBuilder: (_, err, stack) => Image.asset(ASSET_ACCOUNT),
+                    loadingBuilder: (_, c, prog) => (prog == null)
+                        ? c
+                        : Image.asset(
+                            ASSET_LOADING,
+                            height: 50.0,
+                            width: 50.0,
+                          ),
+                    errorBuilder: (_, err, stack) => Image.asset(
+                      ASSET_ACCOUNT,
+                      height: 50.0,
+                      width: 50.0,
+                    ),
                   ),
                 ),
               ),
@@ -99,16 +136,14 @@ class TradeTileState extends State<TradeTile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    (tradeType == 'Sold') ? STRING_SOLD_TO : STRING_BOUGHT_FROM,
+                    tradeDescription,
                     style: TextStyle(
                       color: Colors.grey[350],
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    (tradeType == 'Sold')
-                        ? widget.t.buyerName
-                        : widget.t.sellerName,
+                    name,
                     style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
@@ -117,7 +152,7 @@ class TradeTileState extends State<TradeTile> {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.asset(
-                    PRODUCTS[int.parse(widget.t.pid)][2],
+                    PRODUCTS[int.parse(t.pid)][2],
                     height: 50.0,
                     width: 50.0,
                   ),
@@ -133,9 +168,9 @@ class TradeTileState extends State<TradeTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // TODO
-                  Text('Rate : ₹${widget.t.rate}/kg'),
-                  Text('Quantity: ${widget.t.qty}kg'),
-                  Text('Total Amount: ₹${widget.t.amt}'),
+                  Text('Rate : ₹${t.rate}/kg'),
+                  Text('Quantity: ${t.qty}kg'),
+                  Text('Total Amount: ₹${t.amt}'),
                 ],
               ),
             ],
@@ -143,13 +178,7 @@ class TradeTileState extends State<TradeTile> {
           Divider(
             color: Colors.grey[600],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(widget.t.timestamp.toDate().toString()),
-              Icon(Icons.check),
-            ],
-          ),
+          Text(timestamp),
           Divider(),
           getActionButtons(),
         ],

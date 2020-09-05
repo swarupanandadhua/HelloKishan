@@ -3,7 +3,6 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart' as FarmApp;
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -59,7 +58,16 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                   hintText: STRING_ENTER_QUANTITY,
                   labelText: STRING_ENTER_QUANTITY,
                 ),
-                validator: Validator.quantity,
+                validator: (val) {
+                  double q = double.parse(val);
+                  if (q <= 0) {
+                    return STRING_ENTER_VALID_QUANTITY;
+                  }
+                  if (q > double.parse(r.qty)) {
+                    return r.name + ' will buy maximum ' + r.qty + ' kg';
+                  }
+                  return null;
+                },
               ),
               Text('Address'), // TODO
             ],

@@ -51,9 +51,9 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
               DropdownButtonFormField(
                 validator: (val) => ((val == 'Buy') || (val == 'Sell'))
                     ? null
-                    : 'Please select Buy of Sell', // TODO
+                    : STRING_SELECT_BUY_OR_SELL,
                 value: wantsTo,
-                hint: Text('I want to...'), // TODO
+                hint: Text(STRING_I_WANT_TO),
                 items: [
                   DropdownMenuItem(
                     value: STRING_BUY,

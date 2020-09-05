@@ -1,28 +1,27 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Trade/TradeTile.dart';
+import 'package:FarmApp/Screens/Trade/MyRequirementTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:flutter/material.dart';
 
-class TradeScreen extends StatefulWidget {
+class MyRequirementScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => TradeScreenState();
+  State<StatefulWidget> createState() => MyRequirementScreenState();
 }
 
-// TODO: BUG: If status is changed from REQUESTED <-> ACCEPTED in backend, doesn't get updated
-class TradeScreenState extends State<TradeScreen> {
-  Stream<List<Transaction>> transactions;
+class MyRequirementScreenState extends State<MyRequirementScreen> {
+  Future<List<Requirement>> requirements;
 
   @override
   void initState() {
     super.initState();
-    transactions = DBService.fetchTransactionsStream('TRADE');
+    requirements = DBService.fetchMyRequirements();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Transaction>>(
-      stream: transactions,
+    return FutureBuilder<List<Requirement>>(
+      future: requirements,
       builder: (_, snap) {
         if (snap.hasData) {
           if (snap.data.length > 0) {
@@ -30,14 +29,14 @@ class TradeScreenState extends State<TradeScreen> {
               color: Color(0xff0011),
               child: ListView.builder(
                 itemBuilder: (_, i) {
-                  return TradeTile(snap.data[i]);
+                  return MyRequirementTile(snap.data[i]);
                 },
                 itemCount: snap.data.length,
               ),
             );
           } else {
             return Center(
-              child: Text(STRING_NO_TRANSACTIONS_FOUND),
+              child: Text(STRING_NO_REQUIREMENTS_FOUND),
             );
           }
         } else if (snap.hasError) {

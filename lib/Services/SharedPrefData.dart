@@ -1,39 +1,41 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefData {
-  static SharedPreferences pref;
-  static String uid, fcmToken;
-  static bool profileUpdated;
+  static SharedPreferences p;
 
-  static Future<void> initialize() async {
-    if (pref == null) {
-      pref = await SharedPreferences.getInstance();
-    }
-  }
+  static Future<void> init() async =>
+      p = p ?? await SharedPreferences.getInstance();
 
-  static String getUid() => pref.getString('uid');
+  static void setProfileUpdated() => p.setBool('profileUpdated', true);
+  static bool getProfileUpdated() => p.getBool('profileUpdated');
 
-  static String getFCMToken() => pref.getString('fcmToken');
+  static void setUid(String uid) => p.setString('uid', uid);
+  static String getUid() => p.getString('uid');
 
-  static bool getProfileUpdated() => pref.getBool('profileUpdated');
+  static void setName(String name) => p.setString('name', name);
+  static String getName() => p.getString('name');
 
-  static void setProfileUpdated() => pref.setBool('profileUpdated', true);
+  static void setMobile(String mobile) => p.setString('mobile', mobile);
+  static String getMobile() => p.getString('mobile');
 
-  static void setString(String key, String value) {
-    pref.setString(key, value);
-  }
+  static void setPhotoURL(String url) => p.setString('photoURL', url);
+  static String getPhotoURL() => p.getString('photoURL');
 
-  static void setBool(String key, bool value) {
-    pref.setBool(key, value);
-  }
+  static void setAddressLine(String addressLine) =>
+      p.setString('addressLine', addressLine);
+  static String getAddressLine() => p.getString('addressLine');
 
-  static void reset(String key) => pref.remove(key);
+  static void setDistrict(String district) => p.setString('district', district);
+  static String getDistrict() => p.getString('district');
 
-  static void setName(String name) => pref.setString('name', name);
+  static void setState(String state) => p.setString('state', state);
+  static String getState() => p.getString('state');
 
-  static String getName() => pref.getString('name');
+  static void setPincode(String pincode) => p.setString('pincode', pincode);
+  static String getPincode() => p.getString('pincode');
 
-  static void setPhotoURL(String url) => pref.setString('photoURL', url);
+  static void setFCMToken(String token) => p.setString('fcmToken', token);
+  static String getFCMToken() => p.getString('fcmToken');
 
-  static String getPhotoURL() => pref.getString('photoURL');
+  static void reset(String key) => p.remove(key);
 }

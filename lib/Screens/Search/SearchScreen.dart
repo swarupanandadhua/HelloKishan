@@ -4,8 +4,9 @@ import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Models/Models.dart';
-import 'package:universal_html/html.dart' as HTML;
 import 'package:flutter/material.dart';
+
+// TODO: geolocator::distanceBetween can be used for calculating distance
 
 class SearchScreen extends StatefulWidget {
   final List<String> product;
@@ -17,7 +18,6 @@ class SearchScreen extends StatefulWidget {
 
 class SearchScreenState extends State<SearchScreen> {
   Future<List<Requirement>> requirementsFuture;
-  HTML.Location location; // TODO
   List<Requirement> requirements;
 
   @override

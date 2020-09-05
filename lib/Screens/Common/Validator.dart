@@ -14,7 +14,6 @@ class Validator {
   }
 
   static String name(String val) {
-    // TODO: Move `RegExp('[a-zA-Z ]?').hasMatch(val)` to TextFormField
     return (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_NAME;
   }
 
@@ -23,18 +22,18 @@ class Validator {
   }
 
   static String addressLine(String val) {
-    return (val != null && val.length >= 5) ? null : 'Enter a valid address';
+    return (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_ADDRESS;
   }
 
   static String district(String val) {
-    return (val != null && val.length >= 5) ? null : 'Enter a valid district';
+    return (val != null && val.length >= 5) ? null : STRING_ENTER_YOUR_DISTRICT;
   }
 
   static String pincode(String val) {
-    return (val?.length == 6) ? null : 'Enter a valid pincode';
+    return (val?.length == 6) ? null : STRING_ENTER_PIN_CODE;
   }
 
   static String state(String val) {
-    return (val != null && val.length >= 5) ? null : 'Enter a valid state';
+    return (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_STATE;
   }
 }

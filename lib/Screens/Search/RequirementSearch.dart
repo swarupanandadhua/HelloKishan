@@ -71,10 +71,7 @@ class RequirementSearch extends SearchDelegate<String> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => SearchScreen(
-                products[i],
-                // TODO: .replaceAll(RegExp('[^A-Za-z]'), ''),
-              ),
+              builder: (_) => SearchScreen(products[i]),
             ),
           );
         },

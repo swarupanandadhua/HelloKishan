@@ -65,4 +65,18 @@ const List<List<String>> PRODUCTS = [
   ['লাল শাক', 'Read Leafy', 'assets/images/app_logo.jpg', '51'],
   ['লেটুসপাতা', 'Lettuce', 'assets/images/app_logo.jpg', '52'],
   ['হেলেঞ্চা শাক', 'Cress', 'assets/images/app_logo.jpg', '53'],
+  ['পাট শাক', '???', 'assets/images/app_logo.jpg', '54'],
+  ['শুশনী শাক', '???', 'assets/images/app_logo.jpg', '55'],
+  ['কুলেখাড়া শাক', '???', 'assets/images/app_logo.jpg', '56'],
+
+  ['বাদাম', '???', 'assets/images/app_logo.jpg', '57'],
+  [
+    'মাশরুম',
+    'Mushroom',
+    'assets/images/app_logo.jpg',
+    '57'
+  ], // TODO: is it same as 'শিক ছাতু' or 'কারান ছাতূ' ???
+  ['কুরকুরি ছাতু', '???', 'assets/images/app_logo.jpg', '57'],
+  ['তরমুজ', 'Watermelon', 'assets/images/watermelon.jpg', '57'],
+  ['উচ্ছে', '???', 'assets/images/app_logo.jpg', '57'],
 ];

@@ -2,6 +2,7 @@ import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
+import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -16,7 +17,15 @@ class NavigationDrawer extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             GestureDetector(
-              onTap: () => debugPrint(StackTrace.current.toString()),
+              onTap: () {
+                // Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProfileUpdateScaffold(),
+                  ),
+                );
+              },
               // TODO: Show Profile Picture as well
               child: Container(
                 height: 120,

@@ -25,7 +25,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   void doPreprocessing() async {
     firebaseApp = Firebase.initializeApp();
-    sharedPref = SharedPrefData.initialize();
+    sharedPref = SharedPrefData.init();
     Timer(Duration(seconds: 3), doPostProcessing);
   }
 

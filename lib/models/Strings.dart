@@ -1,8 +1,12 @@
 const String STRING_APP_NAME = 'FarmApp';
 const String STRING_CANCEL = 'Cancel';
 const String STRING_ENTER_MOBILE_NUMBER = 'Enter Mobile Number';
+const String STRING_SELECT_BUY_OR_SELL = 'Please select Buy of Sell';
 const String STRING_ENTER_OTP = 'Enter the OTP';
 const String STRING_ENTER_PIN_CODE = 'Enter Pin Code';
+const String STRING_ENTER_VALID_ADDRESS = 'Enter a valid address';
+const String STRING_ENTER_VALID_STATE = 'Enter a valid state';
+const String STRING_I_WANT_TO = 'I want to...';
 const String STRING_ENTER_PRICE_PER_KG = 'Enter price/kg';
 const String STRING_ENTER_QUANTITY = 'Enter quantity (in kg)';
 const String STRING_ENTER_YOUR_NAME = 'Enter your name';
@@ -12,6 +16,7 @@ const String STRING_HELP_BODY = 'body=Please%20type%20your%20query%20here...';
 const String STRING_HELP_SUB = 'subject=FarmApp%20Help';
 const String STRING_HISTORY = 'History';
 const String STRING_HOME = 'Home';
+const String STRING_REQUIREMENTS = 'Requirements';
 const String STRING_KYC = 'KYC';
 const String STRING_MOBILE = 'Mobile';
 const String STRING_NAME = 'Name';
@@ -33,12 +38,15 @@ const String STRING_ENTER_VALID_NAME = 'Enter a valid name';
 const String STRING_MUST_BE_10_DIGITS = 'Must be 10 digits';
 const String STRING_ENTER_VALID_QUANTITY = 'Enter a valid quantity';
 const String STRING_NO_TRANSACTIONS_FOUND = 'No transactions found!';
+const String STRING_NO_REQUIREMENTS_FOUND = 'No requirements found!';
 const String STRING_SOMETHING_WENT_WRONG = 'Something went wrong!';
 const String STRING_NO_BUYER_OR_SELLER_FOUND_FOR =
     'No buyer or seller found for ';
 const String STRING_SELECT_PRODUCT_FROM_LIST =
     'Please select a product from list';
+const String STRING_BUYING_FROM = 'Buying from';
 const String STRING_BOUGHT_FROM = 'Bought from';
+const String STRING_SELLING_TO = 'Selling to';
 const String STRING_SOLD_TO = 'Sold to';
 const String STRING_RATE = 'Rate';
 const String STRING_QUANTITY = 'Quantity';

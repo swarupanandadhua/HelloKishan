@@ -92,6 +92,42 @@ class DBService {
     return null;
   }
 
+  static Stream<List<FarmApp.Requirement>> fetchMyRequirementsStream() {
+    return FirebaseFirestore.instance
+        .collection(DB_REQUIREMENTS)
+        .where('uid', isEqualTo: SharedPrefData.getUid())
+        .snapshots()
+        .map((snap) {
+      List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
+      snap.docs.forEach((e) {
+        requirements.add(
+          FarmApp.Requirement.fromDocumentSnapshot(e.id, e.data()),
+        );
+      });
+      return requirements;
+    });
+  }
+
+  static Future<List<FarmApp.Requirement>> fetchMyRequirements() async {
+    List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
+    await FirebaseFirestore.instance
+        .collection(DB_REQUIREMENTS)
+        .where('uid', isEqualTo: SharedPrefData.getUid())
+        .get()
+        .then(
+      (snapshot) {
+        snapshot.docs.forEach(
+          (doc) {
+            requirements.add(
+              FarmApp.Requirement.fromDocumentSnapshot(doc.id, doc.data()),
+            );
+          },
+        );
+      },
+    );
+    return requirements;
+  }
+
   static Future<List<FarmApp.Requirement>> fetchRequirements(String pid) async {
     List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
     await FirebaseFirestore.instance
@@ -100,17 +136,50 @@ class DBService {
         .get()
         .then(
       (snapshot) {
+        String uid = SharedPrefData.getUid();
         snapshot.docs.forEach(
           (doc) {
-            requirements.insert(
-              0,
-              FarmApp.Requirement.fromDocumentSnapshot(doc.id, doc.data()),
-            );
+            if (doc.data()['uid'] != uid) {
+              requirements.add(
+                FarmApp.Requirement.fromDocumentSnapshot(doc.id, doc.data()),
+              );
+            }
           },
         );
       },
     );
     return requirements;
+  }
+
+  static Stream<List<FarmApp.Transaction>> fetchTransactionsStream(
+      String screen) {
+    List<String> status;
+    if (screen == 'HISTORY') {
+      status = [
+        FarmApp.STATUS_REJECTED,
+        FarmApp.STATUS_CANCELLED,
+        FarmApp.STATUS_SUCCESSFUL,
+      ];
+    } else {
+      status = [
+        FarmApp.STATUS_REQUESTED,
+        FarmApp.STATUS_ACCEPTED,
+      ];
+    }
+    String uid = SharedPrefData.getUid();
+    return FirebaseFirestore.instance
+        .collection(DB_TRANSACTIONS)
+        .where('sellerUid', isEqualTo: uid)
+        .where('status', whereIn: status)
+        .orderBy('timestamp')
+        .limit(20)
+        .snapshots()
+        .map((snap) {
+      List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
+      snap.docs.forEach(
+          (e) => transactions.add(FarmApp.Transaction.fromMap(e.id, e.data())));
+      return transactions;
+    });
   }
 
   static Future<List<FarmApp.Transaction>> fetchTransactions(
@@ -156,6 +225,15 @@ class DBService {
     await FirebaseFirestore.instance.collection(DB_TRANSACTIONS).add(t.toMap());
   }
 
+  static Future<void> updateTransaction(String tid, {String status}) async {
+    await FirebaseFirestore.instance
+        .collection(DB_TRANSACTIONS)
+        .doc(tid)
+        .update({
+      'status': status,
+    });
+  }
+
   static Future<String> getPhotoURL(String path) async {
     return await FirebaseStorage.instance.ref().child(path).getDownloadURL();
   }
@@ -185,7 +263,7 @@ class DBService {
       FirebaseMessaging fcm = FirebaseMessaging();
       fcmToken = await fcm.getToken();
 
-      SharedPrefData.setString('fcmToken', fcmToken);
+      SharedPrefData.setFCMToken(fcmToken);
       String uid = SharedPrefData.getUid();
       DBService.saveFCMToken(uid, fcmToken);
     }

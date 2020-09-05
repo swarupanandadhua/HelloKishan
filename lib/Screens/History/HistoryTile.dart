@@ -7,15 +7,29 @@ import 'package:flutter/material.dart';
 
 // TODO: TradeTile and HistoryTile can be shared
 
-class HistoryTile extends StatelessWidget {
+class HistoryTile extends StatefulWidget {
   final Transaction t;
 
   HistoryTile(this.t);
 
   @override
+  HistoryTileState createState() => HistoryTileState(t);
+}
+
+class HistoryTileState extends State<HistoryTile> {
+  String timestamp;
+  Transaction t;
+
+  HistoryTileState(this.t) {
+    DateTime d = t.timestamp.toDate();
+    timestamp =
+        '${d.day.toString()}-${d.month.toString()}-${d.year.toString()}  ${d.hour.toString()}:${d.minute.toString()}:${d.second.toString()}';
+  }
+
+  @override
   Widget build(BuildContext context) {
     String tradeType =
-        (SharedPrefData.getUid() == t.sellerUid) ? 'Sold' : 'Bought';
+        (SharedPrefData.getUid() == widget.t.sellerUid) ? 'Sold' : 'Bought';
 
     return Card(
       child: Column(
@@ -27,7 +41,9 @@ class HistoryTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.network(
-                    (tradeType == 'Sold') ? t.buyerPhoto : t.sellerPhoto,
+                    (tradeType == 'Sold')
+                        ? widget.t.buyerPhoto
+                        : widget.t.sellerPhoto,
                     height: 50.0,
                     width: 50.0,
                     errorBuilder: (_, err, stack) => Image.asset(ASSET_ACCOUNT),
@@ -46,7 +62,9 @@ class HistoryTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    (tradeType == 'Sold') ? t.buyerName : t.sellerName,
+                    (tradeType == 'Sold')
+                        ? widget.t.buyerName
+                        : widget.t.sellerName,
                     style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
@@ -55,7 +73,7 @@ class HistoryTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.network(
-                    PRODUCTS[int.parse(t.pid)][2],
+                    PRODUCTS[int.parse(widget.t.pid)][2],
                     height: 50.0,
                     width: 50.0,
                     errorBuilder: (_, err, stack) =>
@@ -74,9 +92,9 @@ class HistoryTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('$STRING_RATE : ₹${t.rate}/kg'),
-                  Text('$STRING_QUANTITY: ${t.qty} kg'),
-                  Text('$STRING_TOTAL_AMOUNT: ₹${t.amt}'),
+                  Text('$STRING_RATE : ₹${widget.t.rate}/kg'),
+                  Text('$STRING_QUANTITY: ${widget.t.qty} kg'),
+                  Text('$STRING_TOTAL_AMOUNT: ₹${widget.t.amt}'),
                 ],
               ),
             ],
@@ -87,7 +105,7 @@ class HistoryTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(t.timestamp.toString()),
+              Text(timestamp),
               Icon(Icons.check),
             ],
           ),

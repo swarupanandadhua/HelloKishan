@@ -53,7 +53,7 @@ class AuthService {
 
     signInCallBack(User u) {
       if (u != null) {
-        SharedPrefData.setString('uid', u.uid);
+        SharedPrefData.setUid(u.uid);
 
         Navigator.pushAndRemoveUntil(
           ctx,

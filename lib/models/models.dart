@@ -1,3 +1,4 @@
+import 'package:FarmApp/Services/DBService.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoder/geocoder.dart';
@@ -81,9 +82,7 @@ class Transaction {
     this.amt,
     this.timestamp,
     this.status,
-  ) {
-    this.amt = (double.parse(rate) * double.parse(qty)).toString();
-  }
+  );
 
   Transaction.fromMap(String id, Map<String, dynamic> data) {
     tid = id;
@@ -117,6 +116,11 @@ class Transaction {
       'status': status,
     };
   }
+
+  Future<void> setStatus(String status) async {
+    this.status = status;
+    await DBService.updateTransaction(tid, status: status);
+  }
 }
 
 class FarmAppUser {
@@ -135,13 +139,12 @@ class FarmAppUser {
   );
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = Map<String, dynamic>();
-    map['uid'] = uid;
-    map['displayName'] = displayName;
-    map['photoURL'] = photoURL;
-    map['phoneNumber'] = phoneNumber;
-    map['location'] = GeoPoint(21.38144, 90.769907); // TODO
-
-    return map;
+    return {
+      'uid': uid,
+      'displayName': displayName,
+      'photoURL': photoURL,
+      'phoneNumber': phoneNumber,
+      'location': GeoPoint(21.38144, 90.769907), // TODO
+    };
   }
 }

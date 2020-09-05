@@ -3,8 +3,8 @@ import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/History/HistoryScreen.dart';
 import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
-import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
+import 'package:FarmApp/Screens/Trade/MyRequirementScreen.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
 import 'package:FarmApp/Services/DBService.dart';
@@ -19,42 +19,28 @@ class Wrapper extends StatefulWidget {
 class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
   static List<Widget> tabs = <Widget>[
     HomeScreen(),
-    ProfileUpdateScreen(),
+    MyRequirementScreen(),
     TradeScreen(),
     HistoryScreen(),
   ];
   static List<String> _titles = <String>[
     STRING_HOME,
-    STRING_PROFILE,
+    STRING_REQUIREMENTS,
     STRING_TRADE,
     STRING_HISTORY,
   ];
   static List<Widget> _icons = [
+    Icon(Icons.home, size: 30, color: Colors.white),
     Icon(
-      Icons.home,
+      Icons.pan_tool,
       size: 30,
       color: Colors.white,
     ),
-    Icon(
-      Icons.account_circle,
-      size: 30,
-      color: Colors.white,
-    ),
-    Icon(
-      Icons.import_export,
-      size: 30,
-      color: Colors.white,
-    ),
+    Icon(Icons.import_export, size: 30, color: Colors.white),
     Icon(Icons.history, size: 30, color: Colors.white),
   ];
 
   TabController tabController;
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -65,8 +51,13 @@ class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
       length: tabs.length,
       vsync: this,
     );
-
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   @override

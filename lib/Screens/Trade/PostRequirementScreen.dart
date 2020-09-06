@@ -159,13 +159,13 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         null, // rid
         SharedPrefData.getUid(),
         SharedPrefData.getName(),
+        SharedPrefData.getPhotoURL(),
         selectedProduct[3],
-        qtyC.text,
         priceC.text,
+        qtyC.text,
         wantsTo,
         Timestamp.now(),
         null, // TODO: position
-        SharedPrefData.getPhotoURL(),
       );
       ProgressDialog submitDialog = ProgressDialog(
         context,

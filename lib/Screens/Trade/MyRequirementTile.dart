@@ -1,7 +1,10 @@
 import 'package:FarmApp/Models/Constants.dart';
+import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
+import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class MyRequirementTile extends StatefulWidget {
   final Requirement r;
@@ -19,38 +22,52 @@ class MyRequirementTileState extends State<MyRequirementTile> {
 
   @override
   Widget build(BuildContext context) {
+    final int pid = int.parse(r.pid);
     return Card(
       child: Column(
         children: [
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipOval(
-                  child: Image.asset(
-                    PRODUCTS[int.parse(r.pid)][2],
-                    height: 50,
-                    width: 50,
-                  ),
+                padding: const EdgeInsets.all(4),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: ClipOval(
+                        child: Image.asset(
+                          PRODUCTS[pid][2],
+                          height: 50,
+                          width: 50,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(PRODUCTS[pid][LANGUAGE.CURRENT]),
+                    ),
+                  ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(4),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text('Product : ' +
-                          PRODUCTS[int.parse(r.pid)][LANGUAGE.CURRENT]),
+                      child: Text('$STRING_RATE : Rs. ${r.rate}/kg'),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text('Rate : Rs. ${r.rate} per kg'),
+                      child: Text('$STRING_QUANTITY : ${r.qty} kg'),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text('Qty : ${r.qty} kg'),
+                      child: Text(getTimeStampString(r.timestamp)),
                     ),
                   ],
                 ),
@@ -58,19 +75,29 @@ class MyRequirementTileState extends State<MyRequirementTile> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 RaisedButton.icon(
-                  onPressed: () => debugPrint('TODO'),
+                  onPressed: () async {
+                    ProgressDialog pd = ProgressDialog(
+                      context,
+                      type: ProgressDialogType.Normal,
+                    );
+                    pd.update(message: 'Deleting...');
+                    pd.show();
+                    await r.delete();
+                    pd.hide();
+                  },
                   icon: Icon(Icons.delete),
-                  label: Text('DELETE'),
+                  label: Text(STRING_DELETE),
                 ),
                 RaisedButton.icon(
-                  onPressed: () => debugPrint('TODO'),
+                  onPressed: () =>
+                      debugPrint(STRING_TODO_IMPORTANT_FUNCTIONALITY),
                   icon: Icon(Icons.edit),
-                  label: Text('UPDATE'),
+                  label: Text(STRING_UPDATE),
                 ),
               ],
             ),

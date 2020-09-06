@@ -100,11 +100,13 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       );
       pd.update(message: STRING_SENDING_REQUEST);
       pd.show();
+      List<String> uids = List<String>();
+      uids.add(SharedPrefData.getUid());
+      uids.add(r.uid);
       FarmApp.Transaction t = FarmApp.Transaction(
-        SharedPrefData.getUid(),
+        uids,
         SharedPrefData.getName(),
         SharedPrefData.getPhotoURL(),
-        r.uid,
         r.name,
         r.photoURL,
         r.pid,

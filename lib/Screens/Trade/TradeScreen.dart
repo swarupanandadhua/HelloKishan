@@ -9,7 +9,6 @@ class TradeScreen extends StatefulWidget {
   State<StatefulWidget> createState() => TradeScreenState();
 }
 
-// TODO: BUG: If status is changed from REQUESTED <-> ACCEPTED in backend, doesn't get updated
 class TradeScreenState extends State<TradeScreen> {
   Stream<List<Transaction>> transactions;
 
@@ -21,7 +20,20 @@ class TradeScreenState extends State<TradeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Transaction>>(
+    return /* AnimatedStreamList(
+      streamList: transactions,
+      itemBuilder: (t, i, _, animation) => SizeTransition(
+        axis: Axis.vertical,
+        sizeFactor: animation,
+        child: TradeTile(t),
+      ),
+      itemRemovedBuilder: (t, i, _, animation) => SizeTransition(
+        axis: Axis.horizontal,
+        sizeFactor: animation,
+        child: TradeTile(t),
+      ),
+    ); */
+        StreamBuilder<List<Transaction>>(
       stream: transactions,
       builder: (_, snap) {
         if (snap.hasData) {

@@ -6,6 +6,7 @@ import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:flutter/material.dart';
 
 // TODO: TradeTile and HistoryTile can be shared
+// TODO: UI BUG: Overflows
 
 class HistoryTile extends StatefulWidget {
   final Transaction t;
@@ -29,7 +30,7 @@ class HistoryTileState extends State<HistoryTile> {
   @override
   Widget build(BuildContext context) {
     String tradeType =
-        (SharedPrefData.getUid() == widget.t.sellerUid) ? 'Sold' : 'Bought';
+        (SharedPrefData.getUid() == widget.t.uids[0]) ? 'Sold' : 'Bought';
 
     return Card(
       child: Column(
@@ -94,7 +95,7 @@ class HistoryTileState extends State<HistoryTile> {
                 children: <Widget>[
                   Text('$STRING_RATE : ₹${widget.t.rate}/kg'),
                   Text('$STRING_QUANTITY: ${widget.t.qty} kg'),
-                  Text('$STRING_TOTAL_AMOUNT: ₹${widget.t.amt}'),
+                  Text('$STRING_TOTAL_AMT: ₹${widget.t.amt}'),
                 ],
               ),
             ],

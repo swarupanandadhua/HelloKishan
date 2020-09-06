@@ -10,7 +10,7 @@ class MyRequirementScreen extends StatefulWidget {
 }
 
 class MyRequirementScreenState extends State<MyRequirementScreen> {
-  Future<List<Requirement>> requirements;
+  Stream<List<Requirement>> requirements;
 
   @override
   void initState() {
@@ -20,8 +20,8 @@ class MyRequirementScreenState extends State<MyRequirementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Requirement>>(
-      future: requirements,
+    return StreamBuilder<List<Requirement>>(
+      stream: requirements,
       builder: (_, snap) {
         if (snap.hasData) {
           if (snap.data.length > 0) {

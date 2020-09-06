@@ -1,4 +1,5 @@
 import 'package:FarmApp/Services/DBService.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoder/geocoder.dart';
@@ -27,53 +28,59 @@ class Requirement {
     this.rid,
     this.uid,
     this.name,
+    this.photoURL,
     this.pid,
-    this.qty,
     this.rate,
+    this.qty,
     this.tradeType,
     this.timestamp,
-    this.position,
-    this.photoURL,
+    this.position, // TODO
   );
 
   Requirement.fromDocumentSnapshot(String id, Map<String, dynamic> data) {
     rid = id;
     uid = data['uid'];
-    photoURL = data['photoURL'];
     name = data['name'];
+    photoURL = data['photoURL'];
     pid = data['pid'];
-    tradeType = data['tradeType'];
     rate = data['rate'];
     qty = data['qty'];
+    tradeType = data['tradeType'];
+    timestamp = data['timestamp'];
   }
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
-      'photoURL': photoURL,
       'name': name,
+      'photoURL': photoURL,
       'pid': pid,
-      'tradeType': tradeType,
       'rate': rate,
       'qty': qty,
+      'tradeType': tradeType,
+      'timestamp': timestamp,
     };
+  }
+
+  Future<void> delete() async {
+    await DBService.deleteRequirement(rid);
   }
 }
 
 class Transaction {
   String tid;
-  String sellerUid, sellerName, sellerPhoto;
-  String buyerUid, buyerName, buyerPhoto;
+  List<String> uids; // [sellerUid, buyerUid]
+  String sellerName, sellerPhoto;
+  String buyerName, buyerPhoto;
   String pid;
   String rate, qty, amt;
   Timestamp timestamp;
   String status;
 
   Transaction(
-    this.sellerUid,
+    this.uids,
     this.sellerName,
     this.sellerPhoto,
-    this.buyerUid,
     this.buyerName,
     this.buyerPhoto,
     this.pid,
@@ -86,10 +93,9 @@ class Transaction {
 
   Transaction.fromMap(String id, Map<String, dynamic> data) {
     tid = id;
-    sellerUid = data['sellerUid'];
+    uids = List<String>.from(data['uids']);
     sellerName = data['sellerName'];
     sellerPhoto = data['sellerPhoto'];
-    buyerUid = data['buyerUid'];
     buyerName = data['buyerName'];
     buyerPhoto = data['buyerPhoto'];
     pid = data['pid'];
@@ -98,14 +104,14 @@ class Transaction {
     amt = data['amt'];
     timestamp = data['timestamp'];
     status = data['status'];
+    debugPrint('fromMap: $tid : $status');
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'sellerUid': sellerUid,
+      'uids': uids,
       'sellerName': sellerName,
       'sellerPhoto': sellerPhoto,
-      'buyerUid': buyerUid,
       'buyerName': buyerName,
       'buyerPhoto': buyerPhoto,
       'pid': pid,

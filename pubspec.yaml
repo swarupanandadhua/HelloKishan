@@ -13,40 +13,28 @@ dependencies:
   firebase_storage:
   firebase_messaging:
 
-  shimmer:
-  octo_image:
+  #shimmer:
+  #octo_image:
   image_cropper:
-  transparent_image:
   image_picker:
-  pin_entry_text_field:
   introduction_screen:
+  intl:
 
   geocoder:
   geoflutterfire:
   location: #Use this instead of geolocator
   geolocator:
 
-  flutter_bloc:
   provider:
+  animated_stream_list:
 
-  stack_trace: ### For DEBUG purpose only ###
-  universal_html:
   url_launcher: ### Starting Phone/Mail Activities ###
 
-  animated_text_kit:
-  numeric_keyboard:
   curved_navigation_bar:
-  cupertino_icons:
-  flutter_spinkit:
   flutter_typeahead:
   progress_dialog:
   splashscreen:
-  loading_gifs:
   shared_preferences:
-
-  flutter_mobx:
-  mobx:
-  flutter_libphonenumber:
 
 environment:
   sdk:
@@ -54,8 +42,6 @@ environment:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner:
-  mobx_codegen:
 
 flutter:
   assets:

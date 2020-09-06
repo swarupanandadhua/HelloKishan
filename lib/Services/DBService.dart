@@ -92,7 +92,7 @@ class DBService {
     return null;
   }
 
-  static Stream<List<FarmApp.Requirement>> fetchMyRequirementsStream() {
+  static Stream<List<FarmApp.Requirement>> fetchMyRequirements() {
     return FirebaseFirestore.instance
         .collection(DB_REQUIREMENTS)
         .where('uid', isEqualTo: SharedPrefData.getUid())
@@ -106,26 +106,6 @@ class DBService {
       });
       return requirements;
     });
-  }
-
-  static Future<List<FarmApp.Requirement>> fetchMyRequirements() async {
-    List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
-    await FirebaseFirestore.instance
-        .collection(DB_REQUIREMENTS)
-        .where('uid', isEqualTo: SharedPrefData.getUid())
-        .get()
-        .then(
-      (snapshot) {
-        snapshot.docs.forEach(
-          (doc) {
-            requirements.add(
-              FarmApp.Requirement.fromDocumentSnapshot(doc.id, doc.data()),
-            );
-          },
-        );
-      },
-    );
-    return requirements;
   }
 
   static Future<List<FarmApp.Requirement>> fetchRequirements(String pid) async {
@@ -166,10 +146,9 @@ class DBService {
         FarmApp.STATUS_ACCEPTED,
       ];
     }
-    String uid = SharedPrefData.getUid();
     return FirebaseFirestore.instance
         .collection(DB_TRANSACTIONS)
-        .where('sellerUid', isEqualTo: uid)
+        .where('uids', arrayContains: SharedPrefData.getUid())
         .where('status', whereIn: status)
         .orderBy('timestamp')
         .limit(20)

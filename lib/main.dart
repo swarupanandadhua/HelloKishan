@@ -10,8 +10,6 @@ void main() {
   runApp(FarmApp());
 }
 
-// TODO: ENHANCEMENT: Use `FirebaseAuth.instance.currentUser.uid` instead of `SharedPredData.getUid`
-
 class FarmApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
+import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,12 +54,17 @@ class AuthService {
 
     signInCallBack(User u) {
       if (u != null) {
-        SharedPrefData.setUid(u.uid);
+        Widget screen;
+        if (SharedPrefData.getProfileUpdated() == true) {
+          screen = Wrapper();
+        } else {
+          screen = ProfileUpdateScaffold();
+        }
 
         Navigator.pushAndRemoveUntil(
           ctx,
           MaterialPageRoute(
-            builder: (ctx) => ProfileUpdateScaffold(),
+            builder: (ctx) => screen,
           ),
           (route) => false,
         );

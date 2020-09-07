@@ -17,13 +17,12 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  Future<List<Requirement>> requirementsFuture;
-  List<Requirement> requirements;
+  Stream<List<Requirement>> requirements;
 
   @override
   void initState() {
     // INFO: product[3] stores 'pid'
-    requirementsFuture = DBService.fetchRequirements(widget.product[3]);
+    requirements = DBService.fetchRequirements(pid: widget.product[3]);
     super.initState();
   }
 
@@ -44,18 +43,10 @@ class SearchScreenState extends State<SearchScreen> {
                   debugPrint(StackTrace.current.toString());
                   break;
                 case STRING_HIGHEST_PRICE_FIRST:
-                  if (requirements != null) {
-                    setState(() {
-                      requirements.sort((a, b) => (a.rate.compareTo(b.rate)));
-                    });
-                  }
+                  debugPrint(StackTrace.current.toString());
                   break;
                 case STRING_LOWEST_PRICE_FIRST:
-                  if (requirements != null) {
-                    setState(() {
-                      requirements.sort((b, a) => (a.rate.compareTo(b.rate)));
-                    });
-                  }
+                  debugPrint(StackTrace.current.toString());
                   break;
                 default:
                   debugPrint(StackTrace.current.toString());
@@ -77,12 +68,11 @@ class SearchScreenState extends State<SearchScreen> {
         ],
       ),
       drawer: NavigationDrawer(),
-      body: FutureBuilder<List<Requirement>>(
-        future: requirementsFuture,
+      body: StreamBuilder<List<Requirement>>(
+        stream: requirements,
         builder: (_, snap) {
           if (snap.hasData && snap.data != null) {
             if (snap.data.length > 0) {
-              requirements = snap.data;
               return Container(
                 color: Color(0xff0011),
                 child: ListView.builder(
@@ -94,7 +84,7 @@ class SearchScreenState extends State<SearchScreen> {
               );
             } else {
               return Center(
-                child: Text(STRING_NO_BUYER_OR_SELLER_FOUND_FOR +
+                child: Text(STRING_NO_BUYER_SELLER_FOUND +
                     widget.product[LANGUAGE.CURRENT]),
               );
             }

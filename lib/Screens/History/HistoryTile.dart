@@ -2,7 +2,7 @@ import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // TODO: TradeTile and HistoryTile can be shared
@@ -29,8 +29,9 @@ class HistoryTileState extends State<HistoryTile> {
 
   @override
   Widget build(BuildContext context) {
-    String tradeType =
-        (SharedPrefData.getUid() == widget.t.uids[0]) ? 'Sold' : 'Bought';
+    String tradeType = (FirebaseAuth.instance.currentUser.uid == t.uids[0])
+        ? 'Sold'
+        : 'Bought';
 
     return Card(
       child: Column(
@@ -42,12 +43,14 @@ class HistoryTileState extends State<HistoryTile> {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.network(
-                    (tradeType == 'Sold')
-                        ? widget.t.buyerPhoto
-                        : widget.t.sellerPhoto,
+                    (tradeType == 'Sold') ? t.buyerPhoto : t.sellerPhoto,
                     height: 50.0,
                     width: 50.0,
-                    errorBuilder: (_, err, stack) => Image.asset(ASSET_ACCOUNT),
+                    errorBuilder: (_, err, stack) => Image.asset(
+                      ASSET_ACCOUNT,
+                      height: 50.0,
+                      width: 50.0,
+                    ),
                   ),
                 ),
               ),
@@ -63,9 +66,7 @@ class HistoryTileState extends State<HistoryTile> {
                     ),
                   ),
                   Text(
-                    (tradeType == 'Sold')
-                        ? widget.t.buyerName
-                        : widget.t.sellerName,
+                    (tradeType == 'Sold') ? t.buyerName : t.sellerName,
                     style: TextStyle(color: Colors.black87, fontSize: 20.0),
                   ),
                 ],
@@ -74,11 +75,14 @@ class HistoryTileState extends State<HistoryTile> {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipOval(
                   child: Image.network(
-                    PRODUCTS[int.parse(widget.t.pid)][2],
+                    PRODUCTS[int.parse(t.pid)][2],
                     height: 50.0,
                     width: 50.0,
-                    errorBuilder: (_, err, stack) =>
-                        Image.asset(ASSET_APP_LOGO),
+                    errorBuilder: (_, err, stack) => Image.asset(
+                      ASSET_APP_LOGO,
+                      height: 50.0,
+                      width: 50.0,
+                    ),
                   ),
                 ),
               ),
@@ -93,9 +97,9 @@ class HistoryTileState extends State<HistoryTile> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('$STRING_RATE : ₹${widget.t.rate}/kg'),
-                  Text('$STRING_QUANTITY: ${widget.t.qty} kg'),
-                  Text('$STRING_TOTAL_AMT: ₹${widget.t.amt}'),
+                  Text('$STRING_RATE : ₹${t.rate}/kg'),
+                  Text('$STRING_QUANTITY: ${t.qty} kg'),
+                  Text('$STRING_TOTAL_AMT: ₹${t.amt}'),
                 ],
               ),
             ],

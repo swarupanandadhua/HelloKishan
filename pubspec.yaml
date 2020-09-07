@@ -22,8 +22,7 @@ dependencies:
 
   geocoder:
   geoflutterfire:
-  location: #Use this instead of geolocator
-  geolocator:
+  location:
 
   provider:
   animated_stream_list:

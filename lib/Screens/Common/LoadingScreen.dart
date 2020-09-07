@@ -12,7 +12,11 @@ class LoadingScreen extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            Image.asset(ASSET_LOADING),
+            Image.asset(
+              ASSET_LOADING,
+              height: 50.0,
+              width: 50.0,
+            ),
             Text(msg),
           ],
         ),

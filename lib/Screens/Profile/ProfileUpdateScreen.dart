@@ -8,13 +8,12 @@ import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
 import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
-import 'package:FarmApp/Services/AuthService.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/LocationService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -41,7 +40,7 @@ class ProfileUpdateScaffold extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          onPressed: () => profileUpdateKey?.currentState?.saveProfileDetails(),
+          onPressed: () => profileUpdateKey?.currentState?.onSave(),
         ),
       ),
       body: ProfileUpdateScreen(
@@ -59,15 +58,17 @@ class ProfileUpdateScreen extends StatefulWidget {
   ProfileUpdateScreen({this.key, this.editing = false}) : super(key: key);
 
   @override
-  ProfileUpdateScreenState createState() =>
-      ProfileUpdateScreenState(key: key, editing: editing);
+  ProfileUpdateScreenState createState() => ProfileUpdateScreenState(
+      key: key, editing: editing, showActionButtons: false);
 }
 
 class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   final Key key;
   bool editing;
+  bool showActionButtons;
 
-  ProfileUpdateScreenState({this.key, this.editing = false});
+  ProfileUpdateScreenState(
+      {this.key, this.editing = false, this.showActionButtons = true});
 
   final GlobalKey<FormState> profileDetailsForm = GlobalKey<FormState>();
   final TextEditingController nameEditC = TextEditingController();
@@ -87,12 +88,13 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     fontWeight: FontWeight.bold,
   );
 
-  User firebaseUser;
+  User user;
   FarmAppUser farmAppUser;
 
   File chosenImage;
   final Image accountLogo = Image.asset(ASSET_ACCOUNT);
   Image oldImage;
+  GeoPoint geopoint;
 
   bool imageChosen = false;
   bool userLoaded = false;
@@ -104,18 +106,14 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void loadUser() async {
-    if (SharedPrefData.getUid() == null) {
-      firebaseUser = firebaseUser ?? AuthService().getFirebaseUser();
-      farmAppUser =
-          farmAppUser ?? await DBService.getFarmAppUser(firebaseUser.uid);
+    user = FirebaseAuth.instance.currentUser;
+    farmAppUser = farmAppUser ?? await DBService.getFarmAppUser(user.uid);
 
-      setState(() {
-        // TODO: Bug: setState() called after dispose(): ProfileUpdateScreenState
-        userLoaded = true;
-        mobileEditC.text = firebaseUser.phoneNumber;
-        nameEditC.text = farmAppUser.displayName;
-      });
-    }
+    setState(() {
+      mobileEditC.text = user.phoneNumber;
+      nameEditC.text = user.displayName;
+      userLoaded = true;
+    });
   }
 
   void getCurrentAddress() async {
@@ -132,6 +130,10 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         pinEditC.text = address?.postalCode;
         stateEditC.text = address?.adminArea;
         distEditC.text = address?.subAdminArea;
+        geopoint = GeoPoint(
+          address.coordinates.latitude,
+          address.coordinates.longitude,
+        );
       });
     });
     pd.hide();
@@ -142,11 +144,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       debugPrint('Showing Chosen Image');
       return Image.file(chosenImage);
     }
-    if (farmAppUser != null && farmAppUser.photoURL != null) {
+    if (user?.photoURL != null) {
       if (oldImage == null) {
         debugPrint('Fetching network image');
         return oldImage = Image.network(
-          farmAppUser.photoURL,
+          user?.photoURL,
           loadingBuilder: (_, child, prog) {
             return (prog == null) ? child : Image.asset(ASSET_LOADING);
           },
@@ -185,38 +187,40 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   Widget actionButtons() {
-    if (editing) {
+    if (editing && showActionButtons) {
       return Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           MyButton(
-            onPressedCallBack: () {
-              setState(() => editing = false);
-              saveProfileDetails();
-            },
+            onPressedCallBack: onSave,
             text: STRING_SAVE,
             color: Colors.green,
           ),
           MyButton(
             text: STRING_CANCEL,
             color: Color(APP_COLOR),
-            onPressedCallBack: () => setState(
-              () {
-                editing = false;
-                nameEditC.text = farmAppUser?.displayName;
-                mobileEditC.text = farmAppUser?.phoneNumber;
-                distEditC.text = farmAppUser?.address?.subAdminArea;
-                addressEditC.text = farmAppUser?.address?.addressLine;
-                pinEditC.text = farmAppUser?.address?.postalCode;
-                stateEditC.text = farmAppUser?.address?.adminArea;
-              },
-            ),
+            onPressedCallBack: onCancel,
           ),
         ],
       );
     }
     return Container(height: 20);
+  }
+
+  void onCancel() {
+    setState(
+      () {
+        editing = false;
+        nameEditC.text = user?.displayName;
+        mobileEditC.text = user?.phoneNumber;
+        addressEditC.text = farmAppUser?.address;
+        distEditC.text = farmAppUser?.district;
+        pinEditC.text = farmAppUser?.pincode;
+        stateEditC.text = farmAppUser?.state;
+        geopoint = farmAppUser?.geopoint;
+      },
+    );
   }
 
   @override
@@ -462,9 +466,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     }
   }
 
-  void saveProfileDetails() async {
+  void onSave() async {
     if (profileDetailsForm.currentState.validate()) {
-      profileDetailsForm.currentState.save();
       ProgressDialog pd = ProgressDialog(
         context,
         type: ProgressDialogType.Normal,
@@ -477,33 +480,25 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         pd.update(message: STRING_UPLOADING_PROFILE_PICTURE);
         photoURL = await DBService.uploadPhoto(
           chosenImage,
-          DB_USERS + firebaseUser.uid + '.jpg',
+          DB_USERS + user.uid + '.jpg',
         );
-        debugPrint('PHOTOURL: ' + photoURL.toString());
       }
-      farmAppUser?.photoURL = photoURL;
-      farmAppUser?.displayName = nameEditC.text;
-      Address address = Address(
-        subAdminArea: distEditC.text,
-        addressLine: addressEditC.text,
-        postalCode: pinEditC.text,
-        adminArea: stateEditC.text,
-      );
-      farmAppUser?.address = address;
       pd.update(message: STRING_UPDATING_PROFILE_INFO);
+
       await DBService.setFarmAppUser(farmAppUser);
-      await firebaseUser.updateProfile(
+      await user.updateProfile(
         displayName: nameEditC.text,
         photoURL: photoURL,
       );
-      SharedPrefData.setName(nameEditC.text);
-      SharedPrefData.setMobile(firebaseUser.phoneNumber);
-      SharedPrefData.setPhotoURL(photoURL);
-      SharedPrefData.setAddressLine(addressEditC.text);
+
+      SharedPrefData.setAddress(addressEditC.text);
       SharedPrefData.setDistrict(distEditC.text);
       SharedPrefData.setPincode(pinEditC.text);
       SharedPrefData.setState(stateEditC.text);
+      SharedPrefData.setLatitude(geopoint.latitude);
+      SharedPrefData.setLongitude(geopoint.longitude);
       SharedPrefData.setProfileUpdated();
+
       pd.hide();
       Navigator.pop(context);
       Navigator.pushAndRemoveUntil(

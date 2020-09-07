@@ -4,7 +4,7 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -25,7 +25,7 @@ class TradeTileState extends State<TradeTile> {
   String tradeDescription;
 
   TradeTileState(this.t) {
-    String uid = SharedPrefData.getUid();
+    String uid = FirebaseAuth.instance.currentUser.uid;
     if (uid == t.uids[0]) {
       name = t.sellerName;
       photoURL = t.sellerPhoto;
@@ -57,7 +57,7 @@ class TradeTileState extends State<TradeTile> {
     // Case 2: REQUESTED, Farmer View --> Text[REQUESTED],  Button[CANCEL]
     // case 3: ACCEPTED, Buyer View   --> Text[ACCEPTED],   Button[COMPLETE]
     // case 4: ACCEPTED, Farmer View  --> Text[ACCEPTED],   Button[COMPLETE]
-    bool isFarmer = (t.uids[0] == SharedPrefData.getUid());
+    bool isFarmer = (t.uids[0] == FirebaseAuth.instance.currentUser.uid);
     bool isAccepted = (t.status == STATUS_ACCEPTED);
 
     List<Widget> actions = List<Widget>();

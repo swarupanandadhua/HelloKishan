@@ -3,6 +3,7 @@ import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
+import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -94,8 +95,12 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                   label: Text(STRING_DELETE),
                 ),
                 RaisedButton.icon(
-                  onPressed: () =>
-                      debugPrint(STRING_TODO_IMPORTANT_FUNCTIONALITY),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostRequirementScreen(r: r),
+                    ),
+                  ),
                   icon: Icon(Icons.edit),
                   label: Text(STRING_UPDATE),
                 ),

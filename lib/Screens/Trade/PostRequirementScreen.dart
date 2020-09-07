@@ -7,13 +7,16 @@ import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class PostRequirementScreen extends StatefulWidget {
+  PostRequirementScreen({this.r});
+
+  final Requirement r;
   final String title = STRING_SEARCH_RESULTS;
 
   @override
@@ -21,18 +24,26 @@ class PostRequirementScreen extends StatefulWidget {
 }
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {
+  Requirement r;
+
+  PostRequirementScreenState({this.r}) {
+    if (r != null) {
+      wantsTo = 'Buy';
+      selectedProduct = PRODUCTS[int.parse(r.pid)];
+      productC.text = selectedProduct[LANGUAGE.CURRENT];
+      priceC.text = r.rate;
+      qtyC.text = r.qty;
+    }
+  }
+
   final GlobalKey<FormState> postRequirementKey = GlobalKey<FormState>();
   final TextEditingController productC = TextEditingController();
   final TextEditingController priceC = TextEditingController();
   final TextEditingController qtyC = TextEditingController();
 
-  List<String> selectedProduct;
-
-  int pid;
-
-  Position position;
-  Size screenSize;
   String wantsTo;
+  List<String> selectedProduct;
+  Size screenSize;
 
   @override
   Widget build(BuildContext context) {
@@ -156,16 +167,23 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   void postRequirement() async {
     if (postRequirementKey.currentState.validate()) {
       final Requirement requirement = Requirement(
-        null, // rid
-        SharedPrefData.getUid(),
-        SharedPrefData.getName(),
-        SharedPrefData.getPhotoURL(),
+        r?.rid,
+        FirebaseAuth.instance.currentUser.uid,
+        FirebaseAuth.instance.currentUser.displayName,
+        FirebaseAuth.instance.currentUser.photoURL,
         selectedProduct[3],
         priceC.text,
         qtyC.text,
         wantsTo,
         Timestamp.now(),
-        null, // TODO: position
+        SharedPrefData.getAddress(),
+        SharedPrefData.getDistrict(),
+        SharedPrefData.getPincode(),
+        SharedPrefData.getState(),
+        GeoPoint(
+          SharedPrefData.getLatitude(),
+          SharedPrefData.getLongitude(),
+        ),
       );
       ProgressDialog submitDialog = ProgressDialog(
         context,

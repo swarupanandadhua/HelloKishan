@@ -2,6 +2,7 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Trade/MyRequirementTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyRequirementScreen extends StatefulWidget {
@@ -15,7 +16,8 @@ class MyRequirementScreenState extends State<MyRequirementScreen> {
   @override
   void initState() {
     super.initState();
-    requirements = DBService.fetchMyRequirements();
+    requirements =
+        DBService.fetchRequirements(uid: FirebaseAuth.instance.currentUser.uid);
   }
 
   @override

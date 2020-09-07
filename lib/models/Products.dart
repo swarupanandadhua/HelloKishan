@@ -1,5 +1,6 @@
 const List<List<String>> PRODUCTS = [
   // TODO: Inserting the index at the end is a hack, get rid of it
+  // সবজি
   ['কচু', 'Arum', 'assets/images/arum.jpg', '0'],
   ['করলা', 'Bitter Gourd', 'assets/images/bitter_gourd.jpg', '1'],
   ['কাঁচা লংকা', 'Green Chili', 'assets/images/green_chili.jpg', '2'],
@@ -14,7 +15,7 @@ const List<List<String>> PRODUCTS = [
   ['লাউ', 'Bottle Gourd', 'assets/images/bottle_gourd.jpg', '11'],
   ['শসা', 'Cucumber', 'assets/images/cucumber.jpg', '12'],
 
-  // WInter
+  // Winter
   ['ওলকপি', 'Kohlrabi', 'assets/images/kohlrabi.jpg', '13'],
   ['গাঁজর', 'Carrot', 'assets/images/carrot.jpg', '14'],
   ['টমেটো', 'Tomato', 'assets/images/tomato.jpg', '15'],
@@ -58,6 +59,7 @@ const List<List<String>> PRODUCTS = [
     '46'
   ],
 
+  // শাক
   ['কলমি শাক', 'Bindweed', 'assets/images/app_logo.jpg', '47'],
   ['পুঁই শাক', 'Basil', 'assets/images/app_logo.jpg', '48'],
   ['পুদিনা পাতা', 'Mint', 'assets/images/app_logo.jpg', '49'],
@@ -68,15 +70,53 @@ const List<List<String>> PRODUCTS = [
   ['পাট শাক', '???', 'assets/images/app_logo.jpg', '54'],
   ['শুশনী শাক', '???', 'assets/images/app_logo.jpg', '55'],
   ['কুলেখাড়া শাক', '???', 'assets/images/app_logo.jpg', '56'],
+  ['লাউ শাক', '???', 'assets/images/app_logo.jpg', '57'],
+  ['বেথুয়া শাক', '???', 'assets/images/app_logo.jpg', '58'],
+  ['গিমা শাক', '???', 'assets/images/app_logo.jpg', '59'],
+  ['সজনে শাক', '???', 'assets/images/app_logo.jpg', '60'],
+  ['কুমড়ো শাক', '???', 'assets/images/app_logo.jpg', '61'],
+  ['মুলো শাক', '???', 'assets/images/app_logo.jpg', '62'],
+  ['পুটুস শাক', '???', 'assets/images/app_logo.jpg', '63'],
 
   ['বাদাম', '???', 'assets/images/app_logo.jpg', '57'],
-  [
-    'মাশরুম',
-    'Mushroom',
-    'assets/images/app_logo.jpg',
-    '57'
-  ], // TODO: is it same as 'শিক ছাতু' or 'কারান ছাতূ' ???
+  ['মাশরুম', 'Mushroom', 'assets/images/app_logo.jpg', '57'],
   ['কুরকুরি ছাতু', '???', 'assets/images/app_logo.jpg', '57'],
   ['তরমুজ', 'Watermelon', 'assets/images/watermelon.jpg', '57'],
   ['উচ্ছে', '???', 'assets/images/app_logo.jpg', '57'],
 ];
+
+/****সবজি****
+এঁচোড়
+চালতা
+কামরাঙ্গা
+আমড়া
+কালমেঘ লঙ্কা
+লুরকি বেগুন
+**************/
+
+/****ফল****
+আম
+জাম
+খেজুর
+মুসাম্বি লেবু
+কাগজি লেবু
+বাতাবি লেবু
+গন্ধরাজ লেবু
+তাল
+আনারস
+কাঁঠাল
+কলা পাকা
+সিঙ্গাপুরি কলা
+পেয়ারা
+লিচু
+আপেল
+আঙ্গুর
+কুল
+নারকেল কুল
+চেরি
+তরমুজ
+পাকা পেঁপে
+কাজুবাদাম
+নারকেল
+ডাব
+************/

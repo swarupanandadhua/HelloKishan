@@ -4,11 +4,10 @@ import 'package:FarmApp/Models/Models.dart' as FarmApp;
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Services/DBService.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class SellRequestScreen extends StatefulWidget {
@@ -27,8 +26,8 @@ class SellRequestScreenState extends State<SellRequestScreen> {
   final FarmApp.Requirement r;
   final TextEditingController qtyC = TextEditingController();
 
-  Position position;
   Size screenSize;
+  String actualProductImage;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +69,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                 },
               ),
               Text('Address'), // TODO
+              // actualProductImage : TODO : IMPORTANT FUNCTIONALITY
             ],
           ),
         ),
@@ -86,13 +86,13 @@ class SellRequestScreenState extends State<SellRequestScreen> {
               fontSize: 20,
             ),
           ),
-          onPressed: this.submit,
+          onPressed: sendRequest,
         ),
       ),
     );
   }
 
-  void submit() async {
+  void sendRequest() async {
     if (sellRequestKey.currentState.validate()) {
       ProgressDialog pd = ProgressDialog(
         context,
@@ -101,15 +101,16 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       pd.update(message: STRING_SENDING_REQUEST);
       pd.show();
       List<String> uids = List<String>();
-      uids.add(SharedPrefData.getUid());
+      uids.add(FirebaseAuth.instance.currentUser.uid);
       uids.add(r.uid);
       FarmApp.Transaction t = FarmApp.Transaction(
         uids,
-        SharedPrefData.getName(),
-        SharedPrefData.getPhotoURL(),
+        FirebaseAuth.instance.currentUser.displayName,
+        FirebaseAuth.instance.currentUser.photoURL,
         r.name,
         r.photoURL,
         r.pid,
+        actualProductImage, // TODO
         r.rate,
         qtyC.text,
         (double.parse(r.rate) * double.parse(qtyC.text)).toString(),

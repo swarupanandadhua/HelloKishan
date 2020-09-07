@@ -19,10 +19,19 @@ class SearchResultTile extends StatelessWidget {
             leading: ClipOval(
               child: Image.network(
                 r.photoURL,
+                height: 50.0,
+                width: 50.0,
                 loadingBuilder: (_, c, prog) {
-                  return (prog == null) ? c : Image.asset(ASSET_LOADING);
+                  return (prog == null)
+                      ? c
+                      : Image.asset(
+                          ASSET_LOADING,
+                          height: 50.0,
+                          width: 50.0,
+                        );
                 },
-                errorBuilder: (_, e, stack) => Image.asset(ASSET_RED_CROSS),
+                errorBuilder: (_, e, stack) =>
+                    Image.asset(ASSET_RED_CROSS, height: 50.0, width: 50.0),
               ),
             ),
             title: Padding(
@@ -46,7 +55,11 @@ class SearchResultTile extends StatelessWidget {
               ),
             ),
             trailing: ClipOval(
-              child: Image.asset(PRODUCTS[int.parse(r.pid)][2]),
+              child: Image.asset(
+                PRODUCTS[int.parse(r.pid)][2],
+                height: 50.0,
+                width: 50.0,
+              ),
             ),
           ),
           FlatButton(

@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class LocationService {
-  static Future<Position> fetchLocation() async {
-    // TODO: Bug: Request for location access....
-    return await GeolocatorPlatform.instance.getCurrentPosition(
-      forceAndroidLocationManager: true,
-      desiredAccuracy: LocationAccuracy.best,
-    );
+  static Future<LocationData> fetchLocation() async {
+    Location location = Location();
+
+    bool serviceEnabled = await location.serviceEnabled();
+    serviceEnabled = serviceEnabled ?? await location.requestService();
+    if (!serviceEnabled) {
+      return null;
+    }
+
+    PermissionStatus permission = await location.hasPermission();
+
+    permission = (permission == PermissionStatus.granted)
+        ? permission
+        : await location.requestPermission();
+
+    if (permission != PermissionStatus.granted) {
+      return null;
+    }
+    debugPrint('TODO: BUG: Getting stuck if location off');
+    LocationData l = await location.getLocation().catchError((e) {
+      debugPrint(e);
+    });
+    debugPrint('---------Stuck passed-----------');
+    return l;
   }
 
   static Future<Address> getAddress() async {
-    Position pos = await fetchLocation();
+    LocationData pos = await fetchLocation();
     List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(
       Coordinates(pos.latitude, pos.longitude),
     );

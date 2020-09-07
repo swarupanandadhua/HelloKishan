@@ -34,8 +34,7 @@ const String STRING_MOBILE = 'Mobile';
 const String STRING_MUST_BE_10_DIGITS = 'Must be 10 digits';
 const String STRING_NAME = 'Name';
 const String STRING_NOTHING_FOUND = 'Nothing found!';
-const String STRING_NO_BUYER_OR_SELLER_FOUND_FOR =
-    'No buyer or seller found for ';
+const String STRING_NO_BUYER_SELLER_FOUND = 'No buyer or seller found for ';
 const String STRING_NO_REQUIREMENTS_FOUND = 'No requirements found!';
 const String STRING_NO_TRANSACTIONS_FOUND = 'No transactions found!';
 const String STRING_OTP_MUST_6_DIGITS = 'OTP must be 6 digits';
@@ -65,8 +64,7 @@ const String STRING_SOLD_TO = 'Sold to';
 const String STRING_SOMETHING_WENT_WRONG = 'Something went wrong!';
 const String STRING_SORT_BY_DISTANCE = 'Sort by distance';
 const String STRING_STATE = 'State';
-const String STRING_TODO_IMPORTANT_FUNCTIONALITY =
-    'TODO : IMPORTANT FUNCTIONALITY';
+const String STRING_TODO_IMPORTANT_FUNCTIONALITY = 'TODO : IMPORTANT FUNC.';
 const String STRING_TRADE = 'Trade';
 const String STRING_UPDATING_PROFILE_INFO = 'Updating Profile Information...';
 const String STRING_UPLOADING_PROFILE_PICTURE = 'Uploading Profile Picture...';
@@ -80,5 +78,5 @@ const String STRING_COMPLETE = 'সফল হয়েছে'; // 'COMPLETE';
 const String STRING_RATE = 'দর'; // 'Rate';
 const String STRING_QUANTITY = 'পরিমাণ'; // 'Quantity
 const String STRING_TOTAL_AMT = 'মোট দাম'; // 'Total Amount';
-const String STRING_DELETE = 'DELETE';
-const String STRING_UPDATE = 'UPDATE';
+const String STRING_DELETE = 'মুছে ফেলুন'; // 'DELETE'
+const String STRING_UPDATE = 'আপডেট করুন'; // 'UPDATE'

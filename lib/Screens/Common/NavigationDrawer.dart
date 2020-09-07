@@ -5,7 +5,7 @@ import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:flutter/material.dart';
 
@@ -41,7 +41,7 @@ class NavigationDrawer extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        SharedPrefData.getName(),
+                        FirebaseAuth.instance.currentUser.displayName,
                         style: TextStyle(
                           fontSize: 22,
                           color: Colors.white,
@@ -49,7 +49,7 @@ class NavigationDrawer extends StatelessWidget {
                       ),
                       ClipOval(
                         child: Image.network(
-                          SharedPrefData.getPhotoURL(),
+                          FirebaseAuth.instance.currentUser.photoURL,
                           height: 50,
                           width: 50,
                           loadingBuilder: (_, c, prog) {

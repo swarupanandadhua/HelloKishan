@@ -1,8 +1,6 @@
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geocoder/geocoder.dart';
 
 const String STATUS_REQUESTED = 'REQUESTED'; // --> (Accept/Reject, Cancel)
 const String STATUS_ACCEPTED = 'ACCEPTED'; // --> (Complete)
@@ -22,7 +20,11 @@ class Requirement {
   String rate, qty;
   String tradeType;
   Timestamp timestamp;
-  Position position;
+  String address;
+  String district;
+  String pincode;
+  String state;
+  GeoPoint geopoint;
 
   Requirement(
     this.rid,
@@ -34,7 +36,11 @@ class Requirement {
     this.qty,
     this.tradeType,
     this.timestamp,
-    this.position, // TODO
+    this.address,
+    this.district,
+    this.pincode,
+    this.state,
+    this.geopoint,
   );
 
   Requirement.fromDocumentSnapshot(String id, Map<String, dynamic> data) {
@@ -47,6 +53,11 @@ class Requirement {
     qty = data['qty'];
     tradeType = data['tradeType'];
     timestamp = data['timestamp'];
+    address = data['address'];
+    district = data['district'];
+    pincode = data['pincode'];
+    state = data['state'];
+    geopoint = data['geopoint'];
   }
 
   Map<String, dynamic> toMap() {
@@ -59,6 +70,11 @@ class Requirement {
       'qty': qty,
       'tradeType': tradeType,
       'timestamp': timestamp,
+      'address': address,
+      'district': district,
+      'pincode': pincode,
+      'state': state,
+      'geopoint': geopoint,
     };
   }
 
@@ -73,6 +89,7 @@ class Transaction {
   String sellerName, sellerPhoto;
   String buyerName, buyerPhoto;
   String pid;
+  String actualProductImage;
   String rate, qty, amt;
   Timestamp timestamp;
   String status;
@@ -84,6 +101,7 @@ class Transaction {
     this.buyerName,
     this.buyerPhoto,
     this.pid,
+    this.actualProductImage,
     this.rate,
     this.qty,
     this.amt,
@@ -99,6 +117,7 @@ class Transaction {
     buyerName = data['buyerName'];
     buyerPhoto = data['buyerPhoto'];
     pid = data['pid'];
+    actualProductImage = data['actualProductImage'];
     rate = data['rate'];
     qty = data['qty'];
     amt = data['amt'];
@@ -115,6 +134,7 @@ class Transaction {
       'buyerName': buyerName,
       'buyerPhoto': buyerPhoto,
       'pid': pid,
+      'actualProductImage': actualProductImage,
       'rate': rate,
       'qty': qty,
       'amt': amt,
@@ -130,27 +150,39 @@ class Transaction {
 }
 
 class FarmAppUser {
-  String uid, displayName, photoURL, phoneNumber;
-  String nickName;
-  Address address; // TODO: Should we store this is DB ???
-  List<String> deviceTokens;
+  String uid;
+  String address;
+  String district;
+  String pincode;
+  String state;
+  GeoPoint geopoint;
 
   FarmAppUser(
     this.uid,
-    this.displayName,
-    this.photoURL,
-    this.phoneNumber,
-    this.nickName,
     this.address,
+    this.district,
+    this.pincode,
+    this.state,
+    this.geopoint,
   );
+
+  FarmAppUser.fromMap(String id, Map<String, dynamic> data) {
+    uid = id;
+    address = data['address'];
+    district = data['district'];
+    pincode = data['pincode'];
+    state = data['state'];
+    geopoint = data['geopoint'];
+  }
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
-      'displayName': displayName,
-      'photoURL': photoURL,
-      'phoneNumber': phoneNumber,
-      'location': GeoPoint(21.38144, 90.769907), // TODO
+      'address': address,
+      'district': district,
+      'pincode': pincode,
+      'state': state,
+      'geopoint': geopoint,
     };
   }
 }

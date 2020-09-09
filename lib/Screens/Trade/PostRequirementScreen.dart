@@ -26,15 +26,7 @@ class PostRequirementScreen extends StatefulWidget {
 class PostRequirementScreenState extends State<PostRequirementScreen> {
   Requirement r;
 
-  PostRequirementScreenState({this.r}) {
-    if (r != null) {
-      wantsTo = 'Buy';
-      selectedProduct = PRODUCTS[int.parse(r.pid)];
-      productC.text = selectedProduct[LANGUAGE.CURRENT];
-      priceC.text = r.rate;
-      qtyC.text = r.qty;
-    }
-  }
+  PostRequirementScreenState({this.r});
 
   final GlobalKey<FormState> postRequirementKey = GlobalKey<FormState>();
   final TextEditingController productC = TextEditingController();
@@ -47,6 +39,13 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (r != null) {
+      wantsTo = 'Buy';
+      selectedProduct = PRODUCTS[int.parse(r.pid)];
+      productC.text = selectedProduct[LANGUAGE.CURRENT];
+      priceC.text = r.rate;
+      qtyC.text = r.qty;
+    }
     screenSize = MediaQuery.of(context).size;
 
     return Scaffold(

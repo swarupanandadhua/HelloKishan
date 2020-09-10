@@ -115,26 +115,30 @@ class TradeTileState extends State<TradeTile> {
       child: Column(
         children: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: ClipOval(
-                        child: Image.asset(
-                          PRODUCTS[pid][2],
-                          height: 50.0,
-                          width: 50.0,
+                child: Container(
+                  width: 80,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: ClipOval(
+                          child: Image.asset(
+                            PRODUCTS[pid][2],
+                            height: 50.0,
+                            width: 50.0,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(PRODUCTS[pid][LANGUAGE.CURRENT]),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(PRODUCTS[pid][LANGUAGE.CURRENT]),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -167,35 +171,38 @@ class TradeTileState extends State<TradeTile> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: ClipOval(
-                        child: Image.network(
-                          photoURL,
-                          height: 50.0,
-                          width: 50.0,
-                          loadingBuilder: (_, c, prog) => (prog == null)
-                              ? c
-                              : Image.asset(
-                                  ASSET_LOADING,
-                                  height: 50.0,
-                                  width: 50.0,
-                                ),
-                          errorBuilder: (_, err, stack) => Image.asset(
-                            ASSET_ACCOUNT,
+                child: Container(
+                  width: 80,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: ClipOval(
+                          child: Image.network(
+                            photoURL,
                             height: 50.0,
                             width: 50.0,
+                            loadingBuilder: (_, c, prog) => (prog == null)
+                                ? c
+                                : Image.asset(
+                                    ASSET_LOADING,
+                                    height: 50.0,
+                                    width: 50.0,
+                                  ),
+                            errorBuilder: (_, err, stack) => Image.asset(
+                              ASSET_ACCOUNT,
+                              height: 50.0,
+                              width: 50.0,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Text(
-                      name,
-                      style: TextStyle(color: Colors.black87),
-                    ),
-                  ],
+                      Text(
+                        name,
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

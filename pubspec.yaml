@@ -6,34 +6,27 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core:
-  firebase_auth:
-  firebase_auth_web:
   cloud_firestore:
-  firebase_storage:
+  firebase_auth:
+  firebase_core:
   firebase_messaging:
+  firebase_storage:
+  firestore_ui:
 
-  #shimmer:
-  #octo_image:
+  curved_navigation_bar:
+  flutter_typeahead:
   image_cropper:
   image_picker:
-  introduction_screen:
   intl:
+  introduction_screen:
+  progress_dialog:
+  shared_preferences:
+  url_launcher:
 
   geocoder:
   geoflutterfire:
   location:
-
   provider:
-  animated_stream_list:
-
-  url_launcher: ### Starting Phone/Mail Activities ###
-
-  curved_navigation_bar:
-  flutter_typeahead:
-  progress_dialog:
-  splashscreen:
-  shared_preferences:
 
 environment:
   sdk:
@@ -45,4 +38,4 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
-  uses-material-design: true ### Material Icons Font ###
+  uses-material-design: true

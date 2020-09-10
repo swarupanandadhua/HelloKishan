@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:FarmApp/test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +50,8 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (user != null) {
-      return profileUpdated ? Wrapper() : ProfileUpdateScaffold();
+      // return profileUpdated ? Wrapper() : ProfileUpdateScaffold();
+      return profileUpdated ? TestScreen() : ProfileUpdateScaffold();
     }
     return loading
         ? Container(

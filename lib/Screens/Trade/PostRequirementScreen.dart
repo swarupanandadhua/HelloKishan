@@ -20,7 +20,7 @@ class PostRequirementScreen extends StatefulWidget {
   final String title = STRING_SEARCH_RESULTS;
 
   @override
-  PostRequirementScreenState createState() => PostRequirementScreenState();
+  PostRequirementScreenState createState() => PostRequirementScreenState(r: r);
 }
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {

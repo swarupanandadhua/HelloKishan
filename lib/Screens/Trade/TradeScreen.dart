@@ -1,6 +1,6 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/Styles.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Trade/TradeTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:firestore_ui/firestore_ui.dart';
@@ -33,6 +33,7 @@ class TradeScreenState extends State<TradeScreen> {
           style: style1,
         ),
       ),
+      defaultChild: Center(child: CircularProgressIndicator()),
     );
   }
 }

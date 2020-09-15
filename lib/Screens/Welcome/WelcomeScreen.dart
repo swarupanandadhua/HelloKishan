@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
@@ -60,16 +60,11 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
+                  Container(
                     padding: const EdgeInsets.all(8.0),
-                    child: ClipOval(
-                      child: Image.asset(
-                        // TODO: Bug: Not showing
-                        ASSET_APP_LOGO,
-                        height: 150,
-                        width: 150,
-                      ),
-                    ),
+                    height: 150,
+                    width: 150,
+                    child: ClipOval(child: ImageAsset.appLogo),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -82,16 +77,11 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     ),
                   ),
-                  Padding(
+                  Container(
                     padding: const EdgeInsets.all(8.0),
-                    child: ClipOval(
-                      // TODO: Bug: Not showing
-                      child: Image.asset(
-                        ASSET_LOADING,
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
+                    height: 50,
+                    width: 50,
+                    child: ClipOval(child: ImageAsset.loading),
                   ),
                 ],
               ),

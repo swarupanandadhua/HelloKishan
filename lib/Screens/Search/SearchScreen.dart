@@ -35,7 +35,7 @@ class SearchScreenState extends State<SearchScreen> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: <Widget>[
+        actions: [
           PopupMenuButton<String>(
             onSelected: (option) {
               switch (option) {

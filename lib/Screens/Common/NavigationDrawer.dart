@@ -1,7 +1,7 @@
-import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
@@ -16,7 +16,7 @@ class NavigationDrawer extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.75,
       child: Drawer(
         child: ListView(
-          children: <Widget>[
+          children: [
             GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -36,7 +36,6 @@ class NavigationDrawer extends StatelessWidget {
               },
               // TODO: Show Profile Picture as well
               child: Container(
-                height: 120,
                 child: DrawerHeader(
                   child: Column(
                     children: [
@@ -47,24 +46,17 @@ class NavigationDrawer extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      ClipOval(
-                        child: Image.network(
-                          FirebaseAuth.instance.currentUser.photoURL,
-                          height: 50,
-                          width: 50,
-                          loadingBuilder: (_, c, prog) {
-                            return (prog == null)
-                                ? c
-                                : Image.asset(
-                                    ASSET_LOADING,
-                                    height: 30,
-                                    width: 30,
-                                  );
-                          },
-                          errorBuilder: (_, __, ___) => Image.asset(
-                            ASSET_RED_CROSS,
-                            height: 30,
-                            width: 30,
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        height: 100,
+                        width: 100,
+                        child: ClipOval(
+                          child: Image.network(
+                            FirebaseAuth.instance.currentUser.photoURL,
+                            loadingBuilder: (_, c, prog) {
+                              return (prog == null) ? c : ImageAsset.loading;
+                            },
+                            errorBuilder: (_, __, ___) => ImageAsset.account,
                           ),
                         ),
                       )

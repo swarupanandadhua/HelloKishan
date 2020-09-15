@@ -1,6 +1,6 @@
-import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/Styles.dart';
+import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/AuthService.dart';
 import 'package:flutter/material.dart';
@@ -28,16 +28,14 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
           child: Form(
             key: otpLoginFormKey,
             child: ListView(
-              children: <Widget>[
+              children: [
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Container(
                     height: 150,
                     width: 150,
                     child: ClipOval(
-                      child: Image.asset(
-                        ASSET_APP_LOGO,
-                      ),
+                      child: ImageAsset.appLogo,
                     ),
                   ),
                 ),

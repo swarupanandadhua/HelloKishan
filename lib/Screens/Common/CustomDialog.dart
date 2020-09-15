@@ -10,7 +10,7 @@ void showFarmAppDialog(BuildContext context) {
       width: 300.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           Padding(
             padding: EdgeInsets.all(15.0),
             child: Text(

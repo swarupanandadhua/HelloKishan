@@ -2,6 +2,7 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 import 'package:flutter/material.dart';
@@ -29,48 +30,58 @@ class MyRequirementTileState extends State<MyRequirementTile> {
         children: [
           Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: ClipOval(
-                        child: Image.asset(
-                          PRODUCTS[pid][2],
-                          height: 50,
-                          width: 50,
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        height: 80,
+                        width: 80,
+                        child: ClipOval(
+                          child: Image.asset(PRODUCTS[pid][2]),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(PRODUCTS[pid][LANGUAGE.CURRENT]),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          PRODUCTS[pid][LANGUAGE.CURRENT],
+                          style: styleName,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text('$STRING_RATE : Rs. ${r.rate}/kg'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text('$STRING_QUANTITY : ${r.qty} kg'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(getTimeStampString(r.timestamp)),
-                    ),
-                  ],
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(displayRate(r.rate), style: styleRate),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(displayQty(r.qty), style: styleQty),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          getTimeStamp(r.timestamp),
+                          style: styleLessImpTxt,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -81,12 +92,14 @@ class MyRequirementTileState extends State<MyRequirementTile> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 RaisedButton.icon(
+                  color: Colors.red,
+                  textColor: Colors.white,
                   onPressed: () async {
                     ProgressDialog pd = ProgressDialog(
                       context,
                       type: ProgressDialogType.Normal,
                     );
-                    pd.update(message: 'Deleting...');
+                    pd.update(message: STRING_DELETING);
                     pd.show();
                     await r.delete();
                     pd.hide();
@@ -95,6 +108,8 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                   label: Text(STRING_DELETE),
                 ),
                 RaisedButton.icon(
+                  color: Colors.yellow,
+                  textColor: Colors.grey[800],
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(

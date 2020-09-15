@@ -3,6 +3,7 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart' as FarmApp;
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,11 +43,14 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         child: Form(
           key: this.sellRequestKey,
           child: ListView(
-            children: <Widget>[
+            children: [
               // TODO
               Text('I want to ${r.tradeType} ...'),
               Text('${PRODUCTS[int.parse(r.pid)][LANGUAGE.CURRENT]}'),
-              Text('Price : ${r.rate}'),
+              Text(
+                displayRate(r.rate),
+                style: styleRate,
+              ),
               TextFormField(
                 controller: qtyC,
                 keyboardType: TextInputType.number,
@@ -110,7 +114,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         r.name,
         r.photoURL,
         r.pid,
-        actualProductImage, // TODO
+        actualProductImage,
         r.rate,
         qtyC.text,
         (double.parse(r.rate) * double.parse(qtyC.text)).toString(),

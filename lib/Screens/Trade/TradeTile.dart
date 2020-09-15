@@ -1,15 +1,13 @@
-import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/Styles.dart';
+import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
-// TODO: BUG: If status is changed from REQUESTED <-> ACCEPTED in backend, doesn't get updated
 
 class TradeTile extends StatefulWidget {
   final Transaction t;
@@ -21,22 +19,8 @@ class TradeTile extends StatefulWidget {
 
 class TradeTileState extends State<TradeTile> {
   Transaction t;
-  String name;
-  String photoURL;
-  String tradeDescription;
 
-  TradeTileState(this.t) {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    if (uid == t.uids[0]) {
-      name = t.sellerName;
-      photoURL = t.sellerPhoto;
-      tradeDescription = STRING_SELLING_TO;
-    } else {
-      name = t.buyerName;
-      photoURL = t.buyerPhoto;
-      tradeDescription = STRING_BUYING_FROM;
-    }
-  }
+  TradeTileState(this.t);
 
   void updateTransactionStatus(String status) async {
     ProgressDialog pd = ProgressDialog(
@@ -63,10 +47,9 @@ class TradeTileState extends State<TradeTile> {
 
     List<Widget> actions = List<Widget>();
     if (isAccepted) {
-      actions.add(Text(STRING_ACCEPTED));
+      actions.add(Text(STRING_ACCEPTED, style: styleGreen));
       actions.add(
         RaisedButton.icon(
-          // TODO: Must be accepted by both parties
           onPressed: () => updateTransactionStatus(STATUS_SUCCESSFUL),
           icon: Icon(Icons.check_circle),
           label: Text(STRING_COMPLETE),
@@ -75,34 +58,33 @@ class TradeTileState extends State<TradeTile> {
     } else {
       if (isFarmer) {
         actions.add(
-          Text(
-            STRING_REQUESTED,
-            style: style2,
-          ),
+          Text(STRING_REQUESTED, style: styleGreen),
         );
         actions.add(
           RaisedButton.icon(
+            color: Colors.red,
+            textColor: Colors.white,
             onPressed: () => updateTransactionStatus(STATUS_CANCELLED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_CANCEL),
-            color: Colors.red,
           ),
         );
       } else {
         actions.add(
           RaisedButton.icon(
+            color: Colors.red,
+            textColor: Colors.white,
             onPressed: () => updateTransactionStatus(STATUS_REJECTED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_REJECT),
-            color: Colors.red,
           ),
         );
         actions.add(
           RaisedButton.icon(
+            color: Colors.green,
             onPressed: () => updateTransactionStatus(STATUS_ACCEPTED),
             icon: Icon(Icons.check),
             label: Text(STRING_ACCEPT),
-            color: Colors.green,
           ),
         );
       }
@@ -113,132 +95,128 @@ class TradeTileState extends State<TradeTile> {
     );
   }
 
+  List<Widget> displayTransactionDetails(Transaction t) {
+    String name;
+    String photoURL;
+    String tradeDescription;
+
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    if (uid == t.uids[0]) {
+      name = t.sellerName;
+      photoURL = t.sellerPhoto;
+      tradeDescription = STRING_SELLING_TO;
+    } else {
+      name = t.buyerName;
+      photoURL = t.buyerPhoto;
+      tradeDescription = STRING_BUYING_FROM;
+    }
+
+    final int pid = int.parse(t.pid);
+
+    return [
+      Expanded(
+        flex: 2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              height: 80.0,
+              width: 80.0,
+              child: ClipOval(
+                child: Image.asset(PRODUCTS[pid][2]),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Text(
+                PRODUCTS[pid][LANGUAGE.CURRENT],
+                style: styleName,
+              ),
+            ),
+          ],
+        ),
+      ),
+      Expanded(
+        flex: 5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Center(
+                child: Text(tradeDescription, style: styleLessImpTxt),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Text(displayRate(t.rate), style: styleRate),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Text(displayQty(t.qty), style: styleQty),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Text(displayAmt(t.amt), style: styleAmt),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Text(
+                getTimeStamp(t.timestamp),
+                style: styleLessImpTxt,
+              ),
+            ),
+          ],
+        ),
+      ),
+      Expanded(
+        flex: 2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              height: 80,
+              width: 80,
+              child: ClipOval(
+                child: Image.network(
+                  photoURL,
+                  loadingBuilder: (_, c, p) =>
+                      (p == null) ? c : ImageAsset.loading,
+                  errorBuilder: (_, err, stack) => ImageAsset.account,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Text(
+                name,
+                style: styleName,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    debugPrint('BUILDING: ${t.tid} status: ${t.status}');
-    if ((t.status != STATUS_ACCEPTED) && (t.status != STATUS_REQUESTED)) {
-      return Container();
-    }
-    final int pid = int.parse(t.pid);
+    final bool showActionButtons =
+        (t.status == STATUS_REQUESTED) || (t.status == STATUS_ACCEPTED);
     return Card(
       child: Column(
-        children: <Widget>[
+        children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Container(
-                  width: 80,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: ClipOval(
-                          child: Image.asset(
-                            PRODUCTS[pid][2],
-                            height: 80.0,
-                            width: 80.0,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(
-                          PRODUCTS[pid][LANGUAGE.CURRENT],
-                          style: TextStyle(
-                            color: Colors.green[500],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      tradeDescription,
-                      style: TextStyle(
-                        color: Colors.grey[350],
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(
-                        '$STRING_RATE : ₹${t.rate}/kg',
-                        style: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(
-                        '$STRING_QUANTITY : ${t.qty}kg',
-                        style: TextStyle(
-                          color: Colors.cyan,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text('$STRING_TOTAL_AMT : ₹${t.amt}'),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Container(
-                  width: 80,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: ClipOval(
-                          child: Image.network(
-                            photoURL,
-                            height: 80.0,
-                            width: 80.0,
-                            loadingBuilder: (_, c, prog) => (prog == null)
-                                ? c
-                                : Image.asset(
-                                    ASSET_LOADING,
-                                    height: 80.0,
-                                    width: 80.0,
-                                  ),
-                            errorBuilder: (_, err, stack) => Image.asset(
-                              ASSET_ACCOUNT,
-                              height: 80.0,
-                              width: 80.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        name,
-                        style: TextStyle(color: Colors.black87),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              ...displayTransactionDetails(t),
             ],
           ),
-          Text(getTimeStampString(t.timestamp)),
-          getActionButtons(),
+          showActionButtons ? getActionButtons() : Container(height: 8),
         ],
       ),
     );

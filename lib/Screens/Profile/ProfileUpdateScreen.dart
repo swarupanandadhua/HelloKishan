@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Constants.dart';
@@ -97,7 +96,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   FarmAppUser farmAppUser;
 
   File chosenImage;
-  final Image accountLogo = Image.asset(ASSET_ACCOUNT);
   Image oldImage;
   GeoPoint geopoint;
 
@@ -156,16 +154,14 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         debugPrint('Fetching network image');
         return oldImage = Image.network(
           user?.photoURL,
-          loadingBuilder: (_, child, prog) {
-            return (prog == null) ? child : Image.asset(ASSET_LOADING);
-          },
-          errorBuilder: (_, __, ___) => Image.asset(ASSET_RED_CROSS),
+          loadingBuilder: (_, c, p) => (p == null) ? c : ImageAsset.loading,
+          errorBuilder: (_, __, ___) => ImageAsset.account,
         );
       } else {
         return oldImage;
       }
     } else {
-      return accountLogo;
+      return ImageAsset.account;
     }
   }
 
@@ -173,7 +169,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     return Center(
       child: Stack(
         alignment: Alignment.bottomRight,
-        children: <Widget>[
+        children: [
           Container(
             padding: EdgeInsets.all(8.0),
             height: 150,
@@ -199,7 +195,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       return Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
+        children: [
           MyButton(
             onPressedCallBack: onSave,
             text: STRING_SAVE,
@@ -237,7 +233,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       return Form(
         key: profileDetailsForm,
         child: ListView(
-          children: <Widget>[
+          children: [
             getDPWidget(),
             Card(
               child: Padding(
@@ -248,7 +244,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(STRING_PERSONAL_INFORMATION, style: h1Style),
                           editing
                               ? Container()
@@ -311,7 +307,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(STRING_ADDRESS_INFORMATION, style: h1Style),
                           editing
                               ? MyIcon(

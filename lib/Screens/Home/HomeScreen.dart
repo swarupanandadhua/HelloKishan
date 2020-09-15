@@ -1,5 +1,6 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Products.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Search/SearchScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -34,14 +35,15 @@ class HomeScreenState extends State<HomeScreen> {
             child: Card(
               child: Column(
                 children: [
-                  ClipOval(
-                    child: Image.asset(
-                      p[2],
-                      width: 120,
-                      height: 120,
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    height: 120,
+                    width: 120,
+                    child: ClipOval(
+                      child: Image.asset(p[2]),
                     ),
                   ),
-                  Text(p[LANGUAGE.CURRENT], style: TextStyle(fontSize: 18)),
+                  Text(p[LANGUAGE.CURRENT], style: styleName),
                 ],
               ),
             ),

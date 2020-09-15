@@ -1,6 +1,6 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/Styles.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Trade/MyRequirementTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:firestore_ui/firestore_ui.dart';
@@ -33,6 +33,7 @@ class MyRequirementScreenState extends State<MyRequirementScreen> {
           style: style1,
         ),
       ),
+      defaultChild: Center(child: CircularProgressIndicator()),
     );
   }
 }

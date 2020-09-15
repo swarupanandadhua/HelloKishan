@@ -53,7 +53,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         child: Form(
           key: this.postRequirementKey,
           child: ListView(
-            children: <Widget>[
+            children: [
               Text('Header'), // TODO
               TypeAheadFormField(
                 // TODO: User must select something, not write
@@ -79,12 +79,14 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 itemBuilder: (_, product) {
                   return ListTile(
                     // TODO: Move to ProductDropDownTile.dart
-                    leading: ClipOval(
-                      child: Image.asset(
-                        product[2],
-                        height: 30,
-                        width: 30,
-                        color: null,
+                    leading: Container(
+                      height: 30,
+                      width: 30,
+                      child: ClipOval(
+                        child: Image.asset(
+                          product[2],
+                          color: null,
+                        ),
                       ),
                     ),
                     title: Text(product[LANGUAGE.CURRENT]),

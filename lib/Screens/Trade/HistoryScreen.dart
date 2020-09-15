@@ -1,7 +1,7 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/Styles.dart';
-import 'package:FarmApp/Screens/History/HistoryTile.dart';
+import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Trade/TradeTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class HistoryScreenState extends State<HistoryScreen> {
     return FirestoreAnimatedList(
       query: DBService.historyScreenQ,
       itemBuilder: (_, snap, animation, int i) {
-        return HistoryTile(
+        return TradeTile(
           Transaction.fromMap(snap.id, snap.data()),
         );
       },
@@ -33,6 +33,7 @@ class HistoryScreenState extends State<HistoryScreen> {
           style: style1,
         ),
       ),
+      defaultChild: Center(child: CircularProgressIndicator()),
     );
   }
 }

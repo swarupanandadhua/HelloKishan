@@ -52,12 +52,14 @@ class RequirementSearch extends SearchDelegate<String> {
     return ListView.builder(
       itemBuilder: (context, i) => ListTile(
         // TODO: Move to ProductDropDownTile.dart
-        leading: ClipOval(
-          child: Image.asset(
-            products[i][2],
-            height: 30,
-            width: 30,
-            color: null,
+        leading: Container(
+          height: 30,
+          width: 30,
+          child: ClipOval(
+            child: Image.asset(
+              products[i][2],
+              color: null,
+            ),
           ),
         ),
         title: Text(

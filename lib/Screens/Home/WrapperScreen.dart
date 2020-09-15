@@ -1,7 +1,7 @@
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
-import 'package:FarmApp/Screens/History/HistoryScreen.dart';
+import 'package:FarmApp/Screens/Trade/HistoryScreen.dart';
 import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/MyRequirementScreen.dart';
@@ -17,7 +17,7 @@ class Wrapper extends StatefulWidget {
 }
 
 class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
-  static List<Widget> tabs = <Widget>[
+  static List<Widget> tabs = [
     HomeScreen(),
     MyRequirementScreen(),
     TradeScreen(),
@@ -65,7 +65,7 @@ class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[tabController.index]),
-        actions: <Widget>[
+        actions: [
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {

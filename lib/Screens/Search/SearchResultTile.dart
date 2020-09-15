@@ -1,7 +1,7 @@
-import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
+import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Trade/SellRequestScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,24 +14,18 @@ class SearchResultTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
-        children: <Widget>[
+        children: [
           ListTile(
-            leading: ClipOval(
-              child: Image.network(
-                r.photoURL,
-                height: 50.0,
-                width: 50.0,
-                loadingBuilder: (_, c, prog) {
-                  return (prog == null)
-                      ? c
-                      : Image.asset(
-                          ASSET_LOADING,
-                          height: 50.0,
-                          width: 50.0,
-                        );
-                },
-                errorBuilder: (_, e, stack) =>
-                    Image.asset(ASSET_RED_CROSS, height: 50.0, width: 50.0),
+            leading: Container(
+              height: 50,
+              width: 50,
+              child: ClipOval(
+                child: Image.network(
+                  r.photoURL,
+                  loadingBuilder: (_, c, p) =>
+                      (p == null) ? c : ImageAsset.loading,
+                  errorBuilder: (_, e, stack) => ImageAsset.account,
+                ),
               ),
             ),
             title: Padding(
@@ -54,11 +48,11 @@ class SearchResultTile extends StatelessWidget {
                 style: TextStyle(fontSize: 12),
               ),
             ),
-            trailing: ClipOval(
-              child: Image.asset(
-                PRODUCTS[int.parse(r.pid)][2],
-                height: 50.0,
-                width: 50.0,
+            trailing: Container(
+              height: 50,
+              width: 50,
+              child: ClipOval(
+                child: Image.asset(PRODUCTS[int.parse(r.pid)][2]),
               ),
             ),
           ),

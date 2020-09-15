@@ -11,6 +11,48 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class DBService {
+  static Query historyScreenQ = FirebaseFirestore.instance
+      .collection(DB_TRANSACTIONS)
+      .where(
+        'uids',
+        arrayContains: FirebaseAuth.instance.currentUser.uid,
+      )
+      .where(
+        'status',
+        whereIn: [
+          FarmApp.STATUS_REJECTED,
+          FarmApp.STATUS_CANCELLED,
+          FarmApp.STATUS_SUCCESSFUL,
+        ],
+      )
+      .orderBy('timestamp')
+      .limit(30);
+
+  static Query tradeScreenQ = FirebaseFirestore.instance
+      .collection(DB_TRANSACTIONS)
+      .where(
+        'uids',
+        arrayContains: FirebaseAuth.instance.currentUser.uid,
+      )
+      .where(
+        'status',
+        whereIn: [
+          FarmApp.STATUS_REQUESTED,
+          FarmApp.STATUS_ACCEPTED,
+        ],
+      )
+      .orderBy('timestamp')
+      .limit(30);
+
+  static Query myRequirementsScreenQ = FirebaseFirestore.instance
+      .collection(DB_REQUIREMENTS)
+      .where(
+        'uid',
+        isEqualTo: FirebaseAuth.instance.currentUser.uid,
+      )
+      .orderBy('timestamp')
+      .limit(30);
+
   static Future<FarmApp.FarmAppUser> getFarmAppUser(String uid) async {
     FarmApp.FarmAppUser farmAppUser;
     await FirebaseFirestore.instance
@@ -82,7 +124,7 @@ class DBService {
           (doc) {
             requirements.insert(
               0,
-              FarmApp.Requirement.fromDocumentSnapshot(doc.id, doc.data()),
+              FarmApp.Requirement.fromMap(doc.id, doc.data()),
             );
           },
         );
@@ -109,12 +151,12 @@ class DBService {
         if (uid == null) {
           if (myuid != e.data()['uid']) {
             requirements.add(
-              FarmApp.Requirement.fromDocumentSnapshot(e.id, e.data()),
+              FarmApp.Requirement.fromMap(e.id, e.data()),
             );
           }
         } else {
           requirements.add(
-            FarmApp.Requirement.fromDocumentSnapshot(e.id, e.data()),
+            FarmApp.Requirement.fromMap(e.id, e.data()),
           );
         }
       });

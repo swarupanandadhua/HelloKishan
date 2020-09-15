@@ -26,7 +26,12 @@ class ProfileUpdateScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(STRING_PROFILE_UPDATE),
+        title: Center(
+          child: Text(
+            STRING_PROFILE_UPDATE,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
       bottomSheet: Container(
         height: 60,
@@ -99,6 +104,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   bool imageChosen = false;
   bool userLoaded = false;
 
+  // TODO: Address Information must be stateful
+
   @override
   void initState() {
     loadUser();
@@ -122,7 +129,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       type: ProgressDialogType.Normal,
       isDismissible: false,
     );
-    pd.update(message: 'Getting Location...');
+    pd.update(message: STRING_GETTING_LOCATION);
     pd.show();
     await LocationService.getAddress().then((address) {
       setState(() {
@@ -168,6 +175,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         alignment: Alignment.bottomRight,
         children: <Widget>[
           Container(
+            padding: EdgeInsets.all(8.0),
             height: 150,
             width: 150,
             child: ClipOval(
@@ -259,7 +267,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(STRING_NAME, style: h2Style),
+                          Text(STRING_YOUR_NAME, style: h2Style),
                         ],
                       ),
                     ),

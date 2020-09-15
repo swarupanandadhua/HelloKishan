@@ -14,33 +14,29 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class PostRequirementScreen extends StatefulWidget {
-  PostRequirementScreen({this.r});
-
   final Requirement r;
-  final String title = STRING_SEARCH_RESULTS;
+
+  PostRequirementScreen({this.r});
 
   @override
   PostRequirementScreenState createState() => PostRequirementScreenState(r: r);
 }
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {
-  Requirement r;
-
   PostRequirementScreenState({this.r});
 
+  Requirement r;
   final GlobalKey<FormState> postRequirementKey = GlobalKey<FormState>();
   final TextEditingController productC = TextEditingController();
   final TextEditingController priceC = TextEditingController();
   final TextEditingController qtyC = TextEditingController();
 
-  String wantsTo;
   List<String> selectedProduct;
   Size screenSize;
 
   @override
   Widget build(BuildContext context) {
     if (r != null) {
-      wantsTo = 'Buy';
       selectedProduct = PRODUCTS[int.parse(r.pid)];
       productC.text = selectedProduct[LANGUAGE.CURRENT];
       priceC.text = r.rate;
@@ -58,26 +54,9 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           key: this.postRequirementKey,
           child: ListView(
             children: <Widget>[
-              DropdownButtonFormField(
-                validator: (val) => ((val == 'Buy') || (val == 'Sell'))
-                    ? null
-                    : STRING_SELECT_BUY_OR_SELL,
-                value: wantsTo,
-                hint: Text(STRING_I_WANT_TO),
-                items: [
-                  DropdownMenuItem(
-                    value: STRING_BUY,
-                    child: Text(STRING_BUY),
-                  ),
-                  DropdownMenuItem(
-                    value: STRING_SELL,
-                    child: Text(STRING_SELL),
-                  ),
-                ],
-                onChanged: (val) => wantsTo = val,
-              ),
+              Text('Header'), // TODO
               TypeAheadFormField(
-                // User must select something, not write
+                // TODO: User must select something, not write
                 validator: (v) => (selectedProduct != null)
                     ? null
                     : STRING_SELECT_PRODUCT_FROM_LIST,
@@ -173,7 +152,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         selectedProduct[3],
         priceC.text,
         qtyC.text,
-        wantsTo,
+        'Buy',
         Timestamp.now(),
         SharedPrefData.getAddress(),
         SharedPrefData.getDistrict(),

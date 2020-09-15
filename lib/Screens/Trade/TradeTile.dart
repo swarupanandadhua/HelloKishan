@@ -3,6 +3,7 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/Styles.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -73,12 +74,18 @@ class TradeTileState extends State<TradeTile> {
       );
     } else {
       if (isFarmer) {
-        actions.add(Text(STRING_REQUESTED));
+        actions.add(
+          Text(
+            STRING_REQUESTED,
+            style: style2,
+          ),
+        );
         actions.add(
           RaisedButton.icon(
             onPressed: () => updateTransactionStatus(STATUS_CANCELLED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_CANCEL),
+            color: Colors.red,
           ),
         );
       } else {
@@ -87,6 +94,7 @@ class TradeTileState extends State<TradeTile> {
             onPressed: () => updateTransactionStatus(STATUS_REJECTED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_REJECT),
+            color: Colors.red,
           ),
         );
         actions.add(
@@ -94,6 +102,7 @@ class TradeTileState extends State<TradeTile> {
             onPressed: () => updateTransactionStatus(STATUS_ACCEPTED),
             icon: Icon(Icons.check),
             label: Text(STRING_ACCEPT),
+            color: Colors.green,
           ),
         );
       }
@@ -128,14 +137,21 @@ class TradeTileState extends State<TradeTile> {
                         child: ClipOval(
                           child: Image.asset(
                             PRODUCTS[pid][2],
-                            height: 50.0,
-                            width: 50.0,
+                            height: 80.0,
+                            width: 80.0,
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4),
-                        child: Text(PRODUCTS[pid][LANGUAGE.CURRENT]),
+                        child: Text(
+                          PRODUCTS[pid][LANGUAGE.CURRENT],
+                          style: TextStyle(
+                            color: Colors.green[500],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -156,11 +172,25 @@ class TradeTileState extends State<TradeTile> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4),
-                      child: Text('$STRING_RATE : ₹${t.rate}/kg'),
+                      child: Text(
+                        '$STRING_RATE : ₹${t.rate}/kg',
+                        style: TextStyle(
+                          color: Colors.purple,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4),
-                      child: Text('$STRING_QUANTITY : ${t.qty}kg'),
+                      child: Text(
+                        '$STRING_QUANTITY : ${t.qty}kg',
+                        style: TextStyle(
+                          color: Colors.cyan,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4),
@@ -180,19 +210,19 @@ class TradeTileState extends State<TradeTile> {
                         child: ClipOval(
                           child: Image.network(
                             photoURL,
-                            height: 50.0,
-                            width: 50.0,
+                            height: 80.0,
+                            width: 80.0,
                             loadingBuilder: (_, c, prog) => (prog == null)
                                 ? c
                                 : Image.asset(
                                     ASSET_LOADING,
-                                    height: 50.0,
-                                    width: 50.0,
+                                    height: 80.0,
+                                    width: 80.0,
                                   ),
                             errorBuilder: (_, err, stack) => Image.asset(
                               ASSET_ACCOUNT,
-                              height: 50.0,
-                              width: 50.0,
+                              height: 80.0,
+                              width: 80.0,
                             ),
                           ),
                         ),

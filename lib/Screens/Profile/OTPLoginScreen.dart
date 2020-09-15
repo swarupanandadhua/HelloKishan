@@ -1,6 +1,6 @@
 import 'package:FarmApp/Models/Assets.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/Debug.dart';
+import 'package:FarmApp/Screens/Common/Styles.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/AuthService.dart';
 import 'package:flutter/material.dart';
@@ -18,44 +18,62 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(STRING_APP_NAME),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Form(
-          key: otpLoginFormKey,
-          child: ListView(
-            children: <Widget>[
-              Image.asset(
-                ASSET_APP_LOGO,
-                height: 150,
-                width: 150,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d{0,10}')),
-                ],
-                decoration: InputDecoration(
-                  hintText: STRING_ENTER_MOBILE_NUMBER,
-                  labelText: STRING_ENTER_MOBILE_NUMBER,
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Form(
+            key: otpLoginFormKey,
+            child: ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Container(
+                    height: 150,
+                    width: 150,
+                    child: ClipOval(
+                      child: Image.asset(
+                        ASSET_APP_LOGO,
+                      ),
+                    ),
+                  ),
                 ),
-                validator: Validator.mobile,
-                onSaved: (value) => mobile = value,
-              ),
-              Container(
-                width: screenSize.width / 2,
-                child: RaisedButton(
-                  child: Text(STRING_SEND_OTP),
-                  onPressed: verify,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d{0,10}')),
+                    ],
+                    decoration: InputDecoration(
+                      hintText: STRING_ENTER_MOBILE_NUMBER,
+                      labelText: STRING_ENTER_MOBILE_NUMBER,
+                    ),
+                    validator: Validator.mobile,
+                    onSaved: (value) => mobile = value,
+                  ),
                 ),
-                margin: EdgeInsets.only(top: 20.0),
-              ),
-              debugPrintUserButton(context),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: RaisedButton(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          STRING_SEND_OTP,
+                          style: style1,
+                        ),
+                      ),
+                      onPressed: verify,
+                    ),
+                    margin: EdgeInsets.only(top: 20.0),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

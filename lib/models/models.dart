@@ -43,7 +43,7 @@ class Requirement {
     this.geopoint,
   );
 
-  Requirement.fromDocumentSnapshot(String id, Map<String, dynamic> data) {
+  Requirement.fromMap(String id, Map<String, dynamic> data) {
     rid = id;
     uid = data['uid'];
     name = data['name'];

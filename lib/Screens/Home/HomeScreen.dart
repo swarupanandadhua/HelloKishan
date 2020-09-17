@@ -1,7 +1,7 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Search/SearchScreen.dart';
+import 'package:FarmApp/Screens/Search/SearchResultScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SearchScreen(p),
+                  builder: (_) => SearchResultScreen(p),
                 ),
               );
             },

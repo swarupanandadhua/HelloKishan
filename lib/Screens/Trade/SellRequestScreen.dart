@@ -41,7 +41,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          key: this.sellRequestKey,
+          key: sellRequestKey,
           child: ListView(
             children: [
               // TODO
@@ -102,7 +102,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         context,
         type: ProgressDialogType.Normal,
       );
-      pd.update(message: STRING_SENDING_REQUEST);
+      pd.update(message: STRING_SENDING_SELL_REQUEST);
       pd.show();
       List<String> uids = List<String>();
       uids.add(FirebaseAuth.instance.currentUser.uid);

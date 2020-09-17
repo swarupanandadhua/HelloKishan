@@ -1,6 +1,7 @@
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
@@ -23,14 +24,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: Text(''),
-                        ),
-                        body: ProfileUpdateScreen(),
-                      );
-                    },
+                    builder: (_) => ProfileUpdateScreen(false, false),
                   ),
                 );
               },
@@ -54,7 +48,10 @@ class NavigationDrawer extends StatelessWidget {
                           child: Image.network(
                             FirebaseAuth.instance.currentUser.photoURL,
                             loadingBuilder: (_, c, prog) {
-                              return (prog == null) ? c : ImageAsset.loading;
+                              if (prog == null) return c;
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
                             },
                             errorBuilder: (_, __, ___) => ImageAsset.account,
                           ),
@@ -66,25 +63,22 @@ class NavigationDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            // TODO: Add leading Icons to the followgs...
             ListTile(
-              title: Text(STRING_KYC),
-              onTap: () => debugPrint(StackTrace.current.toString()),
+              contentPadding: const EdgeInsets.all(8.0),
+              title: Text(STRING_SHARE, style: styleNavItem),
+              leading: Icon(Icons.share),
+              onTap: () => UrlLauncher.launch(STRING_SHARE_ARG),
             ),
             ListTile(
-              title: Text(STRING_HELP),
+              contentPadding: const EdgeInsets.all(8.0),
+              title: Text(STRING_HELP, style: styleNavItem),
+              leading: Icon(Icons.help_outline),
               onTap: () => UrlLauncher.launch(HELP_MAIL_ARG),
             ),
             ListTile(
-              title: Text(STRING_SETTINGS),
-              onTap: () => debugPrint(StackTrace.current.toString()),
-            ),
-            ListTile(
-              title: Text(STRING_FEEDBACK),
-              onTap: () => debugPrint(StackTrace.current.toString()),
-            ),
-            ListTile(
-              title: Text(STRING_SIGN_OUT),
+              contentPadding: const EdgeInsets.all(8.0),
+              title: Text(STRING_SIGN_OUT, style: styleNavItem),
+              leading: Icon(Icons.power_settings_new),
               onTap: () async {
                 await AuthService().signOut();
                 Navigator.pushAndRemoveUntil(

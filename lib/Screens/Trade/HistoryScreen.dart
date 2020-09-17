@@ -33,7 +33,6 @@ class HistoryScreenState extends State<HistoryScreen> {
           style: style1,
         ),
       ),
-      defaultChild: Center(child: CircularProgressIndicator()),
     );
   }
 }

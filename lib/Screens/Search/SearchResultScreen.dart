@@ -1,5 +1,6 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
@@ -8,21 +9,24 @@ import 'package:flutter/material.dart';
 
 // TODO: geolocator::distanceBetween can be used for calculating distance
 
-class SearchScreen extends StatefulWidget {
+class SearchResultScreen extends StatefulWidget {
   final List<String> product;
-  SearchScreen(this.product);
+  SearchResultScreen(this.product);
 
   @override
-  SearchScreenState createState() => SearchScreenState();
+  SearchResultScreenState createState() => SearchResultScreenState(product);
 }
 
-class SearchScreenState extends State<SearchScreen> {
+class SearchResultScreenState extends State<SearchResultScreen> {
+  final List<String> product;
   Stream<List<Requirement>> requirements;
+
+  SearchResultScreenState(this.product);
 
   @override
   void initState() {
     // INFO: product[3] stores 'pid'
-    requirements = DBService.fetchRequirements(pid: widget.product[3]);
+    requirements = DBService.fetchRequirements(pid: product[3]);
     super.initState();
   }
 
@@ -39,7 +43,7 @@ class SearchScreenState extends State<SearchScreen> {
           PopupMenuButton<String>(
             onSelected: (option) {
               switch (option) {
-                case STRING_SORT_BY_DISTANCE:
+                case STRING_NEAREST_FIRST:
                   debugPrint(StackTrace.current.toString());
                   break;
                 case STRING_HIGHEST_PRICE_FIRST:
@@ -54,11 +58,12 @@ class SearchScreenState extends State<SearchScreen> {
             },
             itemBuilder: (_) {
               return {
-                STRING_SORT_BY_DISTANCE,
+                STRING_NEAREST_FIRST,
                 STRING_HIGHEST_PRICE_FIRST,
                 STRING_LOWEST_PRICE_FIRST,
               }.map((String option) {
                 return PopupMenuItem<String>(
+                  textStyle: styleSortItem,
                   value: option,
                   child: Text(option),
                 );
@@ -69,7 +74,7 @@ class SearchScreenState extends State<SearchScreen> {
       ),
       drawer: NavigationDrawer(),
       body: StreamBuilder<List<Requirement>>(
-        stream: requirements,
+        stream: requirements, // TODO: IMPORTANT: Use FirebaseAnimatedList
         builder: (_, snap) {
           if (snap.hasData && snap.data != null) {
             if (snap.data.length > 0) {
@@ -84,8 +89,10 @@ class SearchScreenState extends State<SearchScreen> {
               );
             } else {
               return Center(
-                child: Text(STRING_NO_BUYER_SELLER_FOUND +
-                    widget.product[LANGUAGE.CURRENT]),
+                child: Text(
+                  '${product[LANGUAGE.CURRENT]} $STRING_NO_BUYER_FOUND',
+                  style: styleEmpty,
+                ),
               );
             }
           } else if (snap.hasError) {

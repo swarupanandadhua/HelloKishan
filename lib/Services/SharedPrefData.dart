@@ -32,5 +32,14 @@ class SharedPrefData {
   static void setFCMToken(String token) => p.setString('fcmToken', token);
   static String getFCMToken() => p.getString('fcmToken');
 
-  static void reset(String key) => p.remove(key);
+  static void reset() {
+    p.remove('address');
+    p.remove('district');
+    p.remove('state');
+    p.remove('pincode');
+    p.remove('latitude');
+    p.remove('longitude');
+    p.remove('fcmToken');
+    p.remove('profileUpdated');
+  }
 }

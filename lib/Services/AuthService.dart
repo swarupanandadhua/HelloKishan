@@ -10,18 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class AuthService {
-  Stream<User> get user {
-    return FirebaseAuth.instance.authStateChanges();
-  }
-
-  User getFirebaseUser() {
-    return FirebaseAuth.instance.currentUser;
-  }
-
   Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      SharedPrefData.reset('loggedin');
+      SharedPrefData.reset();
     } catch (e) {
       debugPrint(e);
     }
@@ -44,7 +36,7 @@ class AuthService {
             actions: [
               FlatButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: Text('Dismiss'),
+                child: Text(STRING_DISMISS),
               ),
             ],
           );
@@ -53,64 +45,71 @@ class AuthService {
     }
 
     signInCallBack(User u) {
-      if (u != null) {
+      if (u == null) {
+        showMyInfoDialog(ctx, STRING_VERIFICATION_FAILED);
+      } else {
         Widget screen;
         if (SharedPrefData.getProfileUpdated() == true) {
           screen = Wrapper();
         } else {
-          screen = ProfileUpdateScaffold();
+          screen = ProfileUpdateScreen(true, true);
         }
 
         Navigator.pushAndRemoveUntil(
           ctx,
-          MaterialPageRoute(
-            builder: (ctx) => screen,
-          ),
+          MaterialPageRoute(builder: (ctx) => screen),
           (route) => false,
         );
-      } else {
-        showMyInfoDialog(ctx, 'Sign in failed');
       }
     }
 
-    pd.update(message: 'Sending OTP...');
+    pd.update(message: STRING_SENDING_OTP);
     pd.show();
     User u;
-    if (!phone.startsWith('+91')) phone = '+91' + phone;
+    if (!phone.startsWith(COUNTRY_CODE_IN)) phone = COUNTRY_CODE_IN + phone;
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       codeSent: (verificationId, [forceResendingToken]) {
-        pd.update(message: 'Auto reading OTP...');
+        pd.update(message: STRING_AUTO_READING_OTP);
       },
       timeout: Duration(seconds: 30),
       codeAutoRetrievalTimeout: (verificationId) async {
+        final GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
         if (pd.isShowing()) pd.hide();
         TextEditingController tc = TextEditingController();
         String otp = await showDialog<String>(
           context: ctx,
           barrierDismissible: false,
           builder: (ctx) => AlertDialog(
-            title: Text('Enter the OTP'),
-            content: TextFormField(
-              controller: tc,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d{0,6}')),
-              ],
-              decoration: InputDecoration(
-                hintText: STRING_ENTER_OTP,
-                labelText: STRING_ENTER_OTP,
+            title: Text(STRING_ENTER_OTP),
+            content: Form(
+              key: otpFormKey,
+              child: TextFormField(
+                controller: tc,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d{0,6}')),
+                ],
+                decoration: InputDecoration(
+                  hintText: STRING_ENTER_OTP,
+                  labelText: STRING_ENTER_OTP,
+                ),
+                validator: Validator.otp,
               ),
-              validator: Validator.otp,
             ),
             actions: [
-              FlatButton(
+              RaisedButton.icon(
+                color: Colors.green,
+                textColor: Colors.white,
                 onPressed: () {
-                  if (pd.isShowing()) pd.hide();
-                  Navigator.pop(ctx, tc.text);
+                  if (otpFormKey.currentState.validate()) {
+                    if (pd.isShowing()) pd.hide();
+                    Navigator.pop(ctx, tc.text);
+                  }
                 },
-                child: Text('Submit'),
+                icon: Icon(Icons.check),
+                label: Text(STRING_SUBMIT),
               )
             ],
           ),
@@ -119,29 +118,26 @@ class AuthService {
           verificationId: verificationId,
           smsCode: otp,
         );
-        pd.update(message: 'Signing in...');
+        pd.update(message: STRING_SIGNING_IN);
         pd.show();
         try {
           await FirebaseAuth.instance.signInWithCredential(cred).then(
             (authResult) {
               if (pd.isShowing()) pd.hide();
-              u = authResult?.user;
-              // showMyInfoDialog(
-              // ctx, (u == null) ? 'Sign in failed' : 'Signed in');
-              signInCallBack(u);
+              signInCallBack(authResult?.user);
             },
           );
         } catch (e) {
-          if (e.toString().contains("ERROR_INVALID_VERIFICATION_CODE")) {
+          if (e.toString().contains(STRING_INVALID_VERIFICATION_CODE)) {
             if (pd.isShowing()) pd.hide();
-            showMyInfoDialog(ctx, 'Invalid OTP');
+            showMyInfoDialog(ctx, STRING_INVALID_OTP);
           } else {
             debugPrint(e.toString());
           }
         }
       },
       verificationCompleted: (cred) async {
-        pd.update(message: 'Signing in...');
+        pd.update(message: STRING_SIGNING_IN);
         if (!pd.isShowing()) pd.show();
         await FirebaseAuth.instance.signInWithCredential(cred).then(
           (authResult) {
@@ -154,7 +150,7 @@ class AuthService {
       verificationFailed: (error) {
         debugPrint(error.message);
         if (pd.isShowing()) pd.hide();
-        showMyInfoDialog(ctx, 'Verification failed');
+        showMyInfoDialog(ctx, STRING_VERIFICATION_FAILED);
         u = null;
       },
     );

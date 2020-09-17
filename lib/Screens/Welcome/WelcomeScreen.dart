@@ -50,7 +50,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (user != null) {
-      return profileUpdated ? Wrapper() : ProfileUpdateScaffold();
+      return profileUpdated ? Wrapper() : ProfileUpdateScreen(true, true);
       // return profileUpdated ? TestScreen() : ProfileUpdateScaffold();
     }
     return loading

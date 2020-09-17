@@ -1,7 +1,13 @@
+import 'package:FarmApp/Models/Colors.dart';
 import 'package:flutter/material.dart';
 
 const TextStyle style1 = TextStyle(
   fontSize: 14,
+  color: Color(0xFF870DDE),
+);
+
+const TextStyle styleEmpty = TextStyle(
+  fontSize: 16,
   color: Color(0xFF870DDE),
 );
 
@@ -42,3 +48,22 @@ const TextStyle styleName = TextStyle(
   color: Color(0xFFC2B308),
   fontSize: 14,
 );
+
+const TextStyle styleH1 = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+  color: Color(APP_COLOR),
+);
+
+const TextStyle styleH2 = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+const TextStyle styleNavItem = TextStyle(
+  fontSize: 18,
+  fontStyle: FontStyle.italic,
+  color: Color(0xFF4623b0),
+);
+
+const TextStyle styleSortItem = styleNavItem;

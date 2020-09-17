@@ -16,18 +16,22 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          children: [
-            Image.asset(
-              ASSET_LOADING,
-              height: 50.0,
-              width: 50.0,
-            ),
-            Text(msg),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            height: 50.0,
+            width: 50.0,
+            child: ClipOval(child: ImageAsset.loading),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(msg),
+          ),
+        ],
       ),
     );
   }

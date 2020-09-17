@@ -12,7 +12,12 @@ String displayAmt(String amt) {
   return '$STRING_TOTAL_AMT: ${numE2B(amt)} $STRING_RS';
 }
 
-const String STRING_APP_NAME = 'FarmApp';
+const String COUNTRY_CODE_IN = '+91';
+
+// 'FarmApp';
+const String STRING_APP_NAME = 'ফার্ম অ্যাপ';
+
+const String STRING_WELCOME_USER = 'Welcome User';
 
 // Mobile
 const String STRING_MOBILE = 'মোবাইল নম্বর';
@@ -23,10 +28,19 @@ const String STRING_MUST_BE_10_DIGITS = 'অবশ্যই ১০ সংখ্�
 
 // Send OTP
 const String STRING_SEND_OTP = 'ও.টি.পি পাঠান';
+// 'Sending OTP...'
+const String STRING_SENDING_OTP = 'ও.টি.পি পাঠানো হচ্ছে...';
+const String STRING_AUTO_READING_OTP = 'Auto reading OTP...';
 // Enter the OTP
 const String STRING_ENTER_OTP = 'ও.টি.পি লিখুন';
 // OTP must be 6 digits
 const String STRING_OTP_MUST_6_DIGITS = 'অবশ্যই ৬ সংখ্যার হবে';
+// 'Invalid OTP !'
+const String STRING_INVALID_OTP = 'ও.টি.পি সঠিক নয় !';
+const String STRING_INVALID_VERIFICATION_CODE =
+    'ERROR_INVALID_VERIFICATION_CODE';
+// Submit
+const String STRING_SUBMIT = 'সাবমিট করুন';
 
 // Profile Update
 const String STRING_PROFILE_UPDATE = 'প্রোফাইল আপডেট';
@@ -87,24 +101,22 @@ const String STRING_ENTER_PRICE_PER_KG = 'দাম (প্রতি কেজ�
 // Enter quantity (in kg)
 const String STRING_ENTER_QUANTITY = 'পরিমান (কেজি)';
 
-const String STRING_ENTER_VALID_PRICE = 'Enter a valid price';
+// 'Enter a valid price';
+const String STRING_ENTER_VALID_PRICE = 'দাম সঠিক নয়';
 
-const String STRING_ENTER_VALID_QUANTITY = 'Enter a valid quantity';
+// 'Enter a valid quantity';
+const String STRING_ENTER_VALID_QUANTITY = 'পরিমান সঠিক নয়';
 
 // Home
 const String STRING_HOME = 'Home';
 // Profile
 const String STRING_PROFILE = 'প্রোফাইল';
+
 // History
 const String STRING_HISTORY = 'History';
 
-const String STRING_I_WANT_TO = 'I want to...';
-const String STRING_KYC = 'KYC';
-const String STRING_LOADING_USER_DATA = 'Loading User Data...';
-const String STRING_LOWEST_PRICE_FIRST = 'Lowest Price First';
-
-const String STRING_NOTHING_FOUND = 'Nothing found!';
-const String STRING_NO_BUYER_SELLER_FOUND = 'No buyer or seller found for ';
+// 'No buyer found for ';
+const String STRING_NO_BUYER_FOUND = 'এর কোনো ক্রেতা নেই !';
 
 const String STRING_NO_REQUIREMENTS_FOUND = 'আপনি এখনও কিছু কিনতে চাননি !';
 // No requirements found!
@@ -112,18 +124,27 @@ const String STRING_NO_REQUIREMENTS_FOUND = 'আপনি এখনও কিছ
 const String STRING_NO_TRANSACTIONS_FOUND = 'কোনো লেন-দেন হয়নি !';
 // No transactions found!
 
-const String STRING_POST = 'POST';
+// 'POST';
+const String STRING_POST = 'পোষ্ট করুন';
 const String STRING_POST_REQUIREMENT = 'Post Requirement';
+// Post Requirement Header
+const String STRING_POST_REQUIREMENT_HEADER =
+    'আপনি কী কিনতে চান, কত কেজি কিনতে চান এবং কত দামে কিনতে চান নীচের শূন্যস্থান গুলিতে লিখুন';
 
 const String STRING_REQUIREMENTS = 'Requirements';
 const String STRING_SAVE = 'Save';
 const String STRING_SEARCH_RESULTS = 'Search Results';
-const String STRING_SELECT_A_PRODUCT = 'Select a product';
-const String STRING_SELECT_BUY_OR_SELL = 'Please select Buy of Sell';
-const String STRING_SELECT_PRODUCT_FROM_LIST =
-    'Please select a product from list';
+
+const String STRING_BUY_WHAT = 'কী কিনতে চান ?';
+const String STRING_BUY_HOW_MUCH = 'কত কেজি কিনতে চান ?';
+const String STRING_BUY_WHAT_PRICE = 'কত দামে কিনতে চান ?';
+const String STRING_WRITE_BUY_WHAT = 'কী কিনতে চান এখনে লিখুন';
+
+// 'Please select a product from list';
+const String STRING_WHAT_SELL_SELECT_FROM_LIST =
+    'কী বিক্রি করতে চান লিস্ট থেকে সিলেক্ট করুন !';
+
 const String STRING_SELL = 'Sell';
-const String STRING_PLEASE_WAIT = 'Please Wait...';
 
 const String STRING_BOUGHT_FROM = 'Bought from';
 const String STRING_BUY = 'Buy';
@@ -142,8 +163,8 @@ const String STRING_QUANTITY = 'পরিমাণ';
 const String STRING_TOTAL_AMT = 'মোট দাম';
 
 // ACCEPTED
-const String STRING_ACCEPTED = 'Kinte i66uk';
-// REQUESTED
+const String STRING_ACCEPTED = 'কিনতে ইচ্ছুক';
+// REQUESTED : TODO : IMPORTANT
 const String STRING_REQUESTED = 'REQUESTED';
 
 // গ্রহণ করুন ACCEPT
@@ -159,21 +180,45 @@ const String STRING_DELETE = 'মুছে ফেলুন';
 // UPDATE
 const String STRING_UPDATE = 'আপডেট করুন';
 
+// 'Dismiss'
+const String STRING_DISMISS = 'বাদ দিন';
+
 const String STRING_SELL_REQUEST = 'Sell Request';
-const String STRING_SENDING_REQUEST = 'Sending Request...';
-const String STRING_DELETING = 'Deleting...';
-const String STRING_SETTINGS = 'Settings';
-const String STRING_SIGN_OUT = 'Sign Out';
+
+// 'Sign Out';
+const String STRING_SIGN_OUT = 'লগ আউট করুন';
+
 const String STRING_SOLD_TO = 'Sold to';
-const String STRING_SOMETHING_WENT_WRONG = 'Something went wrong!';
-const String STRING_SORT_BY_DISTANCE = 'Sort by distance';
+
+// 'Something went wrong!';
+const String STRING_SOMETHING_WENT_WRONG = 'কিছু একটা সমস্যা হয়েছে !';
+
 const String STRING_TODO_IMPORTANT_FUNCTIONALITY = 'TODO : IMPORTANT FUNC.';
 const String STRING_TRADE = 'Trade';
-const String STRING_UPDATING_PROFILE_INFO = 'Updating Profile Information...';
-const String STRING_UPLOADING_PROFILE_PICTURE = 'Uploading Profile Picture...';
-const String STRING_WELCOME_USER = 'Welcome User';
-const String STRING_FEEDBACK = 'Feedback';
-const String STRING_HELP = 'Help';
+
+// 'Sending Sell Request...';
+const String STRING_SENDING_SELL_REQUEST = 'বিক্রির অনুরোধ করা হচ্ছে...';
+const String STRING_DELETING = 'Deleting...';
+// 'Please Wait...';
+const String STRING_PLEASE_WAIT = 'অপেক্ষা করুন...';
+// 'Signing in...'
+const String STRING_SIGNING_IN = 'লগ ইন করা হচ্ছে...';
+// 'Verification failed !'
+const String STRING_VERIFICATION_FAILED = 'লগ ইন ব্যর্থ হয়েছে !';
+
+// 'Share';
+const String STRING_SHARE = 'সেয়ার করুন';
+const String STRING_SHARE_ARG = 'TODO IMPORTANT';
+
+// 'Help';
+const String STRING_HELP = 'সাহায্য চান';
+
 const String STRING_HELP_BODY = 'body=Please%20type%20your%20query%20here...';
 const String STRING_HELP_SUB = 'subject=FarmApp%20Help';
-const String STRING_HIGHEST_PRICE_FIRST = 'Highest Price First';
+
+// 'Lowest Price First';
+const String STRING_LOWEST_PRICE_FIRST = 'দর : কম থেকে বেশি';
+// 'Highest Price First';
+const String STRING_HIGHEST_PRICE_FIRST = 'দর : বেশি থেকে কম';
+// 'Nearest first';
+const String STRING_NEAREST_FIRST = 'দূরত্ব : কম থেকে বেশি';

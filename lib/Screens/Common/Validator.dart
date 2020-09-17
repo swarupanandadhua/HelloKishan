@@ -2,11 +2,13 @@ import 'package:FarmApp/Models/Strings.dart';
 
 class Validator {
   static String price(String val) {
-    return (num.tryParse(val) > 0) ? null : STRING_ENTER_VALID_PRICE;
+    double price = double.tryParse(val);
+    return (price != null && price > 0) ? null : STRING_ENTER_VALID_PRICE;
   }
 
   static String quantity(String val) {
-    return (double.parse(val) > 0) ? null : STRING_ENTER_VALID_QUANTITY;
+    double qty = double.tryParse(val);
+    return (qty != null && qty > 0) ? null : STRING_ENTER_VALID_QUANTITY;
   }
 
   static String otp(String val) {

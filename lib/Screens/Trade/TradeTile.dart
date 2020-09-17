@@ -9,20 +9,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class TradeTile extends StatefulWidget {
+class TradeTile extends StatelessWidget {
   final Transaction t;
+
   TradeTile(this.t);
 
-  @override
-  TradeTileState createState() => TradeTileState(t);
-}
-
-class TradeTileState extends State<TradeTile> {
-  Transaction t;
-
-  TradeTileState(this.t);
-
-  void updateTransactionStatus(String status) async {
+  void updateTransactionStatus(BuildContext context, String status) async {
     ProgressDialog pd = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -32,12 +24,9 @@ class TradeTileState extends State<TradeTile> {
     await t.setStatus(status);
     pd.hide();
     debugPrint('Updated Transaction : ' + status);
-    setState(() {
-      t.status = t.status;
-    });
   }
 
-  Widget getActionButtons() {
+  Widget getActionButtons(BuildContext context) {
     // Case 1: REQUESTED, Buyer View  --> Button[ACCEPT, REJECT]
     // Case 2: REQUESTED, Farmer View --> Text[REQUESTED],  Button[CANCEL]
     // case 3: ACCEPTED, Buyer View   --> Text[ACCEPTED],   Button[COMPLETE]
@@ -50,7 +39,9 @@ class TradeTileState extends State<TradeTile> {
       actions.add(Text(STRING_ACCEPTED, style: styleGreen));
       actions.add(
         RaisedButton.icon(
-          onPressed: () => updateTransactionStatus(STATUS_SUCCESSFUL),
+          color: Colors.green,
+          textColor: Colors.white,
+          onPressed: () => updateTransactionStatus(context, STATUS_SUCCESSFUL),
           icon: Icon(Icons.check_circle),
           label: Text(STRING_COMPLETE),
         ),
@@ -64,7 +55,7 @@ class TradeTileState extends State<TradeTile> {
           RaisedButton.icon(
             color: Colors.red,
             textColor: Colors.white,
-            onPressed: () => updateTransactionStatus(STATUS_CANCELLED),
+            onPressed: () => updateTransactionStatus(context, STATUS_CANCELLED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_CANCEL),
           ),
@@ -74,7 +65,7 @@ class TradeTileState extends State<TradeTile> {
           RaisedButton.icon(
             color: Colors.red,
             textColor: Colors.white,
-            onPressed: () => updateTransactionStatus(STATUS_REJECTED),
+            onPressed: () => updateTransactionStatus(context, STATUS_REJECTED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_REJECT),
           ),
@@ -82,7 +73,7 @@ class TradeTileState extends State<TradeTile> {
         actions.add(
           RaisedButton.icon(
             color: Colors.green,
-            onPressed: () => updateTransactionStatus(STATUS_ACCEPTED),
+            onPressed: () => updateTransactionStatus(context, STATUS_ACCEPTED),
             icon: Icon(Icons.check),
             label: Text(STRING_ACCEPT),
           ),
@@ -216,7 +207,7 @@ class TradeTileState extends State<TradeTile> {
               ...displayTransactionDetails(t),
             ],
           ),
-          showActionButtons ? getActionButtons() : Container(height: 8),
+          showActionButtons ? getActionButtons(context) : Container(height: 8),
         ],
       ),
     );

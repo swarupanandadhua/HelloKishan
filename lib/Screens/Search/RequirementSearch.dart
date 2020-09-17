@@ -1,7 +1,8 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Search/SearchScreen.dart';
+import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Search/SearchResultScreen.dart';
 import 'package:flutter/material.dart';
 
 class RequirementSearch extends SearchDelegate<String> {
@@ -34,7 +35,10 @@ class RequirementSearch extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     return Container(
       child: Center(
-        child: Text(STRING_SELECT_PRODUCT_FROM_LIST),
+        child: Text(
+          STRING_WHAT_SELL_SELECT_FROM_LIST,
+          style: styleEmpty,
+        ),
       ),
     );
   }
@@ -73,7 +77,7 @@ class RequirementSearch extends SearchDelegate<String> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => SearchScreen(products[i]),
+              builder: (_) => SearchResultScreen(products[i]),
             ),
           );
         },

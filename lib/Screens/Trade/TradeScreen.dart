@@ -12,13 +12,19 @@ class TradeScreen extends StatefulWidget {
 }
 
 class TradeScreenState extends State<TradeScreen> {
+  final Key key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return FirestoreAnimatedList(
+      key: key,
       query: DBService.tradeScreenQ,
+      duration: Duration(seconds: 1),
       itemBuilder: (_, snap, animation, int i) {
-        return TradeTile(
-          Transaction.fromMap(snap.id, snap.data()),
+        return FadeTransition(
+          opacity: animation,
+          child: TradeTile(
+            Transaction.fromMap(snap.id, snap.data()),
+          ),
         );
       },
       emptyChild: Center(
@@ -33,7 +39,6 @@ class TradeScreenState extends State<TradeScreen> {
           style: style1,
         ),
       ),
-      defaultChild: Center(child: CircularProgressIndicator()),
     );
   }
 }

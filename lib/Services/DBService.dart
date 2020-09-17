@@ -25,7 +25,7 @@ class DBService {
           FarmApp.STATUS_SUCCESSFUL,
         ],
       )
-      .orderBy('timestamp')
+      .orderBy('timestamp', descending: true)
       .limit(30);
 
   static Query tradeScreenQ = FirebaseFirestore.instance
@@ -41,7 +41,7 @@ class DBService {
           FarmApp.STATUS_ACCEPTED,
         ],
       )
-      .orderBy('timestamp')
+      .orderBy('timestamp', descending: true)
       .limit(30);
 
   static Query myRequirementsScreenQ = FirebaseFirestore.instance
@@ -50,7 +50,7 @@ class DBService {
         'uid',
         isEqualTo: FirebaseAuth.instance.currentUser.uid,
       )
-      .orderBy('timestamp')
+      .orderBy('timestamp', descending: true)
       .limit(30);
 
   static Future<FarmApp.FarmAppUser> getFarmAppUser(String uid) async {
@@ -196,7 +196,7 @@ class DBService {
         .collection(DB_TRANSACTIONS)
         .where('uids', arrayContains: FirebaseAuth.instance.currentUser.uid)
         .where('status', whereIn: status)
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .limit(20)
         .snapshots()
         .map((snap) {
@@ -227,7 +227,7 @@ class DBService {
         .collection(DB_TRANSACTIONS)
         .where('sellerUid', isEqualTo: uid)
         .where('status', whereIn: status)
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .limit(20)
         .get();
     List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();

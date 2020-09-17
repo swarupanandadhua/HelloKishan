@@ -3,6 +3,7 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
@@ -54,73 +55,88 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           key: this.postRequirementKey,
           child: ListView(
             children: [
-              Text('Header'), // TODO
-              TypeAheadFormField(
-                // TODO: User must select something, not write
-                validator: (v) => (selectedProduct != null)
-                    ? null
-                    : STRING_SELECT_PRODUCT_FROM_LIST,
-                textFieldConfiguration: TextFieldConfiguration(
-                  decoration:
-                      InputDecoration(labelText: STRING_SELECT_A_PRODUCT),
-                  controller: productC,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  STRING_POST_REQUIREMENT_HEADER,
+                  style: styleH2,
                 ),
-                suggestionsCallback: (pattern) async {
-                  List<List<String>> suggestions = List<List<String>>();
-                  for (int i = 0; i < PRODUCTS.length; i++) {
-                    if (PRODUCTS[i][LANGUAGE.CURRENT]
-                        .toLowerCase()
-                        .contains(pattern.toLowerCase())) {
-                      suggestions.add(PRODUCTS[i]);
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TypeAheadFormField(
+                  // TODO: https://stackoverflow.com/questions/63932633/how-to-reset-the-text-of-typeaheadformfield-when-not-selected-from-suggestions-i
+                  hideSuggestionsOnKeyboardHide: false,
+                  validator: (v) =>
+                      (selectedProduct != null) ? null : STRING_WRITE_BUY_WHAT,
+                  textFieldConfiguration: TextFieldConfiguration(
+                    decoration: InputDecoration(labelText: STRING_BUY_WHAT),
+                    controller: productC,
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    List<List<String>> suggestions = List<List<String>>();
+                    for (int i = 0; i < PRODUCTS.length; i++) {
+                      if (PRODUCTS[i][LANGUAGE.CURRENT]
+                          .toLowerCase()
+                          .contains(pattern.toLowerCase())) {
+                        suggestions.add(PRODUCTS[i]);
+                      }
                     }
-                  }
-                  return suggestions;
-                },
-                itemBuilder: (_, product) {
-                  return ListTile(
-                    // TODO: Move to ProductDropDownTile.dart
-                    leading: Container(
-                      height: 30,
-                      width: 30,
-                      child: ClipOval(
-                        child: Image.asset(
-                          product[2],
-                          color: null,
+                    return suggestions;
+                  },
+                  itemBuilder: (_, product) {
+                    return ListTile(
+                      // TODO: Move to ProductDropDownTile.dart
+                      leading: Container(
+                        height: 30,
+                        width: 30,
+                        child: ClipOval(
+                          child: Image.asset(
+                            product[2],
+                            color: null,
+                          ),
                         ),
                       ),
-                    ),
-                    title: Text(product[LANGUAGE.CURRENT]),
-                  );
-                },
-                transitionBuilder: (_, suggestionsBox, ac) => suggestionsBox,
-                onSuggestionSelected: (List<String> suggestion) {
-                  selectedProduct = suggestion;
-                  productC.text = suggestion[LANGUAGE.CURRENT];
-                },
-              ),
-              TextFormField(
-                controller: priceC,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                ],
-                decoration: InputDecoration(
-                  hintText: STRING_ENTER_PRICE_PER_KG,
-                  labelText: STRING_ENTER_PRICE_PER_KG,
+                      title: Text(product[LANGUAGE.CURRENT]),
+                    );
+                  },
+                  transitionBuilder: (_, suggestionsBox, ac) => suggestionsBox,
+                  onSuggestionSelected: (List<String> suggestion) {
+                    selectedProduct = suggestion;
+                    productC.text = suggestion[LANGUAGE.CURRENT];
+                  },
                 ),
-                validator: Validator.price,
               ),
-              TextFormField(
-                controller: qtyC,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
-                ],
-                decoration: InputDecoration(
-                  hintText: STRING_ENTER_QUANTITY,
-                  labelText: STRING_ENTER_QUANTITY,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: priceC,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: STRING_ENTER_PRICE_PER_KG,
+                    labelText: STRING_BUY_WHAT_PRICE,
+                  ),
+                  validator: Validator.price,
                 ),
-                validator: Validator.quantity,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: qtyC,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: STRING_ENTER_QUANTITY,
+                    labelText: STRING_BUY_HOW_MUCH,
+                  ),
+                  validator: Validator.quantity,
+                ),
               ),
             ],
           ),

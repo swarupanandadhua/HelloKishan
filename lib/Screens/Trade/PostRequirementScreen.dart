@@ -4,6 +4,7 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
@@ -20,30 +21,43 @@ class PostRequirementScreen extends StatefulWidget {
   PostRequirementScreen({this.r});
 
   @override
-  PostRequirementScreenState createState() => PostRequirementScreenState(r: r);
+  PostRequirementScreenState createState() =>
+      PostRequirementScreenState(oldR: r);
 }
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {
-  PostRequirementScreenState({this.r});
+  PostRequirementScreenState({this.oldR});
 
-  Requirement r;
+  Requirement oldR;
   final GlobalKey<FormState> postRequirementKey = GlobalKey<FormState>();
   final TextEditingController productC = TextEditingController();
   final TextEditingController priceC = TextEditingController();
   final TextEditingController qtyC = TextEditingController();
+  ProgressDialog pd;
 
   List<String> selectedProduct;
-  Size screenSize;
+  Timestamp timestamp;
+  bool editing = false;
+
+  @override
+  void initState() {
+    if (oldR != null) {
+      editing = true;
+      selectedProduct = PRODUCTS[int.parse(oldR.pid)];
+      productC.text = selectedProduct[LANGUAGE.CURRENT];
+      priceC.text = oldR.rate;
+      qtyC.text = oldR.qty;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (r != null) {
-      selectedProduct = PRODUCTS[int.parse(r.pid)];
-      productC.text = selectedProduct[LANGUAGE.CURRENT];
-      priceC.text = r.rate;
-      qtyC.text = r.qty;
-    }
-    screenSize = MediaQuery.of(context).size;
+    pd = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +86,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   textFieldConfiguration: TextFieldConfiguration(
                     decoration: InputDecoration(labelText: STRING_BUY_WHAT),
                     controller: productC,
+                    enabled: !editing,
                   ),
                   suggestionsCallback: (pattern) async {
                     List<List<String>> suggestions = List<List<String>>();
@@ -101,9 +116,23 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     );
                   },
                   transitionBuilder: (_, suggestionsBox, ac) => suggestionsBox,
-                  onSuggestionSelected: (List<String> suggestion) {
+                  onSuggestionSelected: (List<String> suggestion) async {
                     selectedProduct = suggestion;
                     productC.text = suggestion[LANGUAGE.CURRENT];
+                    pd.show();
+                    pd.update(message: STRING_PLEASE_WAIT);
+                    oldR = await DBService.fetchRequirement(
+                      pid: selectedProduct[3],
+                      uid: FirebaseAuth.instance.currentUser.uid,
+                    );
+                    if (oldR != null) {
+                      setState(() {
+                        priceC.text = oldR.rate;
+                        qtyC.text = oldR.qty;
+                        timestamp = oldR.timestamp;
+                      });
+                    }
+                    pd.hide();
                   },
                 ),
               ),
@@ -114,7 +143,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d+\.?\d{0,2}')),
+                      RegExp(r'^\d+\.?\d{0,2}'),
+                    ),
                   ],
                   decoration: InputDecoration(
                     hintText: STRING_ENTER_PRICE_PER_KG,
@@ -138,6 +168,13 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   validator: Validator.quantity,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  timestamp == null ? "" : getTimeStamp(timestamp),
+                  style: styleLessImpTxt,
+                ),
+              )
             ],
           ),
         ),
@@ -163,10 +200,11 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   void postRequirement() async {
     if (postRequirementKey.currentState.validate()) {
       final Requirement requirement = Requirement(
-        r?.rid,
+        oldR?.rid,
         FirebaseAuth.instance.currentUser.uid,
         FirebaseAuth.instance.currentUser.displayName,
         FirebaseAuth.instance.currentUser.photoURL,
+        FirebaseAuth.instance.currentUser.phoneNumber,
         selectedProduct[3],
         priceC.text,
         qtyC.text,
@@ -181,15 +219,10 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           SharedPrefData.getLongitude(),
         ),
       );
-      ProgressDialog submitDialog = ProgressDialog(
-        context,
-        type: ProgressDialogType.Normal,
-        isDismissible: false,
-      );
-      submitDialog.update(message: STRING_PLEASE_WAIT);
-      submitDialog.show();
+      pd.update(message: STRING_PLEASE_WAIT);
+      pd.show();
       await DBService.uploadRequirement(requirement);
-      submitDialog.hide();
+      pd.hide();
       Navigator.pop(context);
     }
   }

@@ -32,7 +32,7 @@ class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
   static List<Widget> _icons = [
     Icon(Icons.home, size: 30, color: Colors.white),
     Icon(
-      Icons.pan_tool,
+      Icons.add_shopping_cart,
       size: 30,
       color: Colors.white,
     ),

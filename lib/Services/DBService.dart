@@ -164,6 +164,22 @@ class DBService {
     });
   }
 
+  static Future<FarmApp.Requirement> fetchRequirement({
+    String pid,
+    String uid,
+  }) async {
+    Query q = FirebaseFirestore.instance.collection(DB_REQUIREMENTS);
+    if (pid != null) {
+      q = q.where('pid', isEqualTo: pid);
+    }
+    if (uid != null) {
+      q = q.where('uid', isEqualTo: uid);
+    }
+
+    QuerySnapshot snap = await q.get();
+    return FarmApp.Requirement.fromMap(snap.docs[0].id, snap.docs[0].data());
+  }
+
   static Future<void> uploadTransaction(FarmApp.Transaction t) async {
     Map<String, dynamic> doc = t.toMap();
 

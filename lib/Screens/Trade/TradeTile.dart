@@ -8,6 +8,7 @@ import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class TradeTile extends StatelessWidget {
   final Transaction t;
@@ -23,7 +24,6 @@ class TradeTile extends StatelessWidget {
     pd.show();
     await t.setStatus(status);
     pd.hide();
-    debugPrint('Updated Transaction : ' + status);
   }
 
   Widget getActionButtons(BuildContext context) {
@@ -33,6 +33,7 @@ class TradeTile extends StatelessWidget {
     // case 4: ACCEPTED, Farmer View  --> Text[ACCEPTED],   Button[COMPLETE]
     bool isFarmer = (t.uids[0] == FirebaseAuth.instance.currentUser.uid);
     bool isAccepted = (t.status == STATUS_ACCEPTED);
+    String mobile;
 
     List<Widget> actions = List<Widget>();
     if (isAccepted) {
@@ -48,6 +49,7 @@ class TradeTile extends StatelessWidget {
       );
     } else {
       if (isFarmer) {
+        mobile = t.sellerMobile;
         actions.add(
           Text(STRING_REQUESTED, style: styleGreen),
         );
@@ -61,6 +63,7 @@ class TradeTile extends StatelessWidget {
           ),
         );
       } else {
+        mobile = t.buyerMobile;
         actions.add(
           RaisedButton.icon(
             color: Colors.red,
@@ -80,6 +83,13 @@ class TradeTile extends StatelessWidget {
         );
       }
     }
+    actions.add(
+      IconButton(
+        color: Colors.green,
+        onPressed: () => UrlLauncher.launch('tel:$mobile'),
+        icon: Icon(Icons.phone),
+      ),
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: actions,
@@ -89,17 +99,17 @@ class TradeTile extends StatelessWidget {
   List<Widget> displayTransactionDetails(Transaction t) {
     String name;
     String photoURL;
-    String tradeDescription;
+    String tradeDesc;
 
     String uid = FirebaseAuth.instance.currentUser.uid;
     if (uid == t.uids[0]) {
       name = t.sellerName;
       photoURL = t.sellerPhoto;
-      tradeDescription = STRING_SELLING_TO;
+      tradeDesc = STRING_SELLING_TO;
     } else {
       name = t.buyerName;
       photoURL = t.buyerPhoto;
-      tradeDescription = STRING_BUYING_FROM;
+      tradeDesc = STRING_BUYING_FROM;
     }
 
     final int pid = int.parse(t.pid);
@@ -138,7 +148,7 @@ class TradeTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: Center(
-                child: Text(tradeDescription, style: styleLessImpTxt),
+                child: Text(tradeDesc, style: styleLessImpTxt),
               ),
             ),
             Padding(

@@ -12,6 +12,9 @@ String displayAmt(String amt) {
   return '$STRING_TOTAL_AMT: ${numE2B(amt)} $STRING_RS';
 }
 
+// INFO: Following APP_ID is used in AndroidManifest.xml as well
+const String ADMOB_APP_ID = 'ca-app-pub-8285249568639559~5250421163';
+
 const String COUNTRY_CODE_IN = '+91';
 
 // 'FarmApp';
@@ -53,7 +56,7 @@ const String STRING_YOUR_NAME = 'আপনার নাম';
 // Enter your name
 const String STRING_ENTER_YOUR_NAME = 'আপনার নাম লিখুন';
 // Enter a valid name
-const String STRING_ENTER_VALID_NAME = 'সঠিক নাম লিখুন';
+const String STRING_NAME_INVALID = 'নাম সঠিক নয়';
 
 // Getting Location...
 const String STRING_GETTING_LOCATION = 'অবস্থান নির্ণয় করা হচ্ছে...';
@@ -61,29 +64,29 @@ const String STRING_GETTING_LOCATION = 'অবস্থান নির্ণয়
 // Address Information
 const String STRING_ADDRESS_INFORMATION = 'ঠিকানার তথ্য';
 
-// Address
-const String STRING_ADDRESS = 'ঠিকানা';
 // House / Street / Locality Name
 const String STRING_HOUSE_STREET_LOCALITY = 'বাড়ি / রাস্তা / লোকালয়ের নাম';
 // Enter a valid address
-const String STRING_ENTER_VALID_ADDRESS = 'ঠিকানা সঠিক নয়';
+const String STRING_ADDRESS_INVALID = 'ঠিকানা সঠিক নয়';
 
 // District
-const String STRING_DISTRICT = 'জেলার নাম';
+const String STRING_DISTRICT_NAME = 'জেলার নাম';
 // Enter your district
 const String STRING_ENTER_YOUR_DISTRICT = 'জেলার নাম লিখুন';
+const String STRING_DISTRICT_NAME_INVALID = 'জেলার নাম সঠিক নয়';
 
 // State
-const String STRING_STATE = 'রাজ্যের নাম';
+const String STRING_STATE_NAME = 'রাজ্যের নাম';
 // Enter State
 const String STRING_ENTER_STATE = 'রাজ্যের নাম লিখুন';
 // Enter a valid state
-const String STRING_ENTER_VALID_STATE = 'রাজ্যের নাম সঠিক নয়';
+const String STRING_STATE_NAME_INVALID = 'রাজ্যের নাম সঠিক নয়';
 
 // Pin Code
 const String STRING_PIN_CODE = 'পিন কোড';
 // Enter Pin Code
 const String STRING_ENTER_PIN_CODE = 'পিন কোড লিখুন';
+const String STRING_PINCODE_INVALID = 'পিন কোড সঠিক নয়';
 
 // PROCEED
 const String STRING_PROCEED = 'সেভ করুন';
@@ -118,6 +121,7 @@ const String STRING_HISTORY = 'History';
 // 'No buyer found for ';
 const String STRING_NO_BUYER_FOUND = 'এর কোনো ক্রেতা নেই !';
 
+const String STRING_WANTS_TO_BUY = 'কিনতে চান';
 const String STRING_NO_REQUIREMENTS_FOUND = 'আপনি এখনও কিছু কিনতে চাননি !';
 // No requirements found!
 
@@ -144,7 +148,8 @@ const String STRING_WRITE_BUY_WHAT = 'কী কিনতে চান এখন
 const String STRING_WHAT_SELL_SELECT_FROM_LIST =
     'কী বিক্রি করতে চান লিস্ট থেকে সিলেক্ট করুন !';
 
-const String STRING_SELL = 'Sell';
+// Sell
+const String STRING_SELL = 'বিক্রি করুন';
 
 const String STRING_BOUGHT_FROM = 'Bought from';
 const String STRING_BUY = 'Buy';
@@ -205,6 +210,10 @@ const String STRING_PLEASE_WAIT = 'অপেক্ষা করুন...';
 const String STRING_SIGNING_IN = 'লগ ইন করা হচ্ছে...';
 // 'Verification failed !'
 const String STRING_VERIFICATION_FAILED = 'লগ ইন ব্যর্থ হয়েছে !';
+
+// Language
+// 'ভাষা বদলান';
+const String STRING_LANGUAGE = 'Language';
 
 // 'Share';
 const String STRING_SHARE = 'সেয়ার করুন';

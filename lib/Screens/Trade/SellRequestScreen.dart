@@ -32,6 +32,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final int pid = int.parse(r.pid);
     screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -44,35 +45,65 @@ class SellRequestScreenState extends State<SellRequestScreen> {
           key: sellRequestKey,
           child: ListView(
             children: [
-              // TODO
-              Text('I want to ${r.tradeType} ...'),
-              Text('${PRODUCTS[int.parse(r.pid)][LANGUAGE.CURRENT]}'),
-              Text(
-                displayRate(r.rate),
-                style: styleRate,
-              ),
-              TextFormField(
-                controller: qtyC,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
-                ],
-                decoration: InputDecoration(
-                  hintText: STRING_ENTER_QUANTITY,
-                  labelText: STRING_ENTER_QUANTITY,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          height: 150.0,
+                          width: 150.0,
+                          child: ClipOval(
+                            child: Image.asset(PRODUCTS[pid][2]),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            PRODUCTS[pid][LANGUAGE.CURRENT],
+                            style: styleName20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                validator: (val) {
-                  double q = double.parse(val);
-                  if (q <= 0) {
-                    return STRING_ENTER_VALID_QUANTITY;
-                  }
-                  if (q > double.parse(r.qty)) {
-                    return r.name + ' will buy maximum ' + r.qty + ' kg';
-                  }
-                  return null;
-                },
               ),
-              Text('Address'), // TODO
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  displayRate(r.rate),
+                  style: styleRate,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: qtyC,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: STRING_ENTER_QUANTITY,
+                    labelText: STRING_ENTER_QUANTITY,
+                  ),
+                  validator: (val) {
+                    double q = double.tryParse(val);
+                    if (q == null || q <= 0) return STRING_ENTER_VALID_QUANTITY;
+                    if (q > double.tryParse(r.qty)) {
+                      return r.name + ' will buy maximum ' + r.qty + ' kg';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              // Text('Address'),
+              // TODO
               // actualProductImage : TODO : IMPORTANT FUNCTIONALITY
             ],
           ),
@@ -111,8 +142,10 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         uids,
         FirebaseAuth.instance.currentUser.displayName,
         FirebaseAuth.instance.currentUser.photoURL,
+        FirebaseAuth.instance.currentUser.phoneNumber,
         r.name,
         r.photoURL,
+        r.mobile,
         r.pid,
         actualProductImage,
         r.rate,

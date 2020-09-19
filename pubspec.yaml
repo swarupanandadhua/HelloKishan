@@ -7,6 +7,7 @@ dependencies:
     sdk: flutter
 
   cloud_firestore:
+  firebase_admob:
   firebase_auth:
   firebase_core:
   firebase_messaging:
@@ -14,6 +15,7 @@ dependencies:
   firestore_ui:
 
   curved_navigation_bar:
+  easy_localization:
   flutter_typeahead:
   image_cropper:
   image_picker:
@@ -38,4 +40,5 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/translations/
   uses-material-design: true

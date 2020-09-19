@@ -1,67 +1,130 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
+import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
+import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:FarmApp/Screens/Trade/SellRequestScreen.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultTile extends StatelessWidget {
   final Requirement r;
 
-  SearchResultTile({this.r});
+  SearchResultTile(this.r);
 
   @override
   Widget build(BuildContext context) {
+    final int pid = int.parse(r.pid);
+    final tradeDesc = STRING_WANTS_TO_BUY;
+
     return Card(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ListTile(
-            leading: Container(
-              height: 50,
-              width: 50,
-              child: ClipOval(
-                child: Image.network(
-                  r.photoURL,
-                  loadingBuilder: (_, c, p) =>
-                      (p == null) ? c : ImageAsset.loading,
-                  errorBuilder: (_, e, stack) => ImageAsset.account,
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      height: 80.0,
+                      width: 80.0,
+                      child: ClipOval(
+                        child: Image.asset(PRODUCTS[pid][2]),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        PRODUCTS[pid][LANGUAGE.CURRENT],
+                        style: styleName,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            title: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                r.name +
-                    ' wants to ' +
-                    r.tradeType +
-                    ' ' +
-                    r.qty +
-                    'kg ' +
-                    PRODUCTS[int.parse(r.pid)][LANGUAGE.CURRENT],
-                style: TextStyle(fontSize: 14),
+              Expanded(
+                flex: 5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Center(
+                        child: Text(
+                          tradeDesc,
+                          style: styleLessImpTxt,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(displayRate(r.rate), style: styleRate),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(displayQty(r.qty), style: styleQty),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        getTimeStamp(r.timestamp),
+                        style: styleLessImpTxt,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Rate: Rs. ' + r.rate + ' per kg',
-                style: TextStyle(fontSize: 12),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      height: 80,
+                      width: 80,
+                      child: ClipOval(
+                        child: Image.network(
+                          r.photoURL,
+                          loadingBuilder: (_, c, p) =>
+                              (p == null) ? c : ImageAsset.loading,
+                          errorBuilder: (_, err, stack) => ImageAsset.account,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        r.name,
+                        style: styleName,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            trailing: Container(
-              height: 50,
-              width: 50,
-              child: ClipOval(
-                child: Image.asset(PRODUCTS[int.parse(r.pid)][2]),
-              ),
-            ),
+            ],
           ),
-          FlatButton(
-            child: Text('Contact ' + r.name),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => SellRequestScreen(r),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+              color: Color(0xFF149c16),
+              child: Text(
+                STRING_SELL,
+                style: styleSellBtn,
+              ),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SellRequestScreen(r),
+                ),
               ),
             ),
           ),

@@ -16,7 +16,7 @@ class Validator {
   }
 
   static String name(String val) {
-    return (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_NAME;
+    return (val != null && val.length >= 5) ? null : STRING_NAME_INVALID;
   }
 
   static String mobile(String val) {
@@ -24,18 +24,20 @@ class Validator {
   }
 
   static String addressLine(String val) {
-    return (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_ADDRESS;
+    return (val != null && val.length >= 5) ? null : STRING_ADDRESS_INVALID;
   }
 
   static String district(String val) {
-    return (val != null && val.length >= 5) ? null : STRING_ENTER_YOUR_DISTRICT;
+    return (val != null && val.length >= 5)
+        ? null
+        : STRING_DISTRICT_NAME_INVALID;
   }
 
   static String pincode(String val) {
-    return (val?.length == 6) ? null : STRING_ENTER_PIN_CODE;
+    return (val?.length == 6) ? null : STRING_PINCODE_INVALID;
   }
 
   static String state(String val) {
-    return (val != null && val.length >= 5) ? null : STRING_ENTER_VALID_STATE;
+    return (val != null && val.length >= 5) ? null : STRING_STATE_NAME_INVALID;
   }
 }

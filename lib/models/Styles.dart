@@ -22,7 +22,8 @@ const TextStyle styleRed = TextStyle(
 );
 
 const TextStyle styleLessImpTxt = TextStyle(
-  color: Color(0xFFD6D6D6),
+  fontWeight: FontWeight.w500,
+  color: Color(0xFF6b6767),
   fontSize: 14,
 );
 
@@ -34,7 +35,7 @@ const TextStyle styleRate = TextStyle(
 
 const TextStyle styleQty = TextStyle(
   fontWeight: FontWeight.w600,
-  color: Color(0xFFFF0000),
+  color: Color(0xFFd90b9b),
   fontSize: 16,
 );
 
@@ -45,8 +46,15 @@ const TextStyle styleAmt = TextStyle(
 );
 
 const TextStyle styleName = TextStyle(
-  color: Color(0xFFC2B308),
+  color: Color(0xff0b64d9),
+  fontWeight: FontWeight.w500,
   fontSize: 14,
+);
+
+const TextStyle styleName20 = TextStyle(
+  color: Color(0xff0b64d9),
+  fontWeight: FontWeight.w500,
+  fontSize: 20,
 );
 
 const TextStyle styleH1 = TextStyle(
@@ -67,3 +75,8 @@ const TextStyle styleNavItem = TextStyle(
 );
 
 const TextStyle styleSortItem = styleNavItem;
+
+const TextStyle styleSellBtn = TextStyle(
+  color: Color(0xffe6e9eb),
+  fontSize: 18,
+);

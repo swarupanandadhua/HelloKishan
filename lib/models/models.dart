@@ -1,5 +1,4 @@
 import 'package:FarmApp/Services/DBService.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const String STATUS_REQUESTED = 'REQUESTED'; // --> (Accept/Reject, Cancel)
@@ -15,7 +14,7 @@ enum TradeType {
 
 class Requirement {
   String rid;
-  String uid, name, photoURL;
+  String uid, name, photoURL, mobile;
   String pid;
   String rate, qty;
   String tradeType;
@@ -31,6 +30,7 @@ class Requirement {
     this.uid,
     this.name,
     this.photoURL,
+    this.mobile,
     this.pid,
     this.rate,
     this.qty,
@@ -48,6 +48,7 @@ class Requirement {
     uid = data['uid'];
     name = data['name'];
     photoURL = data['photoURL'];
+    mobile = data['mobile'];
     pid = data['pid'];
     rate = data['rate'];
     qty = data['qty'];
@@ -65,6 +66,7 @@ class Requirement {
       'uid': uid,
       'name': name,
       'photoURL': photoURL,
+      'mobile': mobile,
       'pid': pid,
       'rate': rate,
       'qty': qty,
@@ -86,8 +88,8 @@ class Requirement {
 class Transaction {
   String tid;
   List<String> uids; // [sellerUid, buyerUid]
-  String sellerName, sellerPhoto;
-  String buyerName, buyerPhoto;
+  String sellerName, sellerPhoto, sellerMobile;
+  String buyerName, buyerPhoto, buyerMobile;
   String pid;
   String actualProductImage;
   String rate, qty, amt;
@@ -98,8 +100,10 @@ class Transaction {
     this.uids,
     this.sellerName,
     this.sellerPhoto,
+    this.sellerMobile,
     this.buyerName,
     this.buyerPhoto,
+    this.buyerMobile,
     this.pid,
     this.actualProductImage,
     this.rate,
@@ -114,8 +118,10 @@ class Transaction {
     uids = List<String>.from(data['uids']);
     sellerName = data['sellerName'];
     sellerPhoto = data['sellerPhoto'];
+    sellerMobile = data['sellerMobile'];
     buyerName = data['buyerName'];
     buyerPhoto = data['buyerPhoto'];
+    buyerMobile = data['buyerMobile'];
     pid = data['pid'];
     actualProductImage = data['actualProductImage'];
     rate = data['rate'];
@@ -123,7 +129,6 @@ class Transaction {
     amt = data['amt'];
     timestamp = data['timestamp'];
     status = data['status'];
-    debugPrint('fromMap: $tid : $status');
   }
 
   Map<String, dynamic> toMap() {
@@ -131,8 +136,10 @@ class Transaction {
       'uids': uids,
       'sellerName': sellerName,
       'sellerPhoto': sellerPhoto,
+      'sellerMobile': sellerMobile,
       'buyerName': buyerName,
       'buyerPhoto': buyerPhoto,
+      'buyerMobile': buyerMobile,
       'pid': pid,
       'actualProductImage': actualProductImage,
       'rate': rate,

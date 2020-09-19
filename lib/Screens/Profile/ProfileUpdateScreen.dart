@@ -136,32 +136,15 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(STRING_YOUR_NAME, style: styleH2),
-                      ],
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: nameEditC,
                       decoration: const InputDecoration(
                         hintText: STRING_ENTER_YOUR_NAME,
-                        labelText: STRING_ENTER_YOUR_NAME,
+                        labelText: STRING_YOUR_NAME,
                       ),
                       enabled: editing,
                       validator: Validator.name,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text(STRING_MOBILE, style: styleH2),
-                      ],
                     ),
                   ),
                   Padding(
@@ -197,14 +180,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text(STRING_ADDRESS, style: styleH2),
-                      ],
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: addressEditC,
@@ -217,31 +192,15 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text(STRING_DISTRICT, style: styleH2),
-                      ],
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: districtEditC,
                       decoration: const InputDecoration(
                         hintText: STRING_ENTER_YOUR_DISTRICT,
-                        labelText: STRING_ENTER_YOUR_DISTRICT,
+                        labelText: STRING_DISTRICT_NAME,
                       ),
                       enabled: editing,
                       validator: Validator.district,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text(STRING_PIN_CODE, style: styleH2),
-                      ],
                     ),
                   ),
                   Padding(
@@ -250,18 +209,10 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       controller: pincodeEditC,
                       decoration: const InputDecoration(
                         hintText: STRING_ENTER_PIN_CODE,
-                        labelText: STRING_ENTER_PIN_CODE,
+                        labelText: STRING_PIN_CODE,
                       ),
                       enabled: editing,
                       validator: Validator.pincode,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                    child: Row(
-                      children: [
-                        Text(STRING_STATE, style: styleH2),
-                      ],
                     ),
                   ),
                   Padding(
@@ -270,7 +221,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       controller: stateEditC,
                       decoration: const InputDecoration(
                         hintText: STRING_ENTER_STATE,
-                        labelText: STRING_ENTER_STATE,
+                        labelText: STRING_STATE_NAME,
                       ),
                       enabled: editing,
                       validator: Validator.state,

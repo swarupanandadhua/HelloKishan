@@ -6,6 +6,7 @@ import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:flutter/material.dart';
@@ -28,7 +29,6 @@ class NavigationDrawer extends StatelessWidget {
                   ),
                 );
               },
-              // TODO: Show Profile Picture as well
               child: Container(
                 child: DrawerHeader(
                   child: Column(
@@ -63,32 +63,54 @@ class NavigationDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(
-              contentPadding: const EdgeInsets.all(8.0),
-              title: Text(STRING_SHARE, style: styleNavItem),
-              leading: Icon(Icons.share),
-              onTap: () => UrlLauncher.launch(STRING_SHARE_ARG),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(STRING_LANGUAGE.tr(), style: styleNavItem),
+                leading: Icon(Icons.language),
+                onTap: () {
+                  if (EasyLocalization.of(context).locale.toString() ==
+                      'bn_IN') {
+                    EasyLocalization.of(context).locale = Locale('en', 'US');
+                  } else {
+                    EasyLocalization.of(context).locale = Locale('bn', 'IN');
+                  }
+                  Navigator.pop(context);
+                },
+              ),
             ),
-            ListTile(
-              contentPadding: const EdgeInsets.all(8.0),
-              title: Text(STRING_HELP, style: styleNavItem),
-              leading: Icon(Icons.help_outline),
-              onTap: () => UrlLauncher.launch(HELP_MAIL_ARG),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(STRING_SHARE, style: styleNavItem),
+                leading: Icon(Icons.share),
+                onTap: () => UrlLauncher.launch(STRING_SHARE_ARG),
+              ),
             ),
-            ListTile(
-              contentPadding: const EdgeInsets.all(8.0),
-              title: Text(STRING_SIGN_OUT, style: styleNavItem),
-              leading: Icon(Icons.power_settings_new),
-              onTap: () async {
-                await AuthService().signOut();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => OTPLoginScreen(),
-                  ),
-                  (route) => false,
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(STRING_HELP, style: styleNavItem),
+                leading: Icon(Icons.help_outline),
+                onTap: () => UrlLauncher.launch(HELP_MAIL_ARG),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(STRING_SIGN_OUT, style: styleNavItem),
+                leading: Icon(Icons.power_settings_new),
+                onTap: () async {
+                  await AuthService().signOut();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => OTPLoginScreen(),
+                    ),
+                    (route) => false,
+                  );
+                },
+              ),
             ),
           ],
         ),

@@ -82,7 +82,7 @@ class SearchResultScreenState extends State<SearchResultScreen> {
                 color: Color(0xff0011),
                 child: ListView.builder(
                   itemBuilder: (_, i) {
-                    return SearchResultTile(r: snap.data[i]);
+                    return SearchResultTile(snap.data[i]);
                   },
                   itemCount: snap.data.length,
                 ),

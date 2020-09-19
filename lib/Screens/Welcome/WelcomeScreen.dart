@@ -7,9 +7,12 @@ import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+// TODO: IMPORTANT: AdMob: https://pub.dev/packages/firebase_admob
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -22,6 +25,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   Future<FirebaseApp> firebaseApp;
   Future<void> sharedPref;
+  Future<bool> adMob;
 
   @override
   void initState() {
@@ -31,12 +35,14 @@ class WelcomeScreenState extends State<WelcomeScreen> {
 
   void doPreprocessing() async {
     firebaseApp = Firebase.initializeApp();
+    adMob = FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     sharedPref = SharedPrefData.init();
     Timer(Duration(seconds: 3), doPostProcessing);
   }
 
   doPostProcessing() async {
     await firebaseApp;
+    await adMob;
     await sharedPref;
     setState(
       () {

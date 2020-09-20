@@ -66,8 +66,8 @@ class AuthService {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       codeSent: (verificationId, [forceResendingToken]) {
-        FarmAppDialog.hide();
-        FarmAppDialog.show(ctx, STRING_AUTO_READING_OTP, true);
+        // FarmAppDialog.hide();
+        // FarmAppDialog.show(ctx, STRING_AUTO_READING_OTP, true);
       },
       timeout: Duration(seconds: 30),
       codeAutoRetrievalTimeout: (verificationId) async {
@@ -139,7 +139,9 @@ class AuthService {
             u = authResult?.user;
             signInCallBack(u);
           },
-        ).catchError(() => debugPrint(StackTrace.current.toString()));
+        ).catchError(() {
+          debugPrint(StackTrace.current.toString());
+        });
       },
       verificationFailed: (FirebaseAuthException e) {
         // TODO

@@ -36,6 +36,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
 
   List<String> selectedProduct;
   Timestamp timestamp;
+  String address;
   bool editing = false;
 
   @override
@@ -46,6 +47,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
       productC.text = selectedProduct[LANGUAGE.CURRENT];
       priceC.text = oldR.rate;
       qtyC.text = oldR.qty;
+      address = SharedPrefData.getAddress();
     }
     super.initState();
   }
@@ -122,6 +124,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                         priceC.text = oldR.rate;
                         qtyC.text = oldR.qty;
                         timestamp = oldR.timestamp;
+                        address = oldR.address;
                       });
                     }
                     FarmAppDialog.hide();
@@ -163,10 +166,19 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  timestamp == null ? "" : getTimeStamp(timestamp),
+                  address,
                   style: styleLessImpTxt,
                 ),
-              )
+              ),
+              (timestamp != null)
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        getTimeStamp(timestamp),
+                        style: styleLessImpTxt,
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),

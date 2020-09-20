@@ -10,10 +10,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
-class TradeTile extends StatelessWidget {
+class TradeTile extends StatefulWidget {
   final Transaction t;
 
   TradeTile(this.t);
+
+  @override
+  TradeTileState createState() => TradeTileState(t);
+}
+
+class TradeTileState extends State<TradeTile> {
+  Transaction t;
+
+  TradeTileState(this.t);
 
   void updateTransactionStatus(BuildContext context, String status) async {
     FarmAppDialog.show(context, STRING_UPDATING, true);

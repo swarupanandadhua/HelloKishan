@@ -25,6 +25,9 @@ class HomeScreenState extends State<HomeScreen> {
           List<String> p = PRODUCTS[i];
           return GestureDetector(
             onTap: () {
+              // TODO: IMPORTANT
+              // Show a dialog and get the qty the farmer wants to sell
+              // filter the results based on that
               Navigator.push(
                 context,
                 MaterialPageRoute(

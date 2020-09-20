@@ -10,12 +10,7 @@ import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 
-class MyRequirementScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => MyRequirementScreenState();
-}
-
-class MyRequirementScreenState extends State<MyRequirementScreen> {
+class MyRequirementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FirestoreAnimatedList(
@@ -45,10 +40,18 @@ class MyRequirementScreenState extends State<MyRequirementScreen> {
   }
 }
 
-class MyRequirementTile extends StatelessWidget {
+class MyRequirementTile extends StatefulWidget {
   final Requirement r;
 
   MyRequirementTile(this.r);
+
+  @override
+  MyRequirementTileState createState() => MyRequirementTileState(r);
+}
+
+class MyRequirementTileState extends State<MyRequirementTile> {
+  Requirement r;
+  MyRequirementTileState(this.r);
 
   @override
   Widget build(BuildContext context) {

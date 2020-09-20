@@ -6,12 +6,7 @@ import 'package:FarmApp/Services/DBService.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 import 'package:flutter/material.dart';
 
-class TradeScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => TradeScreenState();
-}
-
-class TradeScreenState extends State<TradeScreen> {
+class TradeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FirestoreAnimatedList(

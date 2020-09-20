@@ -136,7 +136,7 @@ const String STRING_POST = 'পোষ্ট করুন';
 const String STRING_POST_REQUIREMENT = 'Post Requirement';
 // Post Requirement Header
 const String STRING_POST_REQUIREMENT_HEADER =
-    'আপনি কী কিনতে চান, কত কেজি কিনতে চান এবং কত দামে কিনতে চান নীচের শূন্যস্থান গুলিতে লিখুন';
+    'আপনি কী কিনতে চান, কত কেজি কিনতে চান, কত দামে কিনতে চান এবং আপনার দোকান কোথায় - নীচের শূন্যস্থান গুলিতে লিখুন';
 
 const String STRING_REQUIREMENTS = 'Requirements';
 const String STRING_SAVE = 'Save';

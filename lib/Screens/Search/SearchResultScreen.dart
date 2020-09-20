@@ -10,18 +10,10 @@ import 'package:flutter/material.dart';
 
 // TODO: geolocator::distanceBetween can be used for calculating distance
 
-class SearchResultScreen extends StatefulWidget {
+class SearchResultScreen extends StatelessWidget {
   final List<String> product;
+
   SearchResultScreen(this.product);
-
-  @override
-  SearchResultScreenState createState() => SearchResultScreenState(product);
-}
-
-class SearchResultScreenState extends State<SearchResultScreen> {
-  final List<String> product;
-
-  SearchResultScreenState(this.product);
 
   @override
   Widget build(BuildContext context) {

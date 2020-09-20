@@ -6,12 +6,7 @@ import 'package:FarmApp/Services/DBService.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 import 'package:flutter/material.dart';
 
-class HistoryScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => HistoryScreenState();
-}
-
-class HistoryScreenState extends State<HistoryScreen> {
+class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FirestoreAnimatedList(

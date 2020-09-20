@@ -3,6 +3,7 @@ import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
@@ -15,7 +16,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class ProfileUpdateScreen extends StatefulWidget {
   final bool showBottomSheet, editing;
@@ -239,13 +239,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void getCurrentAddress() async {
-    ProgressDialog pd = ProgressDialog(
-      context,
-      type: ProgressDialogType.Normal,
-      isDismissible: false,
-    );
-    pd.update(message: STRING_GETTING_LOCATION);
-    pd.show();
+    FarmAppDialog.show(context, STRING_GETTING_LOCATION, true);
     await LocationService.getAddress().then(
       (address) {
         setState(
@@ -262,7 +256,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         );
       },
     );
-    pd.hide();
+    FarmAppDialog.hide();
   }
 
   Image getProfilePicture() {
@@ -408,13 +402,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   void saveUserDetails() async {
     if (profileDetailsForm.currentState.validate()) {
-      ProgressDialog pd = ProgressDialog(
-        context,
-        type: ProgressDialogType.Normal,
-        isDismissible: false,
-      );
-      pd.update(message: STRING_PLEASE_WAIT);
-      pd.show();
+      FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
 
       String photoURL = FirebaseAuth.instance.currentUser.photoURL;
       if (imageChosen) {
@@ -435,7 +423,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       SharedPrefData.setLongitude(geopoint.longitude);
       SharedPrefData.setProfileUpdated();
 
-      pd.hide();
+      FarmAppDialog.hide();
       Navigator.pop(context);
       Navigator.pushAndRemoveUntil(
         context,

@@ -64,6 +64,9 @@ const String STRING_GETTING_LOCATION = 'অবস্থান নির্ণয়
 // Address Information
 const String STRING_ADDRESS_INFORMATION = 'ঠিকানার তথ্য';
 
+// Address
+const String STRING_ADDRESS = 'ঠিকানা';
+
 // House / Street / Locality Name
 const String STRING_HOUSE_STREET_LOCALITY = 'বাড়ি / রাস্তা / লোকালয়ের নাম';
 // Enter a valid address
@@ -204,6 +207,7 @@ const String STRING_TRADE = 'Trade';
 // 'Sending Sell Request...';
 const String STRING_SENDING_SELL_REQUEST = 'বিক্রির অনুরোধ করা হচ্ছে...';
 const String STRING_DELETING = 'Deleting...';
+const String STRING_UPDATING = 'Updating...';
 // 'Please Wait...';
 const String STRING_PLEASE_WAIT = 'অপেক্ষা করুন...';
 // 'Signing in...'
@@ -212,8 +216,8 @@ const String STRING_SIGNING_IN = 'লগ ইন করা হচ্ছে...';
 const String STRING_VERIFICATION_FAILED = 'লগ ইন ব্যর্থ হয়েছে !';
 
 // Language
-// 'ভাষা বদলান';
-const String STRING_LANGUAGE = 'Language';
+// Language
+const String STRING_LANGUAGE = 'ভাষা বদলান';
 
 // 'Share';
 const String STRING_SHARE = 'সেয়ার করুন';
@@ -231,3 +235,6 @@ const String STRING_LOWEST_PRICE_FIRST = 'দর : কম থেকে বেশ
 const String STRING_HIGHEST_PRICE_FIRST = 'দর : বেশি থেকে কম';
 // 'Nearest first';
 const String STRING_NEAREST_FIRST = 'দূরত্ব : কম থেকে বেশি';
+
+// Maximum
+const String STRING_MAXIMUM = 'সর্বোচ্চ';

@@ -4,12 +4,13 @@ import 'package:FarmApp/Models/Models.dart' as FarmApp;
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
+import 'package:FarmApp/Screens/Common/Translate.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class SellRequestScreen extends StatefulWidget {
   final FarmApp.Requirement requirement;
@@ -96,14 +97,26 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                     double q = double.tryParse(val);
                     if (q == null || q <= 0) return STRING_ENTER_VALID_QUANTITY;
                     if (q > double.tryParse(r.qty)) {
-                      return r.name + ' will buy maximum ' + r.qty + ' kg';
+                      return '$STRING_MAXIMUM : ${numE2B(r.qty)} $STRING_KG';
                     }
                     return null;
                   },
                 ),
               ),
-              // Text('Address'),
-              // TODO
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  STRING_ADDRESS,
+                  style: styleLessImpTxt,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  r.address,
+                  style: styleRate,
+                ),
+              ),
               // actualProductImage : TODO : IMPORTANT FUNCTIONALITY
             ],
           ),
@@ -129,12 +142,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
 
   void sendRequest() async {
     if (sellRequestKey.currentState.validate()) {
-      ProgressDialog pd = ProgressDialog(
-        context,
-        type: ProgressDialogType.Normal,
-      );
-      pd.update(message: STRING_SENDING_SELL_REQUEST);
-      pd.show();
+      FarmAppDialog.show(context, STRING_SENDING_SELL_REQUEST, true);
       List<String> uids = List<String>();
       uids.add(FirebaseAuth.instance.currentUser.uid);
       uids.add(r.uid);
@@ -154,8 +162,8 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         Timestamp.now(),
         FarmApp.STATUS_REQUESTED,
       );
-      await DBService.initTransaction(t);
-      pd.hide();
+      await DBService.uploadTransaction(t);
+      FarmAppDialog.hide();
       Navigator.pop(context);
     }
   }

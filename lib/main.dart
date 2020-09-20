@@ -11,7 +11,7 @@ void main() {
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('bn', 'IN')],
-      path: 'assets/translations', // <-- change patch to your
+      path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
       child: FarmApp(),
     ),

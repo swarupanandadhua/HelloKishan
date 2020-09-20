@@ -66,7 +66,7 @@ class NavigationDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(STRING_LANGUAGE.tr(), style: styleNavItem),
+                title: Text(STRING_LANGUAGE, style: styleNavItem),
                 leading: Icon(Icons.language),
                 onTap: () {
                   if (EasyLocalization.of(context).locale.toString() ==
@@ -101,7 +101,7 @@ class NavigationDrawer extends StatelessWidget {
                 title: Text(STRING_SIGN_OUT, style: styleNavItem),
                 leading: Icon(Icons.power_settings_new),
                 onTap: () async {
-                  await AuthService().signOut();
+                  await AuthService.signOut();
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(

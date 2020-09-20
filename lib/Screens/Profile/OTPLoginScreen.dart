@@ -81,7 +81,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
   void verify() async {
     if (otpLoginFormKey.currentState.validate()) {
       otpLoginFormKey.currentState.save();
-      AuthService().verifyPhoneNumber(mobile, context);
+      AuthService.verifyPhoneNumber(mobile, context);
     }
   }
 }

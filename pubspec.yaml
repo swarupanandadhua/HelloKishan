@@ -21,7 +21,6 @@ dependencies:
   image_picker:
   intl:
   introduction_screen:
-  progress_dialog:
   shared_preferences:
   url_launcher:
 

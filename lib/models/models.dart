@@ -152,7 +152,7 @@ class Transaction {
 
   Future<void> setStatus(String status) async {
     this.status = status;
-    await DBService.updateTransaction(tid, status: status);
+    await DBService.uploadTransaction(this);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
@@ -7,25 +8,20 @@ import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class AuthService {
-  Future<void> signOut() async {
+  static Future<void> signOut() async {
     try {
-      await FirebaseAuth.instance.signOut();
+      await FirebaseAuth.instance
+          .signOut()
+          .catchError(Validator.defaultErrorHandler);
       SharedPrefData.reset();
     } catch (e) {
       debugPrint(e);
     }
   }
 
-  void verifyPhoneNumber(String phone, BuildContext ctx) async {
-    ProgressDialog pd = ProgressDialog(
-      ctx,
-      isDismissible: false,
-      type: ProgressDialogType.Normal,
-    );
-
+  static void verifyPhoneNumber(String phone, BuildContext ctx) async {
     showMyInfoDialog(BuildContext ctx, String label) {
       showDialog(
         context: ctx,
@@ -63,26 +59,25 @@ class AuthService {
       }
     }
 
-    pd.update(message: STRING_SENDING_OTP);
-    pd.show();
+    FarmAppDialog.show(ctx, STRING_SENDING_OTP, true);
     User u;
     if (!phone.startsWith(COUNTRY_CODE_IN)) phone = COUNTRY_CODE_IN + phone;
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       codeSent: (verificationId, [forceResendingToken]) {
-        pd.update(message: STRING_AUTO_READING_OTP);
+        FarmAppDialog.hide();
+        FarmAppDialog.show(ctx, STRING_AUTO_READING_OTP, true);
       },
       timeout: Duration(seconds: 30),
       codeAutoRetrievalTimeout: (verificationId) async {
         final GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
-        if (pd.isShowing()) pd.hide();
+        FarmAppDialog.hide();
         TextEditingController tc = TextEditingController();
         String otp = await showDialog<String>(
           context: ctx,
           barrierDismissible: false,
           builder: (ctx) => AlertDialog(
-            title: Text(STRING_ENTER_OTP),
             content: Form(
               key: otpFormKey,
               child: TextFormField(
@@ -104,8 +99,7 @@ class AuthService {
                 textColor: Colors.white,
                 onPressed: () {
                   if (otpFormKey.currentState.validate()) {
-                    if (pd.isShowing()) pd.hide();
-                    Navigator.pop(ctx, tc.text);
+                    FarmAppDialog.hide();
                   }
                 },
                 icon: Icon(Icons.check),
@@ -118,39 +112,41 @@ class AuthService {
           verificationId: verificationId,
           smsCode: otp,
         );
-        pd.update(message: STRING_SIGNING_IN);
-        pd.show();
+        FarmAppDialog.hide();
+        FarmAppDialog.show(ctx, STRING_SIGNING_IN, true);
         try {
           await FirebaseAuth.instance.signInWithCredential(cred).then(
             (authResult) {
-              if (pd.isShowing()) pd.hide();
+              FarmAppDialog.hide();
               signInCallBack(authResult?.user);
             },
           );
         } catch (e) {
           if (e.toString().contains(STRING_INVALID_VERIFICATION_CODE)) {
-            if (pd.isShowing()) pd.hide();
-            showMyInfoDialog(ctx, STRING_INVALID_OTP);
+            FarmAppDialog.hide();
+            FarmAppDialog.show(ctx, STRING_INVALID_OTP, false);
           } else {
-            debugPrint(e.toString());
+            Validator.defaultErrorHandler();
           }
         }
       },
       verificationCompleted: (cred) async {
-        pd.update(message: STRING_SIGNING_IN);
-        if (!pd.isShowing()) pd.show();
+        FarmAppDialog.hide();
+        FarmAppDialog.show(ctx, STRING_SIGNING_IN, true);
         await FirebaseAuth.instance.signInWithCredential(cred).then(
           (authResult) {
-            if (pd.isShowing()) pd.hide();
+            FarmAppDialog.hide();
             u = authResult?.user;
             signInCallBack(u);
           },
-        );
+        ).catchError(() => debugPrint(StackTrace.current.toString()));
       },
-      verificationFailed: (error) {
-        debugPrint(error.message);
-        if (pd.isShowing()) pd.hide();
-        showMyInfoDialog(ctx, STRING_VERIFICATION_FAILED);
+      verificationFailed: (FirebaseAuthException e) {
+        // TODO
+        debugPrint(e.code);
+        debugPrint(StackTrace.current.toString());
+        FarmAppDialog.hide();
+        FarmAppDialog.show(ctx, STRING_VERIFICATION_FAILED, false);
         u = null;
       },
     );

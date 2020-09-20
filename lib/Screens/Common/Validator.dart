@@ -1,4 +1,5 @@
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:flutter/cupertino.dart';
 
 class Validator {
   static String price(String val) {
@@ -39,5 +40,9 @@ class Validator {
 
   static String state(String val) {
     return (val != null && val.length >= 5) ? null : STRING_STATE_NAME_INVALID;
+  }
+
+  static void defaultErrorHandler() {
+    debugPrint(StackTrace.current.toString());
   }
 }

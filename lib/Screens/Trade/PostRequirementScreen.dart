@@ -4,6 +4,7 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
@@ -13,7 +14,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class PostRequirementScreen extends StatefulWidget {
   final Requirement r;
@@ -33,7 +33,6 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   final TextEditingController productC = TextEditingController();
   final TextEditingController priceC = TextEditingController();
   final TextEditingController qtyC = TextEditingController();
-  ProgressDialog pd;
 
   List<String> selectedProduct;
   Timestamp timestamp;
@@ -53,12 +52,6 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    pd = ProgressDialog(
-      context,
-      type: ProgressDialogType.Normal,
-      isDismissible: false,
-    );
-
     return Scaffold(
       appBar: AppBar(
         title: Text(STRING_POST_REQUIREMENT),
@@ -119,8 +112,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   onSuggestionSelected: (List<String> suggestion) async {
                     selectedProduct = suggestion;
                     productC.text = suggestion[LANGUAGE.CURRENT];
-                    pd.show();
-                    pd.update(message: STRING_PLEASE_WAIT);
+                    FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
                     oldR = await DBService.fetchRequirement(
                       pid: selectedProduct[3],
                       uid: FirebaseAuth.instance.currentUser.uid,
@@ -132,7 +124,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                         timestamp = oldR.timestamp;
                       });
                     }
-                    pd.hide();
+                    FarmAppDialog.hide();
                   },
                 ),
               ),
@@ -219,10 +211,9 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           SharedPrefData.getLongitude(),
         ),
       );
-      pd.update(message: STRING_PLEASE_WAIT);
-      pd.show();
+      FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
       await DBService.uploadRequirement(requirement);
-      pd.hide();
+      FarmAppDialog.hide();
       Navigator.pop(context);
     }
   }

@@ -5,6 +5,7 @@ import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:FarmApp/Models/Models.dart';
+import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:flutter/material.dart';
 
 // TODO: geolocator::distanceBetween can be used for calculating distance
@@ -19,16 +20,8 @@ class SearchResultScreen extends StatefulWidget {
 
 class SearchResultScreenState extends State<SearchResultScreen> {
   final List<String> product;
-  Stream<List<Requirement>> requirements;
 
   SearchResultScreenState(this.product);
-
-  @override
-  void initState() {
-    // INFO: product[3] stores 'pid'
-    requirements = DBService.fetchRequirements(pid: product[3]);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +33,7 @@ class SearchResultScreenState extends State<SearchResultScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
+          // TODO: IMPORTANT: Functionality
           PopupMenuButton<String>(
             onSelected: (option) {
               switch (option) {
@@ -73,38 +67,29 @@ class SearchResultScreenState extends State<SearchResultScreen> {
         ],
       ),
       drawer: NavigationDrawer(),
-      body: StreamBuilder<List<Requirement>>(
-        stream: requirements, // TODO: IMPORTANT: Use FirebaseAnimatedList
-        builder: (_, snap) {
-          if (snap.hasData && snap.data != null) {
-            if (snap.data.length > 0) {
-              return Container(
-                color: Color(0xff0011),
-                child: ListView.builder(
-                  itemBuilder: (_, i) {
-                    return SearchResultTile(snap.data[i]);
-                  },
-                  itemCount: snap.data.length,
-                ),
-              );
-            } else {
-              return Center(
-                child: Text(
-                  '${product[LANGUAGE.CURRENT]} $STRING_NO_BUYER_FOUND',
-                  style: styleEmpty,
-                ),
-              );
-            }
-          } else if (snap.hasError) {
-            return Center(
-              child: Text(STRING_SOMETHING_WENT_WRONG),
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      body: FirestoreAnimatedList(
+        query: DBService.searchResultScreenQ(product[3]),
+        duration: Duration(seconds: 1),
+        itemBuilder: (_, snap, animation, int i) {
+          return FadeTransition(
+            opacity: animation,
+            child: SearchResultTile(
+              Requirement.fromMap(snap.id, snap.data()),
+            ),
+          );
         },
+        emptyChild: Center(
+          child: Text(
+            '${product[LANGUAGE.CURRENT]} $STRING_NO_BUYER_FOUND',
+            style: styleEmpty,
+          ),
+        ),
+        errorChild: Center(
+          child: Text(
+            STRING_SOMETHING_WENT_WRONG,
+            style: style1,
+          ),
+        ),
       ),
     );
   }

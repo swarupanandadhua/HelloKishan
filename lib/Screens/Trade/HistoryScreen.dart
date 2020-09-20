@@ -16,9 +16,13 @@ class HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return FirestoreAnimatedList(
       query: DBService.historyScreenQ,
+      duration: Duration(seconds: 1),
       itemBuilder: (_, snap, animation, int i) {
-        return TradeTile(
-          Transaction.fromMap(snap.id, snap.data()),
+        return FadeTransition(
+          opacity: animation,
+          child: TradeTile(
+            Transaction.fromMap(snap.id, snap.data()),
+          ),
         );
       },
       emptyChild: Center(

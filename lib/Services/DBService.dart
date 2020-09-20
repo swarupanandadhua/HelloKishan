@@ -53,27 +53,12 @@ class DBService {
       .orderBy('timestamp', descending: true)
       .limit(30);
 
-  static Future<FarmApp.FarmAppUser> getFarmAppUser(String uid) async {
-    FarmApp.FarmAppUser farmAppUser;
-    await FirebaseFirestore.instance
-        .collection(DB_USERS)
-        .doc(uid)
-        .get()
-        .then(
-          (snap) => farmAppUser = FarmApp.FarmAppUser.fromMap(
-            snap.id,
-            snap.data(),
-          ),
-        )
-        .catchError((e) => debugPrint(e.toString()));
-    return farmAppUser;
-  }
-
-  static Future<void> setFarmAppUser(FarmApp.FarmAppUser user) async {
-    await FirebaseFirestore.instance
-        .collection(DB_USERS)
-        .doc(user.uid)
-        .set(user.toMap());
+  static Query searchResultScreenQ(String pid) {
+    return FirebaseFirestore.instance
+        .collection(DB_REQUIREMENTS)
+        .where('pid', isEqualTo: pid)
+        .orderBy('timestamp', descending: true)
+        .limit(30);
   }
 
   static Future<void> uploadRequirement(FarmApp.Requirement r) async {
@@ -96,7 +81,7 @@ class DBService {
           .doc(rid)
           .delete();
     } catch (e) {
-      debugPrint(e);
+      debugPrint(StackTrace.current.toString());
     }
   }
 
@@ -134,36 +119,6 @@ class DBService {
     return null;
   }
 
-  static Stream<List<FarmApp.Requirement>> fetchRequirements(
-      {String pid, String uid}) {
-    Query q = FirebaseFirestore.instance.collection(DB_REQUIREMENTS);
-    if (pid != null) {
-      q = q.where('pid', isEqualTo: pid);
-    }
-    if (uid != null) {
-      q = q.where('uid', isEqualTo: uid);
-    }
-
-    return q.snapshots().map((snap) {
-      List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
-      String myuid = FirebaseAuth.instance.currentUser.uid;
-      snap.docs.forEach((e) {
-        if (uid == null) {
-          if (myuid != e.data()['uid']) {
-            requirements.add(
-              FarmApp.Requirement.fromMap(e.id, e.data()),
-            );
-          }
-        } else {
-          requirements.add(
-            FarmApp.Requirement.fromMap(e.id, e.data()),
-          );
-        }
-      });
-      return requirements;
-    });
-  }
-
   static Future<FarmApp.Requirement> fetchRequirement({
     String pid,
     String uid,
@@ -181,98 +136,18 @@ class DBService {
   }
 
   static Future<void> uploadTransaction(FarmApp.Transaction t) async {
-    Map<String, dynamic> doc = t.toMap();
+    CollectionReference ref =
+        FirebaseFirestore.instance.collection(DB_TRANSACTIONS);
 
     try {
-      await FirebaseFirestore.instance
-          .collection(DB_TRANSACTIONS)
-          .doc(t.tid)
-          .set(doc);
+      if (t.tid == null) {
+        await ref.add(t.toMap());
+      } else {
+        await ref.doc(t.tid).set(t.toMap());
+      }
     } catch (e) {
-      debugPrint(e);
+      debugPrint(StackTrace.current.toString());
     }
-  }
-
-  static Stream<List<FarmApp.Transaction>> fetchTransactionsStream(
-      String screen) {
-    List<String> status;
-    if (screen == 'HISTORY') {
-      status = [
-        FarmApp.STATUS_REJECTED,
-        FarmApp.STATUS_CANCELLED,
-        FarmApp.STATUS_SUCCESSFUL,
-      ];
-    } else {
-      status = [
-        FarmApp.STATUS_REQUESTED,
-        FarmApp.STATUS_ACCEPTED,
-      ];
-    }
-    return FirebaseFirestore.instance
-        .collection(DB_TRANSACTIONS)
-        .where('uids', arrayContains: FirebaseAuth.instance.currentUser.uid)
-        .where('status', whereIn: status)
-        .orderBy('timestamp', descending: true)
-        .limit(20)
-        .snapshots()
-        .map((snap) {
-      List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
-      snap.docs.forEach(
-          (e) => transactions.add(FarmApp.Transaction.fromMap(e.id, e.data())));
-      return transactions;
-    });
-  }
-
-  static Future<List<FarmApp.Transaction>> fetchTransactions(
-      String screen) async {
-    List<String> status;
-    if (screen == 'HISTORY') {
-      status = [
-        FarmApp.STATUS_REJECTED,
-        FarmApp.STATUS_CANCELLED,
-        FarmApp.STATUS_SUCCESSFUL,
-      ];
-    } else {
-      status = [
-        FarmApp.STATUS_REQUESTED,
-        FarmApp.STATUS_ACCEPTED,
-      ];
-    }
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    QuerySnapshot snap = await FirebaseFirestore.instance
-        .collection(DB_TRANSACTIONS)
-        .where('sellerUid', isEqualTo: uid)
-        .where('status', whereIn: status)
-        .orderBy('timestamp', descending: true)
-        .limit(20)
-        .get();
-    List<FarmApp.Transaction> transactions = List<FarmApp.Transaction>();
-
-    snap.docs.forEach(
-      (doc) {
-        transactions.add(
-          FarmApp.Transaction.fromMap(doc.id, doc.data()),
-        );
-      },
-    );
-    return transactions;
-  }
-
-  static Future<void> initTransaction(FarmApp.Transaction t) async {
-    await FirebaseFirestore.instance.collection(DB_TRANSACTIONS).add(t.toMap());
-  }
-
-  static Future<void> updateTransaction(String tid, {String status}) async {
-    await FirebaseFirestore.instance
-        .collection(DB_TRANSACTIONS)
-        .doc(tid)
-        .update({
-      'status': status,
-    });
-  }
-
-  static Future<String> getPhotoURL(String path) async {
-    return await FirebaseStorage.instance.ref().child(path).getDownloadURL();
   }
 
   static Future<String> uploadPhoto(File image, String destination) async {

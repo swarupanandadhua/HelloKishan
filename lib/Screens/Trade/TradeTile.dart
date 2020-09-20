@@ -3,11 +3,11 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class TradeTile extends StatelessWidget {
@@ -16,14 +16,9 @@ class TradeTile extends StatelessWidget {
   TradeTile(this.t);
 
   void updateTransactionStatus(BuildContext context, String status) async {
-    ProgressDialog pd = ProgressDialog(
-      context,
-      type: ProgressDialogType.Normal,
-    );
-    pd.update(message: 'Updating...');
-    pd.show();
+    FarmAppDialog.show(context, STRING_UPDATING, true);
     await t.setStatus(status);
-    pd.hide();
+    FarmAppDialog.hide();
   }
 
   Widget getActionButtons(BuildContext context) {

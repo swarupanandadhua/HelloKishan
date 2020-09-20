@@ -6,6 +6,11 @@ const TextStyle style1 = TextStyle(
   color: Color(0xFF870DDE),
 );
 
+const TextStyle styleDialogText = TextStyle(
+  fontSize: 20,
+  color: Color(0xFF037bfc),
+);
+
 const TextStyle styleEmpty = TextStyle(
   fontSize: 16,
   color: Color(0xFF870DDE),

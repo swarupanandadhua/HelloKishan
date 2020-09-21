@@ -132,7 +132,11 @@ class DBService {
     }
 
     QuerySnapshot snap = await q.get();
-    return FarmApp.Requirement.fromMap(snap.docs[0].id, snap.docs[0].data());
+    if (snap?.docs?.length != null && snap.docs.length > 0) {
+      return FarmApp.Requirement.fromMap(snap.docs[0].id, snap.docs[0].data());
+    } else {
+      return null;
+    }
   }
 
   static Future<void> uploadTransaction(FarmApp.Transaction t) async {

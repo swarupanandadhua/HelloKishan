@@ -419,8 +419,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       SharedPrefData.setDistrict(districtEditC.text);
       SharedPrefData.setPincode(pincodeEditC.text);
       SharedPrefData.setState(stateEditC.text);
-      SharedPrefData.setLatitude(geopoint.latitude);
-      SharedPrefData.setLongitude(geopoint.longitude);
+      SharedPrefData.setLatitude(geopoint?.latitude);
+      SharedPrefData.setLongitude(geopoint?.longitude);
       SharedPrefData.setProfileUpdated();
 
       FarmAppDialog.hide();

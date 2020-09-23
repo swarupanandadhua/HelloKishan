@@ -7,7 +7,6 @@ import 'package:FarmApp/Screens/Search/RequirementSearch.dart';
 import 'package:FarmApp/Screens/Trade/MyRequirementScreen.dart';
 import 'package:FarmApp/Screens/Trade/TradeScreen.dart';
 import 'package:FarmApp/Screens/Home/HomeScreen.dart';
-import 'package:FarmApp/Services/DBService.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +43,7 @@ class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    DBService.printDeviceToken();
+    // DBService.printDeviceToken();
 
     tabController = TabController(
       initialIndex: 0,

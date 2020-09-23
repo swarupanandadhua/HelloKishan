@@ -23,6 +23,7 @@ dependencies:
   introduction_screen:
   shared_preferences:
   url_launcher:
+  animated_stream_list:
 
   geocoder:
   geoflutterfire:

@@ -162,9 +162,13 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         Timestamp.now(),
         FarmApp.STATUS_REQUESTED,
       );
-      await DBService.uploadTransaction(t);
+      bool status = await DBService.uploadTransaction(t);
       FarmAppDialog.hide();
-      Navigator.pop(context);
+      if (status == true) {
+        Navigator.pop(context);
+      } else {
+        FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+      }
     }
   }
 }

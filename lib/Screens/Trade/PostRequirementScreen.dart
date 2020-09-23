@@ -119,7 +119,10 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                       pid: selectedProduct[3],
                       uid: FirebaseAuth.instance.currentUser.uid,
                     );
-                    if (oldR != null) {
+                    FarmAppDialog.hide();
+                    if (oldR == null) {
+                      FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+                    } else {
                       setState(() {
                         priceC.text = oldR.rate;
                         qtyC.text = oldR.qty;
@@ -127,7 +130,6 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                         address = oldR.address;
                       });
                     }
-                    FarmAppDialog.hide();
                   },
                 ),
               ),
@@ -163,13 +165,15 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   validator: Validator.quantity,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  address,
-                  style: styleLessImpTxt,
-                ),
-              ),
+              (address != null)
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        address,
+                        style: styleLessImpTxt,
+                      ),
+                    )
+                  : Container(),
               (timestamp != null)
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -224,9 +228,13 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         ),
       );
       FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
-      await DBService.uploadRequirement(requirement);
+      bool status = await DBService.uploadRequirement(requirement);
       FarmAppDialog.hide();
-      Navigator.pop(context);
+      if (status == true) {
+        Navigator.pop(context);
+      } else {
+        FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+      }
     }
   }
 }

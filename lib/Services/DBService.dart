@@ -59,29 +59,41 @@ class DBService {
         .where('pid', isEqualTo: pid)
         .orderBy('timestamp', descending: true)
         .limit(30);
+    // TODO: IMPORTANT: use docChange.newIndex/oldIndex
   }
 
-  static Future<void> uploadRequirement(FarmApp.Requirement r) async {
-    if (r.rid != null) {
-      await FirebaseFirestore.instance
-          .collection(DB_REQUIREMENTS)
-          .doc(r.rid)
-          .set(r.toMap());
-    } else {
-      await FirebaseFirestore.instance
-          .collection(DB_REQUIREMENTS)
-          .add(r.toMap());
+  static Future<bool> uploadRequirement(FarmApp.Requirement r) async {
+    bool status;
+    try {
+      if (r.rid != null) {
+        await FirebaseFirestore.instance
+            .collection(DB_REQUIREMENTS)
+            .doc(r.rid)
+            .set(r.toMap());
+        status = true;
+      } else {
+        await FirebaseFirestore.instance
+            .collection(DB_REQUIREMENTS)
+            .add(r.toMap());
+        status = true;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      status = false;
     }
+    return status;
   }
 
-  static Future<void> deleteRequirement(String rid) async {
+  static Future<bool> deleteRequirement(String rid) async {
     try {
       await FirebaseFirestore.instance
           .collection(DB_REQUIREMENTS)
           .doc(rid)
           .delete();
+      return true;
     } catch (e) {
       debugPrint(StackTrace.current.toString());
+      return false;
     }
   }
 
@@ -139,7 +151,7 @@ class DBService {
     }
   }
 
-  static Future<void> uploadTransaction(FarmApp.Transaction t) async {
+  static Future<bool> uploadTransaction(FarmApp.Transaction t) async {
     CollectionReference ref =
         FirebaseFirestore.instance.collection(DB_TRANSACTIONS);
 
@@ -149,8 +161,10 @@ class DBService {
       } else {
         await ref.doc(t.tid).set(t.toMap());
       }
+      return true;
     } catch (e) {
       debugPrint(StackTrace.current.toString());
+      return false;
     }
   }
 

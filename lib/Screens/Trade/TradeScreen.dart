@@ -28,7 +28,7 @@ class TradeScreen extends StatelessWidget {
       ),
       errorChild: Center(
         child: Text(
-          STRING_SOMETHING_WENT_WRONG,
+          STRING_WENT_WRONG,
           style: style1,
         ),
       ),

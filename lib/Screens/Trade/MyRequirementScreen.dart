@@ -1,9 +1,9 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/CustomAnimatedList.dart';
 import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
 import 'package:FarmApp/Services/DBService.dart';
-import 'package:firestore_ui/firestore_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Products.dart';
@@ -13,7 +13,7 @@ import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 class MyRequirementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FirestoreAnimatedList(
+    return CustomAnimatedList(
       query: DBService.myRequirementsScreenQ,
       duration: Duration(seconds: 1),
       itemBuilder: (_, snap, animation, int i) {
@@ -32,7 +32,7 @@ class MyRequirementScreen extends StatelessWidget {
       ),
       errorChild: Center(
         child: Text(
-          STRING_SOMETHING_WENT_WRONG,
+          STRING_WENT_WRONG,
           style: style1,
         ),
       ),
@@ -127,8 +127,13 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                   textColor: Colors.white,
                   onPressed: () async {
                     FarmAppDialog.show(context, STRING_DELETING, true);
-                    await r.delete();
+                    bool status = await DBService.deleteRequirement(r.rid);
                     FarmAppDialog.hide();
+                    if (status == true) {
+                      FarmAppDialog.show(context, STRING_DELETE_SUCCESS, false);
+                    } else {
+                      FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+                    }
                   },
                   icon: Icon(Icons.delete),
                   label: Text(STRING_DELETE),

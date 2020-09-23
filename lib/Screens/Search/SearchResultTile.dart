@@ -93,8 +93,12 @@ class SearchResultTile extends StatelessWidget {
                       child: ClipOval(
                         child: Image.network(
                           r.photoURL,
-                          loadingBuilder: (_, c, p) =>
-                              (p == null) ? c : ImageAsset.loading,
+                          loadingBuilder: (_, c, p) {
+                            if (p == null) return c;
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
                           errorBuilder: (_, err, stack) => ImageAsset.account,
                         ),
                       ),

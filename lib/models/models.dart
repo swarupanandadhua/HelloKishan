@@ -79,10 +79,6 @@ class Requirement {
       'geopoint': geopoint,
     };
   }
-
-  Future<void> delete() async {
-    await DBService.deleteRequirement(rid);
-  }
 }
 
 class Transaction {

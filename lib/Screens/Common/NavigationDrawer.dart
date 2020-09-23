@@ -47,10 +47,15 @@ class NavigationDrawer extends StatelessWidget {
                         child: ClipOval(
                           child: Image.network(
                             FirebaseAuth.instance.currentUser.photoURL,
-                            loadingBuilder: (_, c, prog) {
-                              if (prog == null) return c;
+                            loadingBuilder: (_, c, p) {
+                              if (p == null) return c;
                               return Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                  value: p.expectedTotalBytes != null
+                                      ? p.cumulativeBytesLoaded /
+                                          p.expectedTotalBytes
+                                      : null,
+                                ),
                               );
                             },
                             errorBuilder: (_, __, ___) => ImageAsset.account,

@@ -404,17 +404,29 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     if (profileDetailsForm.currentState.validate()) {
       FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
 
-      String photoURL = FirebaseAuth.instance.currentUser.photoURL;
+      String newPhotoURL;
       if (imageChosen) {
-        photoURL = await DBService.uploadPhoto(
+        newPhotoURL = await DBService.uploadPhoto(
           chosenImage,
           DB_USERS + FirebaseAuth.instance.currentUser.uid + '.jpg',
         );
+        if (newPhotoURL == null) {
+          FarmAppDialog.hide();
+          FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+          return;
+        }
       }
-      await FirebaseAuth.instance.currentUser.updateProfile(
-        displayName: nameEditC.text,
-        photoURL: photoURL,
-      );
+      try {
+        await FirebaseAuth.instance.currentUser.updateProfile(
+          displayName: nameEditC.text,
+          photoURL: newPhotoURL ?? FirebaseAuth.instance.currentUser.photoURL,
+        );
+      } catch (e) {
+        debugPrint(e.toString());
+        FarmAppDialog.hide();
+        FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+        return;
+      }
       SharedPrefData.setAddress(addressEditC.text);
       SharedPrefData.setDistrict(districtEditC.text);
       SharedPrefData.setPincode(pincodeEditC.text);

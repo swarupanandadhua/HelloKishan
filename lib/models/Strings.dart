@@ -185,6 +185,9 @@ const String STRING_CANCEL = 'বাতিল করুন';
 const String STRING_COMPLETE = 'সফল হয়েছে';
 // DELETE
 const String STRING_DELETE = 'মুছে ফেলুন';
+
+const String STRING_DELETE_SUCCESS = 'মুছে ফেলা সফল হয়েছে';
+
 // UPDATE
 const String STRING_UPDATE = 'আপডেট করুন';
 
@@ -199,7 +202,7 @@ const String STRING_SIGN_OUT = 'লগ আউট করুন';
 const String STRING_SOLD_TO = 'Sold to';
 
 // 'Something went wrong!';
-const String STRING_SOMETHING_WENT_WRONG = 'কিছু একটা সমস্যা হয়েছে !';
+const String STRING_WENT_WRONG = 'কিছু একটা সমস্যা হয়েছে !';
 
 const String STRING_TODO_IMPORTANT_FUNCTIONALITY = 'TODO : IMPORTANT FUNC.';
 const String STRING_TRADE = 'Trade';

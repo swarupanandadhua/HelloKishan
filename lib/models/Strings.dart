@@ -59,7 +59,7 @@ const String STRING_ENTER_YOUR_NAME = 'আপনার নাম লিখুন
 const String STRING_NAME_INVALID = 'নাম সঠিক নয়';
 
 // Getting Location...
-const String STRING_GETTING_LOCATION = 'অবস্থান নির্ণয় করা হচ্ছে...';
+const String STRING_LOADING_LOCATION = 'অবস্থান নির্ণয় করা হচ্ছে...';
 
 // Address Information
 const String STRING_ADDRESS_INFORMATION = 'ঠিকানার তথ্য';

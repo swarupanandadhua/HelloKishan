@@ -14,6 +14,7 @@ import 'package:FarmApp/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -82,6 +83,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         SharedPrefData.getLatitude(),
         SharedPrefData.getLongitude(),
       );
+    } else {
+      getCurrentAddress();
     }
   }
 
@@ -239,34 +242,33 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void getCurrentAddress() async {
-    FarmAppDialog.show(context, STRING_GETTING_LOCATION, true);
-    await LocationService.getAddress().then(
-      (address) {
-        setState(
-          () {
-            addressEditC.text = address?.addressLine;
-            pincodeEditC.text = address?.postalCode;
-            stateEditC.text = address?.adminArea;
-            districtEditC.text = address?.subAdminArea;
-            geopoint = GeoPoint(
-              address.coordinates.latitude,
-              address.coordinates.longitude,
-            );
-          },
-        );
-      },
-    );
+    FarmAppDialog.show(context, STRING_LOADING_LOCATION, true);
+    Address address = await LocationService.getAddress();
     FarmAppDialog.hide();
+    if (address == null) {
+      FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+    } else {
+      setState(
+        () {
+          addressEditC.text = address?.addressLine;
+          pincodeEditC.text = address?.postalCode;
+          stateEditC.text = address?.adminArea;
+          districtEditC.text = address?.subAdminArea;
+          geopoint = GeoPoint(
+            address.coordinates.latitude,
+            address.coordinates.longitude,
+          );
+        },
+      );
+    }
   }
 
   Image getProfilePicture() {
     if (imageChosen) {
-      debugPrint('Showing Chosen Image');
       return Image.file(chosenImage);
     }
     if (FirebaseAuth.instance.currentUser.photoURL != null) {
       if (oldImage == null) {
-        debugPrint('Fetching network image');
         return oldImage = Image.network(
           FirebaseAuth.instance.currentUser.photoURL,
           loadingBuilder: (_, c, p) => (p == null) ? c : ImageAsset.loading,

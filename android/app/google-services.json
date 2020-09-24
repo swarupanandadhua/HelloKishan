@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "496528725137-tt5hudu952ag2g487jd0se7d6bu6bsj7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.farmapp.farmapp",
+            "certificate_hash": "ac80c695a56792c9a9576ec0141481f9b045a728"
+          }
+        },
+        {
           "client_id": "496528725137-579h26eh5he4cp6nkm82s2ke9v53b25n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

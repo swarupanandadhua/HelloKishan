@@ -120,15 +120,15 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                       uid: FirebaseAuth.instance.currentUser.uid,
                     );
                     FarmAppDialog.hide();
-                    if (oldR == null) {
-                      FarmAppDialog.show(context, STRING_WENT_WRONG, false);
-                    } else {
-                      setState(() {
-                        priceC.text = oldR.rate;
-                        qtyC.text = oldR.qty;
-                        timestamp = oldR.timestamp;
-                        address = oldR.address;
-                      });
+                    if (oldR != null) {
+                      setState(
+                        () {
+                          priceC.text = oldR.rate;
+                          qtyC.text = oldR.qty;
+                          timestamp = oldR.timestamp;
+                          address = oldR.address;
+                        },
+                      );
                     }
                   },
                 ),
@@ -223,8 +223,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         SharedPrefData.getPincode(),
         SharedPrefData.getState(),
         GeoPoint(
-          SharedPrefData.getLatitude(),
-          SharedPrefData.getLongitude(),
+          SharedPrefData.getLatitude() ?? 0,
+          SharedPrefData.getLongitude() ?? 0,
         ),
       );
       FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);

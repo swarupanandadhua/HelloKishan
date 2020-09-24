@@ -6,6 +6,7 @@ class LocationService {
     Position p = await getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
+    if (p == null) return null;
     List<Address> addresses = await Geocoder.local.findAddressesFromCoordinates(
       Coordinates(p.latitude, p.longitude),
     );

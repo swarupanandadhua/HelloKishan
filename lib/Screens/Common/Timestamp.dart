@@ -6,3 +6,10 @@ String getTimeStamp(Timestamp timestamp) {
       .format(timestamp.toDate().toLocal())
       .toString();
 }
+
+String getTimeStampBengali(Timestamp timestamp) {
+  String s = getTimeStamp(timestamp);
+  // TODO: ARPITA: Manipulate s to convert it to a bengali timestamp
+
+  return s;
+}

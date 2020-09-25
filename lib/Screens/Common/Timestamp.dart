@@ -10,9 +10,9 @@ String getTimeStamp(Timestamp timestamp) {
 
 String getTimeStampBengali(Timestamp timestamp) {
   String s = getTimeStamp(timestamp);
-  // TODO: ARPITA: Manipulate s to convert it to a bengali timestamp
 
-  String month = s.substring(13, 16); // why 13-16 ???
+  String month = s.substring(13, 16);
+  debugPrint(month);
   String bengaliMonth;
   switch (month) {
     case 'Jan':
@@ -52,9 +52,24 @@ String getTimeStampBengali(Timestamp timestamp) {
       bengaliMonth = 'ডিসেম্বর';
       break;
     default:
-      bengaliMonth += month;
-    // TODO
+      debugPrint(StackTrace.current.toString());
   }
   debugPrint(bengaliMonth);
+
+  String tod = 'TODO';
+  // time of day: e.g. সকাল বিকেল দুপুর বেলা সন্ধ্যা রাত ভোর
+
+  String hh; // = s.substring(?, ?);
+  String mm; // = s.substring(?, ?);
+  String aaa; // = s.substring(?, ?);
+  // TODO
+
+  debugPrint(tod);
+
   return s;
+}
+
+void main() {
+  Timestamp ts = Timestamp.fromDate(DateTime.now());
+  debugPrint(getTimeStampBengali(ts));
 }

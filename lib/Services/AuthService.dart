@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
@@ -59,7 +60,11 @@ class AuthService {
       }
     }
 
-    FarmAppDialog.show(ctx, STRING_SENDING_OTP, true);
+    FarmAppDialog.show(
+      GlobalKeys.otpLogInScaffoldKey.currentContext,
+      STRING_SENDING_OTP,
+      true,
+    );
     User u;
     if (!phone.startsWith(COUNTRY_CODE_IN)) phone = COUNTRY_CODE_IN + phone;
 
@@ -113,7 +118,11 @@ class AuthService {
           smsCode: otp,
         );
         FarmAppDialog.hide();
-        FarmAppDialog.show(ctx, STRING_SIGNING_IN, true);
+        FarmAppDialog.show(
+          GlobalKeys.otpLogInScaffoldKey.currentContext,
+          STRING_SIGNING_IN,
+          true,
+        );
         try {
           await FirebaseAuth.instance.signInWithCredential(cred).then(
             (authResult) {
@@ -124,7 +133,11 @@ class AuthService {
         } catch (e) {
           if (e.toString().contains(STRING_INVALID_VERIFICATION_CODE)) {
             FarmAppDialog.hide();
-            FarmAppDialog.show(ctx, STRING_INVALID_OTP, false);
+            FarmAppDialog.show(
+              GlobalKeys.otpLogInScaffoldKey.currentContext,
+              STRING_INVALID_OTP,
+              false,
+            );
           } else {
             Validator.defaultErrorHandler();
           }
@@ -132,23 +145,34 @@ class AuthService {
       },
       verificationCompleted: (cred) async {
         FarmAppDialog.hide();
-        FarmAppDialog.show(ctx, STRING_SIGNING_IN, true);
-        await FirebaseAuth.instance.signInWithCredential(cred).then(
-          (authResult) {
-            FarmAppDialog.hide();
-            u = authResult?.user;
-            signInCallBack(u);
-          },
-        ).catchError(() {
+        FarmAppDialog.show(
+          GlobalKeys.otpLogInScaffoldKey.currentContext,
+          STRING_SIGNING_IN,
+          true,
+        );
+        try {
+          await FirebaseAuth.instance.signInWithCredential(cred).then(
+            (authResult) {
+              FarmAppDialog.hide();
+              u = authResult?.user;
+              signInCallBack(u);
+            },
+          );
+        } catch (e) {
+          debugPrint(e.toString());
           debugPrint(StackTrace.current.toString());
-        });
+        }
       },
       verificationFailed: (FirebaseAuthException e) {
         // TODO
         debugPrint(e.code);
         debugPrint(StackTrace.current.toString());
         FarmAppDialog.hide();
-        FarmAppDialog.show(ctx, STRING_VERIFICATION_FAILED, false);
+        FarmAppDialog.show(
+          GlobalKeys.otpLogInScaffoldKey.currentContext,
+          STRING_VERIFICATION_FAILED,
+          false,
+        );
         u = null;
       },
     );

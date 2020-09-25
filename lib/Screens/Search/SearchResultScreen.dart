@@ -1,6 +1,7 @@
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
 import 'package:FarmApp/Services/DBService.dart';
@@ -19,6 +20,7 @@ class SearchResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: GlobalKeys.searchResultScaffoldKey,
       appBar: AppBar(
         title: Text(STRING_SEARCH_RESULTS),
         leading: IconButton(

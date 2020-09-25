@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 class FarmAppDialog {
   static bool isShowing = false;
-  static BuildContext context;
+  static BuildContext dialogContext;
 
   static void hide() {
     if (isShowing == true) {
-      Navigator.pop(context);
+      Navigator.pop(dialogContext);
     }
   }
 
   static void show(
-    BuildContext ctx,
+    BuildContext scaffoldContext,
     String msg,
     bool loading,
   ) {
@@ -68,7 +68,7 @@ class FarmAppDialog {
               children: [
                 FlatButton(
                   onPressed: () {
-                    Navigator.pop(ctx);
+                    Navigator.pop(dialogContext);
                   },
                   child: Text(
                     'Close',
@@ -93,11 +93,13 @@ class FarmAppDialog {
     );
 
     isShowing = true;
-    context = ctx;
     showDialog(
-      context: ctx,
+      context: scaffoldContext,
       barrierDismissible: false,
-      builder: (_) => dialog,
+      builder: (context) {
+        dialogContext = context;
+        return dialog;
+      },
     );
   }
 }

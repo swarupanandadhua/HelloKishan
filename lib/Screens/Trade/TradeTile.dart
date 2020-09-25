@@ -4,7 +4,8 @@ import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
+import 'package:FarmApp/Screens/Common/ProfilePicture.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,11 @@ class TradeTileState extends State<TradeTile> {
   TradeTileState(this.t);
 
   void updateTransactionStatus(BuildContext context, String status) async {
-    FarmAppDialog.show(context, STRING_UPDATING, true);
+    FarmAppDialog.show(
+      GlobalKeys.wrapperScaffoldKey.currentContext,
+      STRING_UPDATING,
+      true,
+    );
     await t.setStatus(status);
     FarmAppDialog.hide();
   }
@@ -188,12 +193,7 @@ class TradeTileState extends State<TradeTile> {
               height: 80,
               width: 80,
               child: ClipOval(
-                child: Image.network(
-                  photoURL,
-                  loadingBuilder: (_, c, p) =>
-                      (p == null) ? c : ImageAsset.loading,
-                  errorBuilder: (_, err, stack) => ImageAsset.account,
-                ),
+                child: ProfilePicture.getProfilePicture(photoURL),
               ),
             ),
             Padding(

@@ -5,6 +5,7 @@ import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
 import 'package:FarmApp/Screens/Common/Translate.dart';
 import 'package:FarmApp/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,6 +38,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
     screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      key: GlobalKeys.sellRequestScaffoldKey,
       appBar: AppBar(
         title: Text(STRING_SELL_REQUEST),
       ),
@@ -142,7 +144,11 @@ class SellRequestScreenState extends State<SellRequestScreen> {
 
   void sendRequest() async {
     if (sellRequestKey.currentState.validate()) {
-      FarmAppDialog.show(context, STRING_SENDING_SELL_REQUEST, true);
+      FarmAppDialog.show(
+        GlobalKeys.sellRequestScaffoldKey.currentContext,
+        STRING_SENDING_SELL_REQUEST,
+        true,
+      );
       List<String> uids = List<String>();
       uids.add(FirebaseAuth.instance.currentUser.uid);
       uids.add(r.uid);
@@ -167,7 +173,11 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       if (status == true) {
         Navigator.pop(context);
       } else {
-        FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+        FarmAppDialog.show(
+          GlobalKeys.sellRequestScaffoldKey.currentContext,
+          STRING_WENT_WRONG,
+          false,
+        );
       }
     }
   }

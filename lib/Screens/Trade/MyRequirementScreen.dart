@@ -1,9 +1,10 @@
 import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/CustomAnimatedList.dart';
 import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
 import 'package:FarmApp/Services/DBService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Products.dart';
@@ -13,29 +14,43 @@ import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 class MyRequirementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomAnimatedList(
-      query: DBService.myRequirementsScreenQ,
-      duration: Duration(seconds: 1),
-      itemBuilder: (_, snap, animation, int i) {
-        return FadeTransition(
-          opacity: animation,
-          child: MyRequirementTile(
-            Requirement.fromMap(snap.id, snap.data()),
-          ),
-        );
+    return StreamBuilder(
+      stream: DBService.myRequirementsScreenQ.snapshots(),
+      builder: (_, AsyncSnapshot<QuerySnapshot> snap) {
+        if (snap.hasData) {
+          if (snap.data.docs.length > 0) {
+            return ListView.builder(
+              itemCount: snap.data.docs.length,
+              itemBuilder: (_, i) {
+                return MyRequirementTile(
+                  Requirement.fromMap(
+                    snap.data.docs[i].id,
+                    snap.data.docs[i].data(),
+                  ),
+                );
+              },
+            );
+          } else {
+            return Center(
+              child: Text(
+                STRING_NO_REQUIREMENTS_FOUND,
+                style: style1,
+              ),
+            );
+          }
+        } else if (snap.hasError) {
+          return Center(
+            child: Text(
+              STRING_WENT_WRONG,
+              style: style1,
+            ),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       },
-      emptyChild: Center(
-        child: Text(
-          STRING_NO_REQUIREMENTS_FOUND,
-          style: style1,
-        ),
-      ),
-      errorChild: Center(
-        child: Text(
-          STRING_WENT_WRONG,
-          style: style1,
-        ),
-      ),
     );
   }
 }
@@ -126,13 +141,25 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                   color: Colors.red,
                   textColor: Colors.white,
                   onPressed: () async {
-                    FarmAppDialog.show(context, STRING_DELETING, true);
+                    FarmAppDialog.show(
+                      GlobalKeys.wrapperScaffoldKey.currentContext,
+                      STRING_DELETING,
+                      true,
+                    );
                     bool status = await DBService.deleteRequirement(r.rid);
                     FarmAppDialog.hide();
                     if (status == true) {
-                      FarmAppDialog.show(context, STRING_DELETE_SUCCESS, false);
+                      FarmAppDialog.show(
+                        GlobalKeys.wrapperScaffoldKey.currentContext,
+                        STRING_DELETE_SUCCESS,
+                        false,
+                      );
                     } else {
-                      FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+                      FarmAppDialog.show(
+                        GlobalKeys.wrapperScaffoldKey.currentContext,
+                        STRING_WENT_WRONG,
+                        false,
+                      );
                     }
                   },
                   icon: Icon(Icons.delete),

@@ -3,7 +3,7 @@ import 'package:FarmApp/Models/Models.dart';
 import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
+import 'package:FarmApp/Screens/Common/ProfilePicture.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:FarmApp/Screens/Trade/SellRequestScreen.dart';
 import 'package:flutter/material.dart';
@@ -91,16 +91,7 @@ class SearchResultTile extends StatelessWidget {
                       height: 80,
                       width: 80,
                       child: ClipOval(
-                        child: Image.network(
-                          r.photoURL,
-                          loadingBuilder: (_, c, p) {
-                            if (p == null) return c;
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                          errorBuilder: (_, err, stack) => ImageAsset.account,
-                        ),
+                        child: ProfilePicture.getProfilePicture(r.photoURL),
                       ),
                     ),
                     Padding(

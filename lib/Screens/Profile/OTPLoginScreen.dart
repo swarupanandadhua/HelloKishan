@@ -1,5 +1,6 @@
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
 import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/AuthService.dart';
@@ -19,6 +20,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: GlobalKeys.otpLogInScaffoldKey,
       appBar: AppBar(
         title: Text(STRING_APP_NAME),
       ),

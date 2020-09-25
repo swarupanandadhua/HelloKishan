@@ -10,10 +10,10 @@ String getTimeStamp(Timestamp timestamp) {
 
 String getTimeStampBengali(Timestamp timestamp) {
   String s = getTimeStamp(timestamp);
+  debugPrint('FULL: $s');
 
-  String month = s.substring(13, 16);
-  debugPrint(month);
-  String bengaliMonth;
+  String month = s.substring(12, 15), bengaliMonth;
+
   switch (month) {
     case 'Jan':
       bengaliMonth = 'জানুয়ারি';
@@ -54,15 +54,15 @@ String getTimeStampBengali(Timestamp timestamp) {
     default:
       debugPrint(StackTrace.current.toString());
   }
-  debugPrint(bengaliMonth);
+  debugPrint('English : $month , Bengali : $bengaliMonth');
+
+  String hh = s.substring(0, 2);
+  String mm = s.substring(3, 5);
+  String aaa = s.substring(6, 8);
+  debugPrint('HH: $hh, MM: $mm, aaa: $aaa');
 
   String tod = 'TODO';
-  // time of day: e.g. সকাল বিকেল দুপুর বেলা সন্ধ্যা রাত ভোর
-
-  String hh; // = s.substring(?, ?);
-  String mm; // = s.substring(?, ?);
-  String aaa; // = s.substring(?, ?);
-  // TODO
+  // time of day: সকাল বিকেল দুপুর বেলা সন্ধ্যা রাত ভোর
 
   debugPrint(tod);
 

@@ -2,7 +2,7 @@ import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
+import 'package:FarmApp/Screens/Common/ProfilePicture.dart';
 import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
 import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:FarmApp/Services/AuthService.dart';
@@ -45,20 +45,8 @@ class NavigationDrawer extends StatelessWidget {
                         height: 100,
                         width: 100,
                         child: ClipOval(
-                          child: Image.network(
+                          child: ProfilePicture.getProfilePicture(
                             FirebaseAuth.instance.currentUser.photoURL,
-                            loadingBuilder: (_, c, p) {
-                              if (p == null) return c;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: p.expectedTotalBytes != null
-                                      ? p.cumulativeBytesLoaded /
-                                          p.expectedTotalBytes
-                                      : null,
-                                ),
-                              );
-                            },
-                            errorBuilder: (_, __, ___) => ImageAsset.account,
                           ),
                         ),
                       )

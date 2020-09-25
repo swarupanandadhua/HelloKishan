@@ -4,7 +4,8 @@ import 'package:FarmApp/Models/Constants.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
+import 'package:FarmApp/Screens/Common/ProfilePicture.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Screens/Profile/MyButton.dart';
 import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
@@ -31,7 +32,6 @@ class ProfileUpdateScreen extends StatefulWidget {
 
 class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   File chosenImage;
-  Image oldImage;
 
   String address, district, pincode, state;
   GeoPoint geopoint;
@@ -58,6 +58,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: GlobalKeys.profileUpdateScaffoldKey,
       appBar: AppBar(
         title: Center(
           child: Text(
@@ -242,11 +243,19 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void getCurrentAddress() async {
-    FarmAppDialog.show(context, STRING_LOADING_LOCATION, true);
+    FarmAppDialog.show(
+      GlobalKeys.profileUpdateScaffoldKey.currentContext,
+      STRING_LOADING_LOCATION,
+      true,
+    );
     Address address = await LocationService.getAddress();
     FarmAppDialog.hide();
     if (address == null) {
-      FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+      FarmAppDialog.show(
+        GlobalKeys.profileUpdateScaffoldKey.currentContext,
+        STRING_WENT_WRONG,
+        false,
+      );
     } else {
       setState(
         () {
@@ -263,25 +272,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     }
   }
 
-  Image getProfilePicture() {
-    if (imageChosen) {
-      return Image.file(chosenImage);
-    }
-    if (FirebaseAuth.instance.currentUser.photoURL != null) {
-      if (oldImage == null) {
-        return oldImage = Image.network(
-          FirebaseAuth.instance.currentUser.photoURL,
-          loadingBuilder: (_, c, p) => (p == null) ? c : ImageAsset.loading,
-          errorBuilder: (_, __, ___) => ImageAsset.account,
-        );
-      } else {
-        return oldImage;
-      }
-    } else {
-      return ImageAsset.account;
-    }
-  }
-
   Widget getDPWidget() {
     return Center(
       child: Stack(
@@ -292,7 +282,10 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
             height: 150,
             width: 150,
             child: ClipOval(
-              child: getProfilePicture(),
+              child: ProfilePicture.getProfilePicture(
+                FirebaseAuth.instance.currentUser.photoURL,
+                chosenImage: chosenImage,
+              ),
             ),
           ),
           MyIcon(
@@ -404,7 +397,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   void saveUserDetails() async {
     if (profileDetailsForm.currentState.validate()) {
-      FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
+      FarmAppDialog.show(
+        GlobalKeys.profileUpdateScaffoldKey.currentContext,
+        STRING_PLEASE_WAIT,
+        true,
+      );
 
       String newPhotoURL;
       if (imageChosen) {
@@ -414,7 +411,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         );
         if (newPhotoURL == null) {
           FarmAppDialog.hide();
-          FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+          FarmAppDialog.show(
+            GlobalKeys.profileUpdateScaffoldKey.currentContext,
+            STRING_WENT_WRONG,
+            false,
+          );
           return;
         }
       }
@@ -426,7 +427,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       } catch (e) {
         debugPrint(e.toString());
         FarmAppDialog.hide();
-        FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+        FarmAppDialog.show(
+          GlobalKeys.profileUpdateScaffoldKey.currentContext,
+          STRING_WENT_WRONG,
+          false,
+        );
         return;
       }
       SharedPrefData.setAddress(addressEditC.text);

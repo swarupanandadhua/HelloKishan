@@ -5,6 +5,7 @@ import 'package:FarmApp/Models/Products.dart';
 import 'package:FarmApp/Models/Strings.dart';
 import 'package:FarmApp/Models/Styles.dart';
 import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
 import 'package:FarmApp/Screens/Common/Timestamp.dart';
 import 'package:FarmApp/Screens/Common/Validator.dart';
 import 'package:FarmApp/Services/DBService.dart';
@@ -55,6 +56,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: GlobalKeys.postRequirementScaffoldKey,
       appBar: AppBar(
         title: Text(STRING_POST_REQUIREMENT),
       ),
@@ -114,7 +116,11 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   onSuggestionSelected: (List<String> suggestion) async {
                     selectedProduct = suggestion;
                     productC.text = suggestion[LANGUAGE.CURRENT];
-                    FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
+                    FarmAppDialog.show(
+                      GlobalKeys.postRequirementScaffoldKey.currentContext,
+                      STRING_PLEASE_WAIT,
+                      true,
+                    );
                     oldR = await DBService.fetchRequirement(
                       pid: selectedProduct[3],
                       uid: FirebaseAuth.instance.currentUser.uid,
@@ -227,13 +233,21 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           SharedPrefData.getLongitude() ?? 0,
         ),
       );
-      FarmAppDialog.show(context, STRING_PLEASE_WAIT, true);
+      FarmAppDialog.show(
+        GlobalKeys.postRequirementScaffoldKey.currentContext,
+        STRING_PLEASE_WAIT,
+        true,
+      );
       bool status = await DBService.uploadRequirement(requirement);
       FarmAppDialog.hide();
       if (status == true) {
         Navigator.pop(context);
       } else {
-        FarmAppDialog.show(context, STRING_WENT_WRONG, false);
+        FarmAppDialog.show(
+          GlobalKeys.postRequirementScaffoldKey.currentContext,
+          STRING_WENT_WRONG,
+          false,
+        );
       }
     }
   }

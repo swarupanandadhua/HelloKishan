@@ -1,5 +1,6 @@
 import 'package:FarmApp/Models/Colors.dart';
 import 'package:FarmApp/Models/Strings.dart';
+import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
 import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
 import 'package:FarmApp/Screens/Trade/HistoryScreen.dart';
 import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
@@ -62,6 +63,7 @@ class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: GlobalKeys.wrapperScaffoldKey,
       appBar: AppBar(
         title: Text(_titles[tabController.index]),
         actions: [

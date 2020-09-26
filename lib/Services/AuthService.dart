@@ -11,39 +11,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AuthService {
-  static Future<void> signOut() async {
+  static Future<bool> signOut() async {
     try {
-      await FirebaseAuth.instance
-          .signOut()
-          .catchError(Validator.defaultErrorHandler);
+      FarmAppDialog.show(
+        GlobalKeys.wrapperScaffoldKey.currentContext,
+        STRING_SIGNING_OUT,
+        true,
+      );
+      await FirebaseAuth.instance.signOut();
       SharedPrefData.reset();
+      FarmAppDialog.hide();
+      return true;
     } catch (e) {
+      FarmAppDialog.show(
+        GlobalKeys.wrapperScaffoldKey.currentContext,
+        STRING_SIGNING_OUT_FAILED,
+        false,
+      );
       debugPrint(e);
+      return false;
     }
   }
 
   static void verifyPhoneNumber(String phone, BuildContext ctx) async {
-    showMyInfoDialog(BuildContext ctx, String label) {
-      showDialog(
-        context: ctx,
-        barrierDismissible: false,
-        builder: (_) {
-          return AlertDialog(
-            title: Text(label),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: Text(STRING_DISMISS),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     signInCallBack(User u) {
       if (u == null) {
-        showMyInfoDialog(ctx, STRING_VERIFICATION_FAILED);
+        FarmAppDialog.show(
+          GlobalKeys.otpLogInScaffoldKey.currentContext,
+          STRING_VERIFICATION_FAILED,
+          false,
+        );
       } else {
         Widget screen;
         if (SharedPrefData.getProfileUpdated() == true) {
@@ -70,10 +67,7 @@ class AuthService {
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
-      codeSent: (verificationId, [forceResendingToken]) {
-        // FarmAppDialog.hide();
-        // FarmAppDialog.show(ctx, STRING_AUTO_READING_OTP, true);
-      },
+      codeSent: (verificationId, [forceResendingToken]) {},
       timeout: Duration(seconds: 30),
       codeAutoRetrievalTimeout: (verificationId) async {
         final GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();

@@ -94,14 +94,16 @@ class NavigationDrawer extends StatelessWidget {
                 title: Text(STRING_SIGN_OUT, style: styleNavItem),
                 leading: Icon(Icons.power_settings_new),
                 onTap: () async {
-                  await AuthService.signOut();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => OTPLoginScreen(),
-                    ),
-                    (route) => false,
-                  );
+                  bool status = await AuthService.signOut();
+                  if (status == true) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => OTPLoginScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  }
                 },
               ),
             ),

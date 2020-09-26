@@ -215,8 +215,12 @@ const String STRING_UPDATING = 'Updating...';
 const String STRING_PLEASE_WAIT = 'অপেক্ষা করুন...';
 // 'Signing in...'
 const String STRING_SIGNING_IN = 'লগ ইন করা হচ্ছে...';
+// 'Signing out...
+const String STRING_SIGNING_OUT = 'লগ আউট করা হচ্ছে...';
 // 'Verification failed !'
 const String STRING_VERIFICATION_FAILED = 'লগ ইন ব্যর্থ হয়েছে !';
+// 'Signing out failed...'
+const String STRING_SIGNING_OUT_FAILED = 'লগ আউট ব্যর্থ হয়েছে !';
 
 // Language
 // Language

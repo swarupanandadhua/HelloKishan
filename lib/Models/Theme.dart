@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:FarmApp/Models/Colors.dart';
+import 'package:HelloKishan/Models/Colors.dart';
 
-ThemeData farmAPpTheme = ThemeData(
+ThemeData helloKishanTheme = ThemeData(
   primarySwatch: MaterialColor(APP_COLOR, APP_SWATCH),
   accentColor: Color(APP_COLOR_ACCENT),
   inputDecorationTheme: InputDecorationTheme(

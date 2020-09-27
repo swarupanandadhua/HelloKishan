@@ -1,4 +1,4 @@
-import 'package:FarmApp/Models/Strings.dart';
+import 'package:HelloKishan/Models/Strings.dart';
 import 'package:flutter/cupertino.dart';
 
 class Validator {

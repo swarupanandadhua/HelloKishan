@@ -1,11 +1,11 @@
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Screens/Common/NavigationDrawer.dart';
-import 'package:FarmApp/Screens/Search/SearchResultTile.dart';
-import 'package:FarmApp/Services/DBService.dart';
-import 'package:FarmApp/Models/Models.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/NavigationDrawer.dart';
+import 'package:HelloKishan/Screens/Search/SearchResultTile.dart';
+import 'package:HelloKishan/Services/DBService.dart';
+import 'package:HelloKishan/Models/Models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

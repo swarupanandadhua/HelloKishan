@@ -1,5 +1,5 @@
-import 'package:FarmApp/Models/Theme.dart';
-import 'package:FarmApp/Screens/Welcome/WelcomeScreen.dart';
+import 'package:HelloKishan/Models/Theme.dart';
+import 'package:HelloKishan/Screens/Welcome/WelcomeScreen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -13,12 +13,12 @@ void main() {
       supportedLocales: [Locale('en', 'US'), Locale('bn', 'IN')],
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
-      child: FarmApp(),
+      child: HelloKishan(),
     ),
   );
 }
 
-class FarmApp extends StatelessWidget {
+class HelloKishan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +26,7 @@ class FarmApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
-      theme: farmAPpTheme,
+      theme: helloKishanTheme,
       home: Scaffold(
         body: WelcomeScreen(),
       ),

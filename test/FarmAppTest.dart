@@ -1,17 +1,17 @@
-import 'package:FarmApp/main.dart';
+import 'package:HelloKishan/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets(
-    'FarmApp Test',
-    testFarmApp,
+    'HelloKishan Test',
+    testHelloKishan,
   );
 }
 
-Future<void> testFarmApp(WidgetTester tester) async {
+Future<void> testHelloKishan(WidgetTester tester) async {
   // Build our app and trigger a frame.
-  await tester.pumpWidget(FarmApp());
+  await tester.pumpWidget(HelloKishan());
 
   // Verify that our counter starts at 0.
   expect(find.text('0'), findsOneWidget);

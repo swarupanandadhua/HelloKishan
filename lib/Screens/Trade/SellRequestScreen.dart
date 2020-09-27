@@ -1,20 +1,20 @@
-import 'package:FarmApp/Models/Colors.dart';
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Models.dart' as FarmApp;
-import 'package:FarmApp/Models/Products.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Screens/Common/Translate.dart';
-import 'package:FarmApp/Services/DBService.dart';
+import 'package:HelloKishan/Models/Colors.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Models.dart' as HelloKishan;
+import 'package:HelloKishan/Models/Products.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/Translate.dart';
+import 'package:HelloKishan/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class SellRequestScreen extends StatefulWidget {
-  final FarmApp.Requirement requirement;
+  final HelloKishan.Requirement requirement;
 
   SellRequestScreen(this.requirement);
 
@@ -26,7 +26,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
   SellRequestScreenState(this.r);
 
   final GlobalKey<FormState> sellRequestKey = GlobalKey<FormState>();
-  final FarmApp.Requirement r;
+  final HelloKishan.Requirement r;
   final TextEditingController qtyC = TextEditingController();
 
   Size screenSize;
@@ -144,7 +144,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
 
   void sendRequest() async {
     if (sellRequestKey.currentState.validate()) {
-      FarmAppDialog.show(
+      HelloKishanDialog.show(
         GlobalKeys.sellRequestScaffoldKey.currentContext,
         STRING_SENDING_SELL_REQUEST,
         true,
@@ -152,7 +152,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       List<String> uids = List<String>();
       uids.add(FirebaseAuth.instance.currentUser.uid);
       uids.add(r.uid);
-      FarmApp.Transaction t = FarmApp.Transaction(
+      HelloKishan.Transaction t = HelloKishan.Transaction(
         uids,
         FirebaseAuth.instance.currentUser.displayName,
         FirebaseAuth.instance.currentUser.photoURL,
@@ -166,14 +166,14 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         qtyC.text,
         (double.parse(r.rate) * double.parse(qtyC.text)).toString(),
         Timestamp.now(),
-        FarmApp.STATUS_REQUESTED,
+        HelloKishan.STATUS_REQUESTED,
       );
       bool status = await DBService.uploadTransaction(t);
-      FarmAppDialog.hide();
+      HelloKishanDialog.hide();
       if (status == true) {
         Navigator.pop(context);
       } else {
-        FarmAppDialog.show(
+        HelloKishanDialog.show(
           GlobalKeys.sellRequestScaffoldKey.currentContext,
           STRING_WENT_WRONG,
           false,

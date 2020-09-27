@@ -1,7 +1,7 @@
-import 'package:FarmApp/Models/Styles.dart';
+import 'package:HelloKishan/Models/Styles.dart';
 import 'package:flutter/material.dart';
 
-class FarmAppDialog {
+class HelloKishanDialog {
   static bool isShowing = false;
   static BuildContext dialogContext;
 

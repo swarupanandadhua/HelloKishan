@@ -1,9 +1,9 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.farmapp.farmapp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.HelloKishan.HelloKishan">
     <!--PERMISSIONS-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:name="io.flutter.app.FlutterApplication" android:label="FarmApp" android:icon="@mipmap/ic_launcher">
+    <application android:name="io.flutter.app.FlutterApplication" android:label="HelloKishan" android:icon="@mipmap/ic_launcher">
         <!--ACTIVITIES-->
         <activity android:name=".MainActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
             <meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme" />
@@ -20,17 +20,17 @@
         <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!--SERVICES-->
-        <service android:name="com.farmapp.farmapp.gcm.GcmIntentService" android:exported="false">
+        <service android:name="com.HelloKishan.HelloKishan.gcm.GcmIntentService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name="com.farmapp.farmapp.gcm.GcmIDListenerService" android:exported="false">
+        <service android:name="com.HelloKishan.HelloKishan.gcm.GcmIDListenerService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
-        <service android:name="com.farmapp.farmapp.gcm.RegistrationIntentService" android:exported="false" />
+        <service android:name="com.HelloKishan.HelloKishan.gcm.RegistrationIntentService" android:exported="false" />
 
         <!--METADATA-->
         <meta-data android:name="flutterEmbedding" android:value="2" />

@@ -1,8 +1,8 @@
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Products.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Search/SearchResultScreen.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Products.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Search/SearchResultScreen.dart';
 import 'package:flutter/material.dart';
 
 class RequirementSearch extends SearchDelegate<String> {

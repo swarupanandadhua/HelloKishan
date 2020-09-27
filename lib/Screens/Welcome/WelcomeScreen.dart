@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:FarmApp/Models/Colors.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
-import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
-import 'package:FarmApp/Screens/Profile/OTPLoginScreen.dart';
-import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:HelloKishan/Models/Colors.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Screens/Common/LoadingScreen.dart';
+import 'package:HelloKishan/Screens/Home/WrapperScreen.dart';
+import 'package:HelloKishan/Screens/Profile/OTPLoginScreen.dart';
+import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
+import 'package:HelloKishan/Services/SharedPrefData.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

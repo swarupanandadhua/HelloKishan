@@ -61,9 +61,30 @@ String getTimeStampBengali(Timestamp timestamp) {
   String aaa = s.substring(6, 8);
   debugPrint('HH: $hh, MM: $mm, aaa: $aaa');
 
-  String tod = 'TODO';
-  // time of day: সকাল বিকেল দুপুর বেলা সন্ধ্যা রাত ভোর
+  String tod;
+  int h = int.tryParse(s.substring(0, 2));
 
+  if (s.substring(6, 8) == 'am') {
+    if (h >= 0 && h < 3) {
+      tod = 'রাত্রি';
+    } else if (h >= 3 && h < 6) {
+      tod = 'ভোর';
+    } else if (h >= 6 && h < 12) {
+      tod = 'সকাল';
+    } else if (h == 12) {
+      tod = 'বেলা';
+    }
+  } else if (s.substring(6, 8) == 'pm') {
+    if (h >= 0 && h < 3) {
+      tod = 'দুপুর';
+    }
+    if (h >= 3 && h < 6) {
+      tod = 'বিকেল';
+    }
+    if (h >= 6 && h <= 12) {
+      tod = 'রাত্রি';
+    }
+  }
   debugPrint(tod);
 
   return s;

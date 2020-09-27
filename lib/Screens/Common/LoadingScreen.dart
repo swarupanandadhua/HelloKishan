@@ -1,4 +1,4 @@
-import 'package:FarmApp/Models/Assets.dart';
+import 'package:HelloKishan/Models/Assets.dart';
 import 'package:flutter/material.dart';
 
 class ImageAsset {

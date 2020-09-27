@@ -1,4 +1,4 @@
-import 'package:FarmApp/Models/Strings.dart';
+import 'package:HelloKishan/Models/Strings.dart';
 
 const String DB_REQUIREMENTS = 'requirements';
 const String DB_TRANSACTIONS = 'transactions';

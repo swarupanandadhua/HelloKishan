@@ -1,15 +1,15 @@
-import 'package:FarmApp/Models/Colors.dart';
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Models.dart';
-import 'package:FarmApp/Models/Products.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Screens/Common/Timestamp.dart';
-import 'package:FarmApp/Screens/Common/Validator.dart';
-import 'package:FarmApp/Services/DBService.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:HelloKishan/Models/Colors.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Models.dart';
+import 'package:HelloKishan/Models/Products.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/Timestamp.dart';
+import 'package:HelloKishan/Screens/Common/Validator.dart';
+import 'package:HelloKishan/Services/DBService.dart';
+import 'package:HelloKishan/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +116,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   onSuggestionSelected: (List<String> suggestion) async {
                     selectedProduct = suggestion;
                     productC.text = suggestion[LANGUAGE.CURRENT];
-                    FarmAppDialog.show(
+                    HelloKishanDialog.show(
                       GlobalKeys.postRequirementScaffoldKey.currentContext,
                       STRING_PLEASE_WAIT,
                       true,
@@ -125,7 +125,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                       pid: selectedProduct[3],
                       uid: FirebaseAuth.instance.currentUser.uid,
                     );
-                    FarmAppDialog.hide();
+                    HelloKishanDialog.hide();
                     if (oldR != null) {
                       setState(
                         () {
@@ -233,17 +233,17 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
           SharedPrefData.getLongitude() ?? 0,
         ),
       );
-      FarmAppDialog.show(
+      HelloKishanDialog.show(
         GlobalKeys.postRequirementScaffoldKey.currentContext,
         STRING_PLEASE_WAIT,
         true,
       );
       bool status = await DBService.uploadRequirement(requirement);
-      FarmAppDialog.hide();
+      HelloKishanDialog.hide();
       if (status == true) {
         Navigator.pop(context);
       } else {
-        FarmAppDialog.show(
+        HelloKishanDialog.show(
           GlobalKeys.postRequirementScaffoldKey.currentContext,
           STRING_WENT_WRONG,
           false,

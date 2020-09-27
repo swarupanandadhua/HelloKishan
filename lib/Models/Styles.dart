@@ -1,4 +1,4 @@
-import 'package:FarmApp/Models/Colors.dart';
+import 'package:HelloKishan/Models/Colors.dart';
 import 'package:flutter/material.dart';
 
 const TextStyle style1 = TextStyle(

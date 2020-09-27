@@ -1,4 +1,4 @@
-import 'package:FarmApp/Services/DBService.dart';
+import 'package:HelloKishan/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const String STATUS_REQUESTED = 'REQUESTED'; // --> (Accept/Reject, Cancel)
@@ -152,7 +152,7 @@ class Transaction {
   }
 }
 
-class FarmAppUser {
+class HelloKishanUser {
   String uid;
   String address;
   String district;
@@ -160,7 +160,7 @@ class FarmAppUser {
   String state;
   GeoPoint geopoint;
 
-  FarmAppUser(
+  HelloKishanUser(
     this.uid,
     this.address,
     this.district,
@@ -169,7 +169,7 @@ class FarmAppUser {
     this.geopoint,
   );
 
-  FarmAppUser.fromMap(String id, Map<String, dynamic> data) {
+  HelloKishanUser.fromMap(String id, Map<String, dynamic> data) {
     uid = id;
     address = data['address'];
     district = data['district'];

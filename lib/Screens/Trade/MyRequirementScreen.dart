@@ -1,15 +1,15 @@
-import 'package:FarmApp/Models/Models.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Services/DBService.dart';
+import 'package:HelloKishan/Models/Models.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Services/DBService.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Products.dart';
+import 'package:HelloKishan/Screens/Common/Timestamp.dart';
+import 'package:HelloKishan/Screens/Trade/PostRequirementScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Products.dart';
-import 'package:FarmApp/Screens/Common/Timestamp.dart';
-import 'package:FarmApp/Screens/Trade/PostRequirementScreen.dart';
 
 class MyRequirementScreen extends StatelessWidget {
   @override
@@ -141,21 +141,21 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                   color: Colors.red,
                   textColor: Colors.white,
                   onPressed: () async {
-                    FarmAppDialog.show(
+                    HelloKishanDialog.show(
                       GlobalKeys.wrapperScaffoldKey.currentContext,
                       STRING_DELETING,
                       true,
                     );
                     bool status = await DBService.deleteRequirement(r.rid);
-                    FarmAppDialog.hide();
+                    HelloKishanDialog.hide();
                     if (status == true) {
-                      FarmAppDialog.show(
+                      HelloKishanDialog.show(
                         GlobalKeys.wrapperScaffoldKey.currentContext,
                         STRING_DELETE_SUCCESS,
                         false,
                       );
                     } else {
-                      FarmAppDialog.show(
+                      HelloKishanDialog.show(
                         GlobalKeys.wrapperScaffoldKey.currentContext,
                         STRING_WENT_WRONG,
                         false,

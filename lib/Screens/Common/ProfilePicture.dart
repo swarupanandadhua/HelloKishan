@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
+import 'package:HelloKishan/Screens/Common/LoadingScreen.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePicture {

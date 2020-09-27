@@ -1,4 +1,4 @@
-import 'package:FarmApp/Screens/Common/Translate.dart';
+import 'package:HelloKishan/Screens/Common/Translate.dart';
 
 String displayRate(String rate) {
   return '$STRING_RATE : ${numE2B(rate)} $STRING_RS_PER_KG';
@@ -17,8 +17,8 @@ const String ADMOB_APP_ID = 'ca-app-pub-8285249568639559~5250421163';
 
 const String COUNTRY_CODE_IN = '+91';
 
-// 'FarmApp';
-const String STRING_APP_NAME = 'ফার্ম অ্যাপ';
+// 'HelloKishan';
+const String STRING_APP_NAME = 'হ্যালো কিষাণ';
 
 const String STRING_WELCOME_USER = 'Welcome User';
 
@@ -234,7 +234,7 @@ const String STRING_SHARE_ARG = 'TODO IMPORTANT';
 const String STRING_HELP = 'সাহায্য চান';
 
 const String STRING_HELP_BODY = 'body=Please%20type%20your%20query%20here...';
-const String STRING_HELP_SUB = 'subject=FarmApp%20Help';
+const String STRING_HELP_SUB = 'subject=HelloKishan%20Help';
 
 // 'Lowest Price First';
 const String STRING_LOWEST_PRICE_FIRST = 'দর : কম থেকে বেশি';

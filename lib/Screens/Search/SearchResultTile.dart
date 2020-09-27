@@ -1,11 +1,11 @@
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Models.dart';
-import 'package:FarmApp/Models/Products.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/ProfilePicture.dart';
-import 'package:FarmApp/Screens/Common/Timestamp.dart';
-import 'package:FarmApp/Screens/Trade/SellRequestScreen.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Models.dart';
+import 'package:HelloKishan/Models/Products.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
+import 'package:HelloKishan/Screens/Common/Timestamp.dart';
+import 'package:HelloKishan/Screens/Trade/SellRequestScreen.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultTile extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Models.dart' as FarmApp;
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Models.dart' as HelloKishan;
+import 'package:HelloKishan/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -20,9 +20,9 @@ class DBService {
       .where(
         'status',
         whereIn: [
-          FarmApp.STATUS_REJECTED,
-          FarmApp.STATUS_CANCELLED,
-          FarmApp.STATUS_SUCCESSFUL,
+          HelloKishan.STATUS_REJECTED,
+          HelloKishan.STATUS_CANCELLED,
+          HelloKishan.STATUS_SUCCESSFUL,
         ],
       )
       .orderBy('timestamp', descending: true)
@@ -37,8 +37,8 @@ class DBService {
       .where(
         'status',
         whereIn: [
-          FarmApp.STATUS_REQUESTED,
-          FarmApp.STATUS_ACCEPTED,
+          HelloKishan.STATUS_REQUESTED,
+          HelloKishan.STATUS_ACCEPTED,
         ],
       )
       .orderBy('timestamp', descending: true)
@@ -62,7 +62,7 @@ class DBService {
     // TODO: IMPORTANT: use docChange.newIndex/oldIndex
   }
 
-  static Future<bool> uploadRequirement(FarmApp.Requirement r) async {
+  static Future<bool> uploadRequirement(HelloKishan.Requirement r) async {
     bool status;
     try {
       if (r.rid != null) {
@@ -97,7 +97,7 @@ class DBService {
     }
   }
 
-  static Stream<List<FarmApp.Requirement>> fetchRequirementsByLocation(
+  static Stream<List<HelloKishan.Requirement>> fetchRequirementsByLocation(
       String db, double lat, double long, double rad, String product) {
     CollectionReference ref = FirebaseFirestore.instance.collection(db);
     Geoflutterfire geo = Geoflutterfire();
@@ -116,12 +116,13 @@ class DBService {
         )
         .map(
       (snap) {
-        List<FarmApp.Requirement> requirements = List<FarmApp.Requirement>();
+        List<HelloKishan.Requirement> requirements =
+            List<HelloKishan.Requirement>();
         snap.forEach(
           (doc) {
             requirements.insert(
               0,
-              FarmApp.Requirement.fromMap(doc.id, doc.data()),
+              HelloKishan.Requirement.fromMap(doc.id, doc.data()),
             );
           },
         );
@@ -131,7 +132,7 @@ class DBService {
     return null;
   }
 
-  static Future<FarmApp.Requirement> fetchRequirement({
+  static Future<HelloKishan.Requirement> fetchRequirement({
     String pid,
     String uid,
   }) async {
@@ -145,13 +146,14 @@ class DBService {
 
     QuerySnapshot snap = await q.get();
     if (snap?.docs?.length != null && snap.docs.length > 0) {
-      return FarmApp.Requirement.fromMap(snap.docs[0].id, snap.docs[0].data());
+      return HelloKishan.Requirement.fromMap(
+          snap.docs[0].id, snap.docs[0].data());
     } else {
       return null;
     }
   }
 
-  static Future<bool> uploadTransaction(FarmApp.Transaction t) async {
+  static Future<bool> uploadTransaction(HelloKishan.Transaction t) async {
     CollectionReference ref =
         FirebaseFirestore.instance.collection(DB_TRANSACTIONS);
 

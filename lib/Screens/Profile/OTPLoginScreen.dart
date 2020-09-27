@@ -1,9 +1,9 @@
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Screens/Common/LoadingScreen.dart';
-import 'package:FarmApp/Screens/Common/Validator.dart';
-import 'package:FarmApp/Services/AuthService.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/LoadingScreen.dart';
+import 'package:HelloKishan/Screens/Common/Validator.dart';
+import 'package:HelloKishan/Services/AuthService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

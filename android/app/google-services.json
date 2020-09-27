@@ -1,64 +1,47 @@
 {
   "project_info": {
-    "project_number": "496528725137",
-    "firebase_url": "https://farmapp-india.firebaseio.com",
-    "project_id": "farmapp-india",
-    "storage_bucket": "farmapp-india.appspot.com"
+    "project_number": "934139019469",
+    "firebase_url": "https://hello-kishan-india.firebaseio.com",
+    "project_id": "hello-kishan-india",
+    "storage_bucket": "hello-kishan-india.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:496528725137:android:a7df3419fed0a8b7751b30",
+        "mobilesdk_app_id": "1:934139019469:android:5dcc24427f51c8ee3de984",
         "android_client_info": {
-          "package_name": "com.farmapp.farmapp"
+          "package_name": "com.HelloKishan.HelloKishan"
         }
       },
       "oauth_client": [
         {
-          "client_id": "496528725137-tt5hudu952ag2g487jd0se7d6bu6bsj7.apps.googleusercontent.com",
+          "client_id": "934139019469-e7io48ff53sca1bru076lrfdrd3nrg0a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.farmapp.farmapp",
-            "certificate_hash": "ac80c695a56792c9a9576ec0141481f9b045a728"
+            "package_name": "com.HelloKishan.HelloKishan",
+            "certificate_hash": "e62ac26e2d8b4d86db89330e2ad1b3a3ee79d0bd"
           }
         },
         {
-          "client_id": "496528725137-579h26eh5he4cp6nkm82s2ke9v53b25n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.farmapp.farmapp",
-            "certificate_hash": "908c1acd8e04d776579033bb33af21948c64749b"
-          }
-        },
-        {
-          "client_id": "496528725137-3gl32oatlkv6mug7fglmvdnkvi7q9199.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.farmapp.farmapp",
-            "certificate_hash": "56884f1f0d68d8991cc338bfecaec5ea695f5887"
-          }
-        },
-        {
-          "client_id": "496528725137-ace5186lojrq5vs5k93b9v37bd4l3bp6.apps.googleusercontent.com",
+          "client_id": "934139019469-gfqh0jqe3gml38qpe1nqn1s6pc13an8d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDZ8XIQhpFr-XBam6e1OURUoFgV5sefuf0"
+          "current_key": "AIzaSyCxmevhxGk8DnuQQ9WZFa854lnS9IBtYLM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "496528725137-ace5186lojrq5vs5k93b9v37bd4l3bp6.apps.googleusercontent.com",
+              "client_id": "934139019469-gfqh0jqe3gml38qpe1nqn1s6pc13an8d.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      },
-      "admob_app_id": "ca-app-pub-8285249568639559~5250421163"
+      }
     }
   ],
   "configuration_version": "1"

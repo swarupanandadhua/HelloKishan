@@ -1,8 +1,8 @@
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Models/Models.dart' as FarmApp;
-import 'package:FarmApp/Screens/Trade/TradeTile.dart';
-import 'package:FarmApp/Services/DBService.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Models/Models.dart' as HelloKishan;
+import 'package:HelloKishan/Screens/Trade/TradeTile.dart';
+import 'package:HelloKishan/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,7 @@ class HistoryScreen extends StatelessWidget {
               itemCount: snap.data.docs.length,
               itemBuilder: (_, i) {
                 return TradeTile(
-                  FarmApp.Transaction.fromMap(
+                  HelloKishan.Transaction.fromMap(
                     snap.data.docs[i].id,
                     snap.data.docs[i].data(),
                   ),

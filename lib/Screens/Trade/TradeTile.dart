@@ -1,12 +1,12 @@
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Models.dart';
-import 'package:FarmApp/Models/Products.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Screens/Common/ProfilePicture.dart';
-import 'package:FarmApp/Screens/Common/Timestamp.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Models.dart';
+import 'package:HelloKishan/Models/Products.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
+import 'package:HelloKishan/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -26,13 +26,13 @@ class TradeTileState extends State<TradeTile> {
   TradeTileState(this.t);
 
   void updateTransactionStatus(BuildContext context, String status) async {
-    FarmAppDialog.show(
+    HelloKishanDialog.show(
       GlobalKeys.wrapperScaffoldKey.currentContext,
       STRING_UPDATING,
       true,
     );
     await t.setStatus(status);
-    FarmAppDialog.hide();
+    HelloKishanDialog.hide();
   }
 
   Widget getActionButtons(BuildContext context) {

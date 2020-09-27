@@ -3,12 +3,16 @@ const admin = require("firebase-admin");
 
 admin.initializeApp(functions.config().firebase);
 
-exports.createFarmAppUser = functions.auth.user().onCreate((user) => {
-  var farmAppUser = JSON.parse(JSON.stringify(user));
-  return admin.firestore().collection("users").doc(user.uid).set(farmAppUser);
+exports.createHelloKishanUser = functions.auth.user().onCreate((user) => {
+  var helloKishanUser = JSON.parse(JSON.stringify(user));
+  return admin
+    .firestore()
+    .collection("users")
+    .doc(user.uid)
+    .set(helloKishanUser);
 });
 
-exports.deleteFarmAppUser = functions.auth.user().onDelete((user) => {
+exports.deleteHelloKishanUser = functions.auth.user().onDelete((user) => {
   return admin.firestore().collection("users").doc(user.uid).delete();
 });
 

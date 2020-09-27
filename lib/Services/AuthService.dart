@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Screens/Common/Validator.dart';
-import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
-import 'package:FarmApp/Screens/Profile/ProfileUpdateScreen.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/Validator.dart';
+import 'package:HelloKishan/Screens/Home/WrapperScreen.dart';
+import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
+import 'package:HelloKishan/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,17 +13,17 @@ import 'package:flutter/services.dart';
 class AuthService {
   static Future<bool> signOut() async {
     try {
-      FarmAppDialog.show(
+      HelloKishanDialog.show(
         GlobalKeys.wrapperScaffoldKey.currentContext,
         STRING_SIGNING_OUT,
         true,
       );
       await FirebaseAuth.instance.signOut();
       SharedPrefData.reset();
-      FarmAppDialog.hide();
+      HelloKishanDialog.hide();
       return true;
     } catch (e) {
-      FarmAppDialog.show(
+      HelloKishanDialog.show(
         GlobalKeys.wrapperScaffoldKey.currentContext,
         STRING_SIGNING_OUT_FAILED,
         false,
@@ -36,7 +36,7 @@ class AuthService {
   static void verifyPhoneNumber(String phone, BuildContext ctx) async {
     signInCallBack(User u) {
       if (u == null) {
-        FarmAppDialog.show(
+        HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
           STRING_VERIFICATION_FAILED,
           false,
@@ -57,7 +57,7 @@ class AuthService {
       }
     }
 
-    FarmAppDialog.show(
+    HelloKishanDialog.show(
       GlobalKeys.otpLogInScaffoldKey.currentContext,
       STRING_SENDING_OTP,
       true,
@@ -71,7 +71,7 @@ class AuthService {
       timeout: Duration(seconds: 30),
       codeAutoRetrievalTimeout: (verificationId) async {
         final GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
-        FarmAppDialog.hide();
+        HelloKishanDialog.hide();
         TextEditingController tc = TextEditingController();
         String otp = await showDialog<String>(
           context: ctx,
@@ -98,7 +98,7 @@ class AuthService {
                 textColor: Colors.white,
                 onPressed: () {
                   if (otpFormKey.currentState.validate()) {
-                    FarmAppDialog.hide();
+                    HelloKishanDialog.hide();
                   }
                 },
                 icon: Icon(Icons.check),
@@ -111,8 +111,8 @@ class AuthService {
           verificationId: verificationId,
           smsCode: otp,
         );
-        FarmAppDialog.hide();
-        FarmAppDialog.show(
+        HelloKishanDialog.hide();
+        HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
           STRING_SIGNING_IN,
           true,
@@ -120,14 +120,14 @@ class AuthService {
         try {
           await FirebaseAuth.instance.signInWithCredential(cred).then(
             (authResult) {
-              FarmAppDialog.hide();
+              HelloKishanDialog.hide();
               signInCallBack(authResult?.user);
             },
           );
         } catch (e) {
           if (e.toString().contains(STRING_INVALID_VERIFICATION_CODE)) {
-            FarmAppDialog.hide();
-            FarmAppDialog.show(
+            HelloKishanDialog.hide();
+            HelloKishanDialog.show(
               GlobalKeys.otpLogInScaffoldKey.currentContext,
               STRING_INVALID_OTP,
               false,
@@ -138,8 +138,8 @@ class AuthService {
         }
       },
       verificationCompleted: (cred) async {
-        FarmAppDialog.hide();
-        FarmAppDialog.show(
+        HelloKishanDialog.hide();
+        HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
           STRING_SIGNING_IN,
           true,
@@ -147,7 +147,7 @@ class AuthService {
         try {
           await FirebaseAuth.instance.signInWithCredential(cred).then(
             (authResult) {
-              FarmAppDialog.hide();
+              HelloKishanDialog.hide();
               u = authResult?.user;
               signInCallBack(u);
             },
@@ -161,8 +161,8 @@ class AuthService {
         // TODO
         debugPrint(e.code);
         debugPrint(StackTrace.current.toString());
-        FarmAppDialog.hide();
-        FarmAppDialog.show(
+        HelloKishanDialog.hide();
+        HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
           STRING_VERIFICATION_FAILED,
           false,

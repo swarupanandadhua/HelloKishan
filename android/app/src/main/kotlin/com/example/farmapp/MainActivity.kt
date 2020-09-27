@@ -1,4 +1,4 @@
-package com.farmapp.farmapp
+package com.HelloKishan.HelloKishan
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

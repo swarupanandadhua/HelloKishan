@@ -1,17 +1,17 @@
 import 'dart:io';
-import 'package:FarmApp/Models/Colors.dart';
-import 'package:FarmApp/Models/Constants.dart';
-import 'package:FarmApp/Models/Strings.dart';
-import 'package:FarmApp/Models/Styles.dart';
-import 'package:FarmApp/Screens/Common/FarmAppDialog.dart';
-import 'package:FarmApp/Screens/Common/GlobalKeys.dart';
-import 'package:FarmApp/Screens/Common/ProfilePicture.dart';
-import 'package:FarmApp/Screens/Common/Validator.dart';
-import 'package:FarmApp/Screens/Profile/MyButton.dart';
-import 'package:FarmApp/Screens/Home/WrapperScreen.dart';
-import 'package:FarmApp/Services/DBService.dart';
-import 'package:FarmApp/Services/LocationService.dart';
-import 'package:FarmApp/Services/SharedPrefData.dart';
+import 'package:HelloKishan/Models/Colors.dart';
+import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Strings.dart';
+import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
+import 'package:HelloKishan/Screens/Common/Validator.dart';
+import 'package:HelloKishan/Screens/Profile/MyButton.dart';
+import 'package:HelloKishan/Screens/Home/WrapperScreen.dart';
+import 'package:HelloKishan/Services/DBService.dart';
+import 'package:HelloKishan/Services/LocationService.dart';
+import 'package:HelloKishan/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -243,15 +243,15 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void getCurrentAddress() async {
-    FarmAppDialog.show(
+    HelloKishanDialog.show(
       GlobalKeys.profileUpdateScaffoldKey.currentContext,
       STRING_LOADING_LOCATION,
       true,
     );
     Address address = await LocationService.getAddress();
-    FarmAppDialog.hide();
+    HelloKishanDialog.hide();
     if (address == null) {
-      FarmAppDialog.show(
+      HelloKishanDialog.show(
         GlobalKeys.profileUpdateScaffoldKey.currentContext,
         STRING_WENT_WRONG,
         false,
@@ -397,7 +397,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   void saveUserDetails() async {
     if (profileDetailsForm.currentState.validate()) {
-      FarmAppDialog.show(
+      HelloKishanDialog.show(
         GlobalKeys.profileUpdateScaffoldKey.currentContext,
         STRING_PLEASE_WAIT,
         true,
@@ -410,8 +410,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           DB_USERS + FirebaseAuth.instance.currentUser.uid + '.jpg',
         );
         if (newPhotoURL == null) {
-          FarmAppDialog.hide();
-          FarmAppDialog.show(
+          HelloKishanDialog.hide();
+          HelloKishanDialog.show(
             GlobalKeys.profileUpdateScaffoldKey.currentContext,
             STRING_WENT_WRONG,
             false,
@@ -426,8 +426,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         );
       } catch (e) {
         debugPrint(e.toString());
-        FarmAppDialog.hide();
-        FarmAppDialog.show(
+        HelloKishanDialog.hide();
+        HelloKishanDialog.show(
           GlobalKeys.profileUpdateScaffoldKey.currentContext,
           STRING_WENT_WRONG,
           false,
@@ -442,7 +442,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       SharedPrefData.setLongitude(geopoint?.longitude);
       SharedPrefData.setProfileUpdated();
 
-      FarmAppDialog.hide();
+      HelloKishanDialog.hide();
       Navigator.pop(context);
       Navigator.pushAndRemoveUntil(
         context,

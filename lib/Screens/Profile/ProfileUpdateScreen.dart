@@ -443,7 +443,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       SharedPrefData.setProfileUpdated();
 
       HelloKishanDialog.hide();
-      Navigator.pop(context);
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

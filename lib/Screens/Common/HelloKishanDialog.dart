@@ -8,6 +8,9 @@ class HelloKishanDialog {
   static void hide() {
     if (isShowing == true) {
       Navigator.pop(dialogContext);
+      isShowing = false;
+    } else {
+      debugPrint('XXXXXXXXXXXXXXXXXX PROBLEM XXXXXXXXXXXXXXXXXX');
     }
   }
 

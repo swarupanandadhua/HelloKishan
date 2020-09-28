@@ -33,7 +33,7 @@ const String STRING_MUST_BE_10_DIGITS = 'অবশ্যই ১০ সংখ্�
 const String STRING_SEND_OTP = 'ও.টি.পি পাঠান';
 // 'Sending OTP...'
 const String STRING_SENDING_OTP = 'ও.টি.পি পাঠানো হচ্ছে...';
-const String STRING_AUTO_READING_OTP = 'Auto reading OTP...';
+// const String STRING_AUTO_READING_OTP = 'Auto reading OTP...';
 // Enter the OTP
 const String STRING_ENTER_OTP = 'ও.টি.পি লিখুন';
 // OTP must be 6 digits

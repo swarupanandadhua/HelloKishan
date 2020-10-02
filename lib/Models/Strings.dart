@@ -228,7 +228,14 @@ const String STRING_LANGUAGE = 'ভাষা বদলান';
 
 // 'Share';
 const String STRING_SHARE = 'সেয়ার করুন';
-const String STRING_SHARE_ARG = 'TODO IMPORTANT';
+
+const String APP_DESC_MSG =
+    'কৃষিক্ষেত্রে ডিজিটালাইজেশন আনতে, অনলাইনে শাক-সব্জি ব্যবসায়ীদের সাথে কৃষকদের যোগাযোগ স্থাপন করতে এবং কৃষিকাজের বিভিন্ন প্রয়োজনীয় জিনিসপত্র অনলাইনে কেনার ব্যবস্থা করতে আমাদের এই ছোট্ট প্রয়াস Hello Kishan অ্যাপ। ব্যবহার করুন এবং আপনার পরিচিতদের সঙ্গে শেয়ার করুন।';
+
+const String APP_PLAY_STORE_URL =
+    'https://play.google.com/store/apps/details?id=com.HelloKishan.HelloKishan';
+
+const String STRING_SHARE_ARG = '$APP_DESC_MSG \n $APP_PLAY_STORE_URL';
 
 // 'Help';
 const String STRING_HELP = 'সাহায্য চান';

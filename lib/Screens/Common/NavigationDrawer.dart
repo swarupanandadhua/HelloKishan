@@ -6,7 +6,7 @@ import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
 import 'package:HelloKishan/Screens/Profile/OTPLoginScreen.dart';
 import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:HelloKishan/Services/AuthService.dart';
-import 'package:easy_localization/easy_localization.dart';
+// import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:flutter/material.dart';
@@ -56,7 +56,8 @@ class NavigationDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
+            // TODO: Language support
+/*             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(STRING_LANGUAGE, style: styleNavItem),
@@ -71,7 +72,7 @@ class NavigationDrawer extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-            ),
+            ), */
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(

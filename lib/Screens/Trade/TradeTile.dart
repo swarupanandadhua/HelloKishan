@@ -42,7 +42,6 @@ class TradeTileState extends State<TradeTile> {
     // case 4: ACCEPTED, Farmer View  --> Text[ACCEPTED],   Button[COMPLETE]
     bool isFarmer = (t.uids[0] == FirebaseAuth.instance.currentUser.uid);
     bool isAccepted = (t.status == STATUS_ACCEPTED);
-    String mobile;
 
     List<Widget> actions = List<Widget>();
     if (isAccepted) {
@@ -58,7 +57,6 @@ class TradeTileState extends State<TradeTile> {
       );
     } else {
       if (isFarmer) {
-        mobile = t.sellerMobile;
         actions.add(
           Text(STRING_REQUESTED, style: styleGreen),
         );
@@ -72,7 +70,6 @@ class TradeTileState extends State<TradeTile> {
           ),
         );
       } else {
-        mobile = t.buyerMobile;
         actions.add(
           RaisedButton.icon(
             color: Colors.red,
@@ -92,6 +89,7 @@ class TradeTileState extends State<TradeTile> {
         );
       }
     }
+    String mobile = isFarmer ? t.sellerMobile : t.buyerMobile;
     actions.add(
       IconButton(
         color: Colors.green,

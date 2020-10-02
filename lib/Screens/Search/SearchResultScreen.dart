@@ -27,8 +27,8 @@ class SearchResultScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          // TODO: IMPORTANT: Functionality
+        // TODO: IMPORTANT: Functionality
+        /* actions: [
           PopupMenuButton<String>(
             onSelected: (option) {
               switch (option) {
@@ -59,7 +59,7 @@ class SearchResultScreen extends StatelessWidget {
               }).toList();
             },
           ),
-        ],
+        ], */
       ),
       drawer: NavigationDrawer(),
       body: StreamBuilder(

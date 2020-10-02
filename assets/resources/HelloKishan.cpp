@@ -1,3 +1,8 @@
+Fertilizer {
+    License : matirkatha.net
+    Dealer Retailer List.csv
+}
+
 AdMob { // App ID: ca-app-pub-8285249568639559~5250421163
     1. Create AdMob app , get App ID.
     2. Create ad unit.

@@ -1,3 +1,19 @@
+Company Registration {
+    startupindia.gov.in {
+        Programs { // startupindia.gov.in/content/sih/en/ams-application/application-listing.html
+            Grand Challenge :            https://www.startupindia.gov.in/content/sih/en/ams-application/challenge.html?applicationId=5f5a0cbae4b094dd1b65c5da
+
+            ***MIRI GramUdyog IdeaPod : https://www.startupindia.gov.in/content/sih/en/ams-application/challenge.html?applicationId=5f466ccde4b07b91e441360b
+
+            Global Impact Innovation :            https://www.startupindia.gov.in/content/sih/en/ams-application/challenge.html?applicationId=5f4cb7cde4b06d557d9d2b45
+        }
+    }
+    mca.gov.in {
+        TODO: Submit & Pay the SPICe form for Name Registration
+    }
+    tradeindia.com
+}
+
 Fertilizer {
     License : matirkatha.net
     Dealer Retailer List.csv

@@ -19,10 +19,66 @@ import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+class ProfileUpdateScaffold extends StatelessWidget {
+  final GlobalKey<ProfileUpdateScreenState> profileUpdateScreenKey =
+      GlobalKey();
+  final bool showBottomSheet, editing;
+
+  ProfileUpdateScaffold(this.showBottomSheet, this.editing);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: GlobalKeys.profileUpdateScaffoldKey,
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            STRING_PROFILE_UPDATE,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      bottomSheet: getBottomSheet(context),
+      body: ProfileUpdateScreen(
+        showBottomSheet,
+        editing,
+        key: profileUpdateScreenKey,
+      ),
+    );
+  }
+
+  Widget getBottomSheet(BuildContext context) {
+    if (showBottomSheet) {
+      return Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          color: Color(APP_COLOR),
+          child: Text(
+            STRING_PROCEED,
+            style: TextStyle(
+              color: Color(0xFFFFFFFF),
+              fontSize: 20,
+            ),
+          ),
+          onPressed: () {
+            profileUpdateScreenKey.currentState.saveUserDetails();
+          },
+        ),
+      );
+    }
+    return null;
+  }
+}
+
 class ProfileUpdateScreen extends StatefulWidget {
   final bool showBottomSheet, editing;
 
-  ProfileUpdateScreen(this.showBottomSheet, this.editing);
+  ProfileUpdateScreen(
+    this.showBottomSheet,
+    this.editing, {
+    Key key,
+  }) : super(key: key);
 
   @override
   ProfileUpdateScreenState createState() {
@@ -55,23 +111,6 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: GlobalKeys.profileUpdateScaffoldKey,
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            STRING_PROFILE_UPDATE,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      bottomSheet: getBottomSheet(context),
-      body: getBody(),
-    );
-  }
-
   void loadUserDetails() {
     mobileEditC.text = FirebaseAuth.instance.currentUser.phoneNumber;
     nameEditC.text = FirebaseAuth.instance.currentUser.displayName;
@@ -89,28 +128,8 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     }
   }
 
-  Widget getBottomSheet(BuildContext context) {
-    if (showBottomSheet) {
-      return Container(
-        height: 60,
-        width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          color: Color(APP_COLOR),
-          child: Text(
-            STRING_PROCEED,
-            style: TextStyle(
-              color: Color(0xFFFFFFFF),
-              fontSize: 20,
-            ),
-          ),
-          onPressed: () => saveUserDetails(),
-        ),
-      );
-    }
-    return null;
-  }
-
-  Widget getBody() {
+  @override
+  Widget build(BuildContext context) {
     return Form(
       key: profileDetailsForm,
       child: ListView(
@@ -243,33 +262,40 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void getCurrentAddress() async {
-    HelloKishanDialog.show(
-      GlobalKeys.profileUpdateScaffoldKey.currentContext,
-      STRING_LOADING_LOCATION,
-      true,
-    );
-    Address address = await LocationService.getAddress();
-    HelloKishanDialog.hide();
-    if (address == null) {
-      HelloKishanDialog.show(
-        GlobalKeys.profileUpdateScaffoldKey.currentContext,
-        STRING_WENT_WRONG,
-        false,
-      );
-    } else {
-      setState(
-        () {
-          addressEditC.text = address?.addressLine;
-          pincodeEditC.text = address?.postalCode;
-          stateEditC.text = address?.adminArea;
-          districtEditC.text = address?.subAdminArea;
-          geopoint = GeoPoint(
-            address.coordinates.latitude,
-            address.coordinates.longitude,
+    Future<Address> addressFuture = LocationService.getAddress();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        HelloKishanDialog.show(
+          GlobalKeys.profileUpdateScaffoldKey.currentContext,
+          STRING_LOADING_LOCATION,
+          true,
+        );
+
+        Address address = await addressFuture;
+        HelloKishanDialog.hide();
+
+        if (address == null) {
+          HelloKishanDialog.show(
+            GlobalKeys.profileUpdateScaffoldKey.currentContext,
+            STRING_WENT_WRONG,
+            false,
           );
-        },
-      );
-    }
+        } else {
+          setState(
+            () {
+              addressEditC.text = address?.addressLine;
+              pincodeEditC.text = address?.postalCode;
+              stateEditC.text = address?.adminArea;
+              districtEditC.text = address?.subAdminArea;
+              geopoint = GeoPoint(
+                address.coordinates.latitude,
+                address.coordinates.longitude,
+              );
+            },
+          );
+        }
+      },
+    );
   }
 
   Widget getDPWidget() {

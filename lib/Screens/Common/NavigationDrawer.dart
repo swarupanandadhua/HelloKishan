@@ -2,6 +2,8 @@ import 'package:HelloKishan/Models/Colors.dart';
 import 'package:HelloKishan/Models/Constants.dart';
 import 'package:HelloKishan/Models/Strings.dart';
 import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
 import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
 import 'package:HelloKishan/Screens/Profile/OTPLoginScreen.dart';
 import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
@@ -25,7 +27,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ProfileUpdateScreen(false, false),
+                    builder: (_) => ProfileUpdateScaffold(false, false),
                   ),
                 );
               },
@@ -95,7 +97,14 @@ class NavigationDrawer extends StatelessWidget {
                 title: Text(STRING_SIGN_OUT, style: styleNavItem),
                 leading: Icon(Icons.power_settings_new),
                 onTap: () async {
+                  HelloKishanDialog.show(
+                    GlobalKeys.wrapperScaffoldKey.currentContext,
+                    // TODO: ISSUE: The above context was poped earlier
+                    STRING_SIGNING_OUT,
+                    true,
+                  );
                   bool status = await AuthService.signOut();
+                  HelloKishanDialog.hide();
                   if (status == true) {
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -103,6 +112,12 @@ class NavigationDrawer extends StatelessWidget {
                         builder: (_) => OTPLoginScreen(),
                       ),
                       (route) => false,
+                    );
+                  } else {
+                    HelloKishanDialog.show(
+                      GlobalKeys.wrapperScaffoldKey.currentContext,
+                      STRING_SIGNING_OUT_FAILED,
+                      false,
                     );
                   }
                 },

@@ -13,24 +13,13 @@ import 'package:flutter/services.dart';
 class AuthService {
   static Future<bool> signOut() async {
     try {
-      HelloKishanDialog.show(
-        GlobalKeys.wrapperScaffoldKey.currentContext,
-        STRING_SIGNING_OUT,
-        true,
-      );
       await FirebaseAuth.instance.signOut();
       SharedPrefData.reset();
-      HelloKishanDialog.hide();
-      return true;
     } catch (e) {
-      HelloKishanDialog.show(
-        GlobalKeys.wrapperScaffoldKey.currentContext,
-        STRING_SIGNING_OUT_FAILED,
-        false,
-      );
-      debugPrint(e);
-      return false;
+      debugPrint(e.toString());
+      return (e.runtimeType == FlutterError); // TODO: Cleanup this code
     }
+    return true;
   }
 
   static void verifyPhoneNumber(String phone, BuildContext ctx) async {
@@ -46,7 +35,7 @@ class AuthService {
         if (SharedPrefData.getProfileUpdated() == true) {
           screen = Wrapper();
         } else {
-          screen = ProfileUpdateScreen(true, true);
+          screen = ProfileUpdateScaffold(true, true);
         }
 
         Navigator.pushAndRemoveUntil(

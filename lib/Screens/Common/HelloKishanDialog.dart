@@ -7,7 +7,7 @@ class HelloKishanDialog {
 
   static void hide() {
     if (isShowing == true) {
-      Navigator.pop(dialogContext);
+      Navigator.of(dialogContext).pop();
       isShowing = false;
     } else {
       debugPrint('XXXXXXXXXXXXXXXXXX PROBLEM XXXXXXXXXXXXXXXXXX');
@@ -71,7 +71,7 @@ class HelloKishanDialog {
               children: [
                 FlatButton(
                   onPressed: () {
-                    Navigator.pop(dialogContext);
+                    Navigator.of(dialogContext).pop();
                   },
                   child: Text(
                     'Close',
@@ -99,8 +99,8 @@ class HelloKishanDialog {
     showDialog(
       context: scaffoldContext,
       barrierDismissible: false,
-      builder: (context) {
-        dialogContext = context;
+      builder: (_) {
+        dialogContext = _;
         return dialog;
       },
     );

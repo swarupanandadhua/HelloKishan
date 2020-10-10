@@ -14,6 +14,7 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: GridView.builder(
+        scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,

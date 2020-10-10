@@ -252,3 +252,9 @@ const String STRING_NEAREST_FIRST = 'দূরত্ব : কম থেকে �
 
 // Maximum
 const String STRING_MAXIMUM = 'সর্বোচ্চ';
+
+const String STRING_FERTILIZER = 'সার';
+const String STRING_PESTICIDE = '';
+const String STRING_INSECTICIDE = 'কীট-নাশক';
+const String STRING_FUNGICIDE = '';
+const String STRING_HERBICIDE = 'আগাছা নাশক';

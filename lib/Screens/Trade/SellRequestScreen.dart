@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SellRequestScreen extends StatefulWidget {
   final HelloKishan.Requirement requirement;
@@ -40,7 +41,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
     return Scaffold(
       key: GlobalKeys.sellRequestScaffoldKey,
       appBar: AppBar(
-        title: Text(STRING_SELL_REQUEST),
+        title: Text(STRING_SELL_REQUEST.tr()),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -92,14 +93,15 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                     FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
                   ],
                   decoration: InputDecoration(
-                    hintText: STRING_ENTER_QUANTITY,
-                    labelText: STRING_ENTER_QUANTITY,
+                    hintText: STRING_ENTER_QUANTITY.tr(),
+                    labelText: STRING_ENTER_QUANTITY.tr(),
                   ),
                   validator: (val) {
                     double q = double.tryParse(val);
-                    if (q == null || q <= 0) return STRING_ENTER_VALID_QUANTITY;
+                    if (q == null || q <= 0)
+                      return STRING_ENTER_VALID_QUANTITY.tr();
                     if (q > double.tryParse(r.qty)) {
-                      return '$STRING_MAXIMUM : ${numE2B(r.qty)} $STRING_KG';
+                      return '${STRING_MAXIMUM.tr()} : ${numE2B(r.qty)} ${STRING_KG.tr()}';
                     }
                     return null;
                   },
@@ -108,7 +110,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  STRING_ADDRESS,
+                  STRING_ADDRESS.tr(),
                   style: styleLessImpTxt,
                 ),
               ),
@@ -130,7 +132,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         child: RaisedButton(
           color: Color(APP_COLOR),
           child: Text(
-            STRING_PROCEED,
+            STRING_PROCEED.tr(),
             style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 20,
@@ -146,7 +148,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
     if (sellRequestKey.currentState.validate()) {
       HelloKishanDialog.show(
         GlobalKeys.sellRequestScaffoldKey.currentContext,
-        STRING_SENDING_SELL_REQUEST,
+        STRING_SENDING_SELL_REQUEST.tr(),
         true,
       );
       List<String> uids = List<String>();
@@ -175,7 +177,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       } else {
         HelloKishanDialog.show(
           GlobalKeys.sellRequestScaffoldKey.currentContext,
-          STRING_WENT_WRONG,
+          STRING_WENT_WRONG.tr(),
           false,
         );
       }

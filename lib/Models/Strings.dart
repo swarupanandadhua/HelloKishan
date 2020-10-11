@@ -14,248 +14,142 @@ String displayAmt(String amt) {
 
 // INFO: Following APP_ID is used in AndroidManifest.xml as well
 const String ADMOB_APP_ID = 'ca-app-pub-8285249568639559~5250421163';
-
 const String COUNTRY_CODE_IN = '+91';
-
-// 'HelloKishan';
-const String STRING_APP_NAME = 'হ্যালো কিষাণ';
-
-const String STRING_WELCOME_USER = 'Welcome User';
-
-// Mobile
-const String STRING_MOBILE = 'মোবাইল নম্বর';
-// Enter Mobile Number
-const String STRING_ENTER_MOBILE_NUMBER = 'মোবাইল নম্বর লিখুন';
-const String STRING_MUST_BE_10_DIGITS = 'অবশ্যই ১০ সংখ্যার হবে';
-// Must be 10 digits
-
-// Send OTP
-const String STRING_SEND_OTP = 'ও.টি.পি পাঠান';
-// 'Sending OTP...'
-const String STRING_SENDING_OTP = 'ও.টি.পি পাঠানো হচ্ছে...';
-// const String STRING_AUTO_READING_OTP = 'Auto reading OTP...';
-// Enter the OTP
-const String STRING_ENTER_OTP = 'ও.টি.পি লিখুন';
-// OTP must be 6 digits
-const String STRING_OTP_MUST_6_DIGITS = 'অবশ্যই ৬ সংখ্যার হবে';
-// 'Invalid OTP !'
-const String STRING_INVALID_OTP = 'ও.টি.পি সঠিক নয় !';
 const String STRING_INVALID_VERIFICATION_CODE =
     'ERROR_INVALID_VERIFICATION_CODE';
-// Submit
-const String STRING_SUBMIT = 'সাবমিট করুন';
+const String STRING_TODO_IMPORTANT_FUNCTIONALITY = 'TODO : IMPORTANT FUNC.';
+const String APP_PLAY_STORE_URL =
+    'https://play.google.com/store/apps/details?id=com.HelloKishan.HelloKishan';
+const String STRING_SHARE_ARG = '$APP_DESC_MSG \n $APP_PLAY_STORE_URL';
 
-// Profile Update
-const String STRING_PROFILE_UPDATE = 'প্রোফাইল আপডেট';
+const String STRING_APP_NAME = 'Hello Kishan';
+const String STRING_WELCOME_USER = 'Welcome User';
 
-// Personal Information
-const String STRING_PERSONAL_INFORMATION = 'ব্যক্তিগত তথ্য';
+const String STRING_MOBILE = 'Mobile';
+const String STRING_ENTER_MOBILE_NUMBER = 'Enter Mobile Number';
+const String STRING_MUST_BE_10_DIGITS = 'Must be 10 digits';
+const String STRING_SEND_OTP = 'Send OTP';
+const String STRING_SENDING_OTP = 'Sending OTP...';
+const String STRING_ENTER_OTP = 'Enter the OTP';
+const String STRING_OTP_MUST_6_DIGITS = 'OTP must be 6 digits';
+const String STRING_INVALID_OTP = 'Invalid OTP !';
 
-// Your Name
-const String STRING_YOUR_NAME = 'আপনার নাম';
-// Enter your name
-const String STRING_ENTER_YOUR_NAME = 'আপনার নাম লিখুন';
-// Enter a valid name
-const String STRING_NAME_INVALID = 'নাম সঠিক নয়';
+const String STRING_SUBMIT = 'Submit';
 
-// Getting Location...
-const String STRING_LOADING_LOCATION = 'অবস্থান নির্ণয় করা হচ্ছে...';
+const String STRING_PROFILE_UPDATE = 'Profile Update';
+const String STRING_PERSONAL_INFORMATION = 'Personal Information';
+const String STRING_YOUR_NAME = 'Your Name';
+const String STRING_ENTER_YOUR_NAME = 'Enter your name';
+const String STRING_NAME_INVALID = 'Enter a valid name';
 
-// Address Information
-const String STRING_ADDRESS_INFORMATION = 'ঠিকানার তথ্য';
+const String STRING_LOADING_LOCATION = 'Getting Location...';
+const String STRING_ADDRESS_INFORMATION = 'Address Information';
+const String STRING_ADDRESS = 'Address';
+const String STRING_HOUSE_STREET_LOCALITY = 'House / Street / Locality Name';
+const String STRING_ADDRESS_INVALID = 'Enter a valid address';
+const String STRING_DISTRICT_NAME = 'District';
+const String STRING_ENTER_YOUR_DISTRICT = 'Enter your district';
+const String STRING_DISTRICT_NAME_INVALID = 'Enter a valid district';
+const String STRING_STATE_NAME = 'State';
+const String STRING_ENTER_STATE = 'Enter State';
+const String STRING_STATE_NAME_INVALID = 'Enter a valid state';
+const String STRING_PIN_CODE = 'Pin Code';
+const String STRING_ENTER_PIN_CODE = 'Enter Pin Code';
+const String STRING_PINCODE_INVALID = 'Enter a valid Pin Code';
 
-// Address
-const String STRING_ADDRESS = 'ঠিকানা';
+const String STRING_PROCEED = 'PROCEED';
 
-// House / Street / Locality Name
-const String STRING_HOUSE_STREET_LOCALITY = 'বাড়ি / রাস্তা / লোকালয়ের নাম';
-// Enter a valid address
-const String STRING_ADDRESS_INVALID = 'ঠিকানা সঠিক নয়';
+const String STRING_KG = 'kg';
+const String STRING_RS_PER_KG = 'Rs/kg';
+const String STRING_RS = 'Rs';
+const String STRING_ENTER_PRICE_PER_KG = 'Enter price/kg';
+const String STRING_ENTER_QUANTITY = 'Enter quantity (in kg)';
 
-// District
-const String STRING_DISTRICT_NAME = 'জেলার নাম';
-// Enter your district
-const String STRING_ENTER_YOUR_DISTRICT = 'জেলার নাম লিখুন';
-const String STRING_DISTRICT_NAME_INVALID = 'জেলার নাম সঠিক নয়';
+const String STRING_ENTER_VALID_PRICE = 'Enter a valid price';
+const String STRING_ENTER_VALID_QUANTITY = 'Enter a valid quantity';
 
-// State
-const String STRING_STATE_NAME = 'রাজ্যের নাম';
-// Enter State
-const String STRING_ENTER_STATE = 'রাজ্যের নাম লিখুন';
-// Enter a valid state
-const String STRING_STATE_NAME_INVALID = 'রাজ্যের নাম সঠিক নয়';
-
-// Pin Code
-const String STRING_PIN_CODE = 'পিন কোড';
-// Enter Pin Code
-const String STRING_ENTER_PIN_CODE = 'পিন কোড লিখুন';
-const String STRING_PINCODE_INVALID = 'পিন কোড সঠিক নয়';
-
-// PROCEED
-const String STRING_PROCEED = 'সেভ করুন';
-
-// KG
-const String STRING_KG = 'কেজি';
-
-// RS_PER_KG
-const String STRING_RS_PER_KG = 'টাকা/কেজি';
-// RS
-const String STRING_RS = 'টাকা';
-// Enter price/kg
-const String STRING_ENTER_PRICE_PER_KG = 'দাম (প্রতি কেজি)';
-
-// Enter quantity (in kg)
-const String STRING_ENTER_QUANTITY = 'পরিমান (কেজি)';
-
-// 'Enter a valid price';
-const String STRING_ENTER_VALID_PRICE = 'দাম সঠিক নয়';
-
-// 'Enter a valid quantity';
-const String STRING_ENTER_VALID_QUANTITY = 'পরিমান সঠিক নয়';
-
-// Home
 const String STRING_HOME = 'Home';
-// Profile
-const String STRING_PROFILE = 'প্রোফাইল';
-
-// History
+const String STRING_PROFILE = 'Profile';
+const String STRING_TRADE = 'Trade';
 const String STRING_HISTORY = 'History';
 
-// 'No buyer found for ';
-const String STRING_NO_BUYER_FOUND = 'এর কোনো ক্রেতা নেই !';
+const String STRING_NO_BUYER_FOUND = 'No buyer found for';
+const String STRING_WANTS_TO_BUY = 'Wants to buy';
+const String STRING_NO_REQUIREMENTS_FOUND = 'No requirements found !';
+const String STRING_NO_TRANSACTIONS_FOUND = 'No transactions found !';
 
-const String STRING_WANTS_TO_BUY = 'কিনতে চান';
-const String STRING_NO_REQUIREMENTS_FOUND = 'আপনি এখনও কিছু কিনতে চাননি !';
-// No requirements found!
-
-const String STRING_NO_TRANSACTIONS_FOUND = 'কোনো লেন-দেন হয়নি !';
-// No transactions found!
-
-// 'POST';
-const String STRING_POST = 'পোষ্ট করুন';
+const String STRING_POST = 'POST';
 const String STRING_POST_REQUIREMENT = 'Post Requirement';
-// Post Requirement Header
 const String STRING_POST_REQUIREMENT_HEADER =
-    'আপনি কী কিনতে চান, কত কেজি কিনতে চান, কত দামে কিনতে চান এবং আপনার দোকান কোথায় - নীচের শূন্যস্থান গুলিতে লিখুন';
+    'Please enter what do you want to buy, how much, at what rate and where is your shop located';
 
 const String STRING_REQUIREMENTS = 'Requirements';
 const String STRING_SAVE = 'Save';
 const String STRING_SEARCH_RESULTS = 'Search Results';
 
-const String STRING_BUY_WHAT = 'কী কিনতে চান ?';
-const String STRING_BUY_HOW_MUCH = 'কত কেজি কিনতে চান ?';
-const String STRING_BUY_WHAT_PRICE = 'কত দামে কিনতে চান ?';
-const String STRING_WRITE_BUY_WHAT = 'কী কিনতে চান এখনে লিখুন';
+const String STRING_BUY_WHAT = 'What do you want to buy ?';
+const String STRING_WRITE_BUY_WHAT = 'Enter what do you want to buy ?';
+const String STRING_BUY_HOW_MUCH = 'How much (kg) do you want to buy ?';
+const String STRING_BUY_WHAT_PRICE = 'At what price ?';
 
-// 'Please select a product from list';
 const String STRING_WHAT_SELL_SELECT_FROM_LIST =
-    'কী বিক্রি করতে চান লিস্ট থেকে সিলেক্ট করুন !';
+    'Please select a product from list';
 
-// Sell
-const String STRING_SELL = 'বিক্রি করুন';
-
+const String STRING_SELL = 'Sell';
 const String STRING_BOUGHT_FROM = 'Bought from';
 const String STRING_BUY = 'Buy';
-
-const String STRING_SELLING_TO = 'বিক্রি হচ্ছে';
-// Selling to
-
-const String STRING_BUYING_FROM = 'কেনা হচ্ছে';
-// Buying from
-
-// Rate
-const String STRING_RATE = 'দর';
-// Quantity
-const String STRING_QUANTITY = 'পরিমাণ';
-// Total Amount
-const String STRING_TOTAL_AMT = 'মোট দাম';
-
-// ACCEPTED
-const String STRING_ACCEPTED = 'কিনতে ইচ্ছুক';
-// REQUESTED : TODO : IMPORTANT
-const String STRING_REQUESTED = 'REQUESTED';
-
-// গ্রহণ করুন ACCEPT
-const String STRING_ACCEPT = 'নিয়ে আসুন';
-// প্রত্যাখ্যান করুন REJECT
-const String STRING_REJECT = 'নিতে চাইনা';
-// CANCEL
-const String STRING_CANCEL = 'বাতিল করুন';
-// COMPLETE
-const String STRING_COMPLETE = 'সফল হয়েছে';
-// DELETE
-const String STRING_DELETE = 'মুছে ফেলুন';
-
-const String STRING_DELETE_SUCCESS = 'মুছে ফেলা সফল হয়েছে';
-
-// UPDATE
-const String STRING_UPDATE = 'আপডেট করুন';
-
-// 'Dismiss'
-const String STRING_DISMISS = 'বাদ দিন';
-
+const String STRING_SELLING_TO = 'Selling to';
+const String STRING_BUYING_FROM = 'Buying from';
+const String STRING_SOLD_TO = 'Sold to';
 const String STRING_SELL_REQUEST = 'Sell Request';
 
-// 'Sign Out';
-const String STRING_SIGN_OUT = 'লগ আউট করুন';
+const String STRING_RATE = 'Rate';
+const String STRING_QUANTITY = 'Quantity';
+const String STRING_TOTAL_AMT = 'Total Amount';
 
-const String STRING_SOLD_TO = 'Sold to';
+const String STRING_ACCEPTED = 'ACCEPTED';
+const String STRING_REQUESTED = 'REQUESTED';
+const String STRING_ACCEPT = 'ACCEPT';
+const String STRING_REJECT = 'REJECT';
+const String STRING_CANCEL = 'CANCEL';
+const String STRING_COMPLETE = 'COMPLETE';
+const String STRING_DELETE = 'DELETE';
+const String STRING_DELETE_SUCCESS = 'Deleted Successfully!';
+const String STRING_UPDATE = 'UPDATE';
+const String STRING_DISMISS = 'Dismiss';
 
-// 'Something went wrong!';
-const String STRING_WENT_WRONG = 'কিছু একটা সমস্যা হয়েছে !';
+const String STRING_SIGN_OUT = 'Sign Out';
 
-const String STRING_TODO_IMPORTANT_FUNCTIONALITY = 'TODO : IMPORTANT FUNC.';
-const String STRING_TRADE = 'Trade';
+const String STRING_WENT_WRONG = 'Something went wrong!';
 
-// 'Sending Sell Request...';
-const String STRING_SENDING_SELL_REQUEST = 'বিক্রির অনুরোধ করা হচ্ছে...';
+const String STRING_SENDING_SELL_REQUEST = 'Sending Sell Request...';
 const String STRING_DELETING = 'Deleting...';
 const String STRING_UPDATING = 'Updating...';
-// 'Please Wait...';
-const String STRING_PLEASE_WAIT = 'অপেক্ষা করুন...';
-// 'Signing in...'
-const String STRING_SIGNING_IN = 'লগ ইন করা হচ্ছে...';
-// 'Signing out...
-const String STRING_SIGNING_OUT = 'লগ আউট করা হচ্ছে...';
-// 'Verification failed !'
-const String STRING_VERIFICATION_FAILED = 'লগ ইন ব্যর্থ হয়েছে !';
-// 'Signing out failed...'
-const String STRING_SIGNING_OUT_FAILED = 'লগ আউট ব্যর্থ হয়েছে !';
+const String STRING_PLEASE_WAIT = 'Please Wait...';
+const String STRING_SIGNING_IN = 'Signing in...';
+const String STRING_SIGNING_OUT = 'Signing out...';
+const String STRING_VERIFICATION_FAILED = 'Verification failed !';
+const String STRING_SIGNING_OUT_FAILED = 'Signing out failed...';
 
-// Language
-// Language
-const String STRING_LANGUAGE = 'ভাষা বদলান';
+const String STRING_LANGUAGE = 'Language';
+const String STRING_SHARE = 'Share';
 
-// 'Share';
-const String STRING_SHARE = 'সেয়ার করুন';
+const String APP_DESC_MSG = 'APP_DESC_MSG';
 
-const String APP_DESC_MSG =
-    'কৃষিক্ষেত্রে ডিজিটালাইজেশন আনতে, অনলাইনে শাক-সব্জি ব্যবসায়ীদের সাথে কৃষকদের যোগাযোগ স্থাপন করতে এবং কৃষিকাজের বিভিন্ন প্রয়োজনীয় জিনিসপত্র অনলাইনে কেনার ব্যবস্থা করতে আমাদের এই ছোট্ট প্রয়াস Hello Kishan অ্যাপ। ব্যবহার করুন এবং আপনার পরিচিতদের সঙ্গে শেয়ার করুন।';
-
-const String APP_PLAY_STORE_URL =
-    'https://play.google.com/store/apps/details?id=com.HelloKishan.HelloKishan';
-
-const String STRING_SHARE_ARG = '$APP_DESC_MSG \n $APP_PLAY_STORE_URL';
-
-// 'Help';
-const String STRING_HELP = 'সাহায্য চান';
+const String STRING_HELP = 'Help';
 
 const String STRING_HELP_BODY = 'body=Please%20type%20your%20query%20here...';
 const String STRING_HELP_SUB = 'subject=HelloKishan%20Help';
 
-// 'Lowest Price First';
-const String STRING_LOWEST_PRICE_FIRST = 'দর : কম থেকে বেশি';
-// 'Highest Price First';
-const String STRING_HIGHEST_PRICE_FIRST = 'দর : বেশি থেকে কম';
-// 'Nearest first';
-const String STRING_NEAREST_FIRST = 'দূরত্ব : কম থেকে বেশি';
+const String STRING_LOWEST_PRICE_FIRST = 'Lowest Price First';
+const String STRING_HIGHEST_PRICE_FIRST = 'Highest Price First';
+const String STRING_NEAREST_FIRST = 'Nearest first';
 
-// Maximum
-const String STRING_MAXIMUM = 'সর্বোচ্চ';
+const String STRING_MAXIMUM = 'Maximum';
 
-const String STRING_VEGETABLES = 'শাক-সব্জি';
-const String STRING_FERTILIZERS = 'সার';
-const String STRING_PESTICIDES = '';
-const String STRING_INSECTICIDES = 'কীট-নাশক';
-const String STRING_FUNGICIDES = '';
-const String STRING_HERBICIDES = 'আগাছা নাশক';
+const String STRING_VEGETABLES = 'Vegetables';
+const String STRING_FERTILIZERS = 'Fertilizers';
+const String STRING_PESTICIDES = 'Pesticides';
+const String STRING_INSECTICIDES = 'Insecticides';
+const String STRING_FUNGICIDES = 'Fungicides';
+const String STRING_HERBICIDES = 'Herbicides';

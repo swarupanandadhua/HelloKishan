@@ -1,4 +1,8 @@
-Competitors {
+LOCALIZATION {
+    https://stackoverflow.com/questions/49441212/flutter-multi-lingual-application-how-to-override-the-locale
+}
+
+COMPETITORS {
     https://www.farmkart.com/    *****
     https://www.facebook.com/farmkartofficial/  ---> Page created on 14/10/2017
     https://krushikendra.com/
@@ -7,7 +11,7 @@ Competitors {
     https://www.agrowala.com/
 }
 
-Company Registration {
+COMPANY REGISTRATION {
     startupindia.gov.in {
         Programs { // startupindia.gov.in/content/sih/en/ams-application/application-listing.html
             Grand Challenge :            https://www.startupindia.gov.in/content/sih/en/ams-application/challenge.html?applicationId=5f5a0cbae4b094dd1b65c5da
@@ -23,7 +27,7 @@ Company Registration {
     tradeindia.com
 }
 
-Fertilizer {
+FERTILIZER {
     License : matirkatha.net
     Dealer Retailer List.csv
 }
@@ -36,9 +40,9 @@ AdMob { // App ID: ca-app-pub-8285249568639559~5250421163
     5. Add AdMob App ID to AndroidManifest.xml
 }
 
-Authenticating Your Client
-{      // https://developers.google.com/android/guides/client-auth
-https: //developer.android.com/studio/publish/app-signing
+AUTH
+{ // https://developers.google.com/android/guides/client-auth
+    // https://developer.android.com/studio/publish/app-signing
 TAGS:
     SHA1, keytool, OAuth2
 
@@ -54,10 +58,8 @@ TAGS:
     // Similar for release key also
 }
 
-Release{
-    https : //flutter.dev/docs/deployment/android#shrinking-your-code-with-r8
-        flutter build apk-- split - per - abi
-}
+Release{// https://flutter.dev/docs/deployment/android#shrinking-your-code-with-r8
+        flutter build apk-- split - per - abi}
 
 adb{
     / c / Users / swarupan / AppData / Local / Android / Sdk / platform - tools / adb

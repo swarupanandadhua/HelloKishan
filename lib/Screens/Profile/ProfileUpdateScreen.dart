@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProfileUpdateScaffold extends StatelessWidget {
   final GlobalKey<ProfileUpdateScreenState> profileUpdateScreenKey =
@@ -33,7 +34,7 @@ class ProfileUpdateScaffold extends StatelessWidget {
       appBar: AppBar(
         title: Center(
           child: Text(
-            STRING_PROFILE_UPDATE,
+            STRING_PROFILE_UPDATE.tr(),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -55,7 +56,7 @@ class ProfileUpdateScaffold extends StatelessWidget {
         child: RaisedButton(
           color: Color(APP_COLOR),
           child: Text(
-            STRING_PROCEED,
+            STRING_PROCEED.tr(),
             style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 20,
@@ -145,7 +146,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(STRING_PERSONAL_INFORMATION, style: styleH1),
+                        Text(STRING_PERSONAL_INFORMATION.tr(), style: styleH1),
                         editing
                             ? Container()
                             : MyIcon(
@@ -162,9 +163,9 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: nameEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_ENTER_YOUR_NAME,
-                        labelText: STRING_YOUR_NAME,
+                      decoration: InputDecoration(
+                        hintText: STRING_ENTER_YOUR_NAME.tr(),
+                        labelText: STRING_YOUR_NAME.tr(),
                       ),
                       enabled: editing,
                       validator: Validator.name,
@@ -191,7 +192,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(STRING_ADDRESS_INFORMATION, style: styleH1),
+                        Text(STRING_ADDRESS_INFORMATION.tr(), style: styleH1),
                         editing
                             ? MyIcon(
                                 onTapCallBack: () => getCurrentAddress(),
@@ -206,9 +207,9 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: addressEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_HOUSE_STREET_LOCALITY,
-                        labelText: STRING_HOUSE_STREET_LOCALITY,
+                      decoration: InputDecoration(
+                        hintText: STRING_HOUSE_STREET_LOCALITY.tr(),
+                        labelText: STRING_HOUSE_STREET_LOCALITY.tr(),
                       ),
                       enabled: editing,
                       validator: Validator.addressLine,
@@ -218,9 +219,9 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: districtEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_ENTER_YOUR_DISTRICT,
-                        labelText: STRING_DISTRICT_NAME,
+                      decoration: InputDecoration(
+                        hintText: STRING_ENTER_YOUR_DISTRICT.tr(),
+                        labelText: STRING_DISTRICT_NAME.tr(),
                       ),
                       enabled: editing,
                       validator: Validator.district,
@@ -230,9 +231,9 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: pincodeEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_ENTER_PIN_CODE,
-                        labelText: STRING_PIN_CODE,
+                      decoration: InputDecoration(
+                        hintText: STRING_ENTER_PIN_CODE.tr(),
+                        labelText: STRING_PIN_CODE.tr(),
                       ),
                       enabled: editing,
                       validator: Validator.pincode,
@@ -242,9 +243,9 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                     padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
                     child: TextFormField(
                       controller: stateEditC,
-                      decoration: const InputDecoration(
-                        hintText: STRING_ENTER_STATE,
-                        labelText: STRING_STATE_NAME,
+                      decoration: InputDecoration(
+                        hintText: STRING_ENTER_STATE.tr(),
+                        labelText: STRING_STATE_NAME.tr(),
                       ),
                       enabled: editing,
                       validator: Validator.state,
@@ -267,7 +268,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       (_) async {
         HelloKishanDialog.show(
           GlobalKeys.profileUpdateScaffoldKey.currentContext,
-          STRING_LOADING_LOCATION,
+          STRING_LOADING_LOCATION.tr(),
           true,
         );
 
@@ -277,7 +278,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         if (address == null) {
           HelloKishanDialog.show(
             GlobalKeys.profileUpdateScaffoldKey.currentContext,
-            STRING_WENT_WRONG,
+            STRING_WENT_WRONG.tr(),
             false,
           );
         } else {
@@ -334,11 +335,11 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         children: [
           MyButton(
             onPressedCallBack: saveUserDetails,
-            text: STRING_SAVE,
+            text: STRING_SAVE.tr(),
             color: Colors.green,
           ),
           MyButton(
-            text: STRING_CANCEL,
+            text: STRING_CANCEL.tr(),
             color: Color(APP_COLOR),
             onPressedCallBack: discardUserDetails,
           ),
@@ -425,7 +426,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     if (profileDetailsForm.currentState.validate()) {
       HelloKishanDialog.show(
         GlobalKeys.profileUpdateScaffoldKey.currentContext,
-        STRING_PLEASE_WAIT,
+        STRING_PLEASE_WAIT.tr(),
         true,
       );
 
@@ -439,7 +440,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           HelloKishanDialog.hide();
           HelloKishanDialog.show(
             GlobalKeys.profileUpdateScaffoldKey.currentContext,
-            STRING_WENT_WRONG,
+            STRING_WENT_WRONG.tr(),
             false,
           );
           return;
@@ -455,7 +456,7 @@ class ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         HelloKishanDialog.hide();
         HelloKishanDialog.show(
           GlobalKeys.profileUpdateScaffoldKey.currentContext,
-          STRING_WENT_WRONG,
+          STRING_WENT_WRONG.tr(),
           false,
         );
         return;

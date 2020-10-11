@@ -9,6 +9,7 @@ import 'package:HelloKishan/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AuthService {
   static Future<bool> signOut() async {
@@ -27,7 +28,7 @@ class AuthService {
       if (u == null) {
         HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
-          STRING_VERIFICATION_FAILED,
+          STRING_VERIFICATION_FAILED.tr(),
           false,
         );
       } else {
@@ -48,7 +49,7 @@ class AuthService {
 
     HelloKishanDialog.show(
       GlobalKeys.otpLogInScaffoldKey.currentContext,
-      STRING_SENDING_OTP,
+      STRING_SENDING_OTP.tr(),
       true,
     );
     User u;
@@ -75,8 +76,8 @@ class AuthService {
                   FilteringTextInputFormatter.allow(RegExp(r'^\d{0,6}')),
                 ],
                 decoration: InputDecoration(
-                  hintText: STRING_ENTER_OTP,
-                  labelText: STRING_ENTER_OTP,
+                  hintText: STRING_ENTER_OTP.tr(),
+                  labelText: STRING_ENTER_OTP.tr(),
                 ),
                 validator: Validator.otp,
               ),
@@ -91,7 +92,7 @@ class AuthService {
                   }
                 },
                 icon: Icon(Icons.check),
-                label: Text(STRING_SUBMIT),
+                label: Text(STRING_SUBMIT.tr()),
               )
             ],
           ),
@@ -103,7 +104,7 @@ class AuthService {
         HelloKishanDialog.hide();
         HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
-          STRING_SIGNING_IN,
+          STRING_SIGNING_IN.tr(),
           true,
         );
         try {
@@ -118,7 +119,7 @@ class AuthService {
             HelloKishanDialog.hide();
             HelloKishanDialog.show(
               GlobalKeys.otpLogInScaffoldKey.currentContext,
-              STRING_INVALID_OTP,
+              STRING_INVALID_OTP.tr(),
               false,
             );
           } else {
@@ -130,7 +131,7 @@ class AuthService {
         HelloKishanDialog.hide();
         HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
-          STRING_SIGNING_IN,
+          STRING_SIGNING_IN.tr(),
           true,
         );
         try {
@@ -153,7 +154,7 @@ class AuthService {
         HelloKishanDialog.hide();
         HelloKishanDialog.show(
           GlobalKeys.otpLogInScaffoldKey.currentContext,
-          STRING_VERIFICATION_FAILED,
+          STRING_VERIFICATION_FAILED.tr(),
           false,
         );
         u = null;

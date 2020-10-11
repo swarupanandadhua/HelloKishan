@@ -5,6 +5,7 @@ import 'package:HelloKishan/Screens/Trade/TradeTile.dart';
 import 'package:HelloKishan/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 // COVERITY: Trade & History Screen can be shared (TODO:ARPITA)
 
@@ -30,7 +31,7 @@ class HistoryScreen extends StatelessWidget {
           } else {
             return Center(
               child: Text(
-                STRING_NO_TRANSACTIONS_FOUND,
+                STRING_NO_TRANSACTIONS_FOUND.tr(),
                 style: style1,
               ),
             );
@@ -38,7 +39,7 @@ class HistoryScreen extends StatelessWidget {
         } else if (snap.hasError) {
           return Center(
             child: Text(
-              STRING_WENT_WRONG,
+              STRING_WENT_WRONG.tr(),
               style: style1,
             ),
           );

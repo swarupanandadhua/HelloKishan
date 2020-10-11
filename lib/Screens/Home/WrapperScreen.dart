@@ -10,6 +10,7 @@ import 'package:HelloKishan/Screens/Trade/TradeScreen.dart';
 import 'package:HelloKishan/Screens/Home/HomeScreen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Wrapper extends StatefulWidget {
   @override
@@ -24,10 +25,10 @@ class WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
     HistoryScreen(),
   ];
   static List<String> _titles = <String>[
-    STRING_HOME,
-    STRING_REQUIREMENTS,
-    STRING_TRADE,
-    STRING_HISTORY,
+    STRING_HOME.tr(),
+    STRING_REQUIREMENTS.tr(),
+    STRING_TRADE.tr(),
+    STRING_HISTORY.tr(),
   ];
   static List<Widget> _icons = [
     Icon(Icons.home, size: 30, color: Colors.white),

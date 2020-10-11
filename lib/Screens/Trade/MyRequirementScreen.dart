@@ -10,6 +10,7 @@ import 'package:HelloKishan/Screens/Common/Timestamp.dart';
 import 'package:HelloKishan/Screens/Trade/PostRequirementScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyRequirementScreen extends StatelessWidget {
   @override
@@ -33,7 +34,7 @@ class MyRequirementScreen extends StatelessWidget {
           } else {
             return Center(
               child: Text(
-                STRING_NO_REQUIREMENTS_FOUND,
+                STRING_NO_REQUIREMENTS_FOUND.tr(),
                 style: style1,
               ),
             );
@@ -41,7 +42,7 @@ class MyRequirementScreen extends StatelessWidget {
         } else if (snap.hasError) {
           return Center(
             child: Text(
-              STRING_WENT_WRONG,
+              STRING_WENT_WRONG.tr(),
               style: style1,
             ),
           );
@@ -143,7 +144,7 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                   onPressed: () async {
                     HelloKishanDialog.show(
                       GlobalKeys.wrapperScaffoldKey.currentContext,
-                      STRING_DELETING,
+                      STRING_DELETING.tr(),
                       true,
                     );
                     bool status = await DBService.deleteRequirement(r.rid);
@@ -151,19 +152,19 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                     if (status == true) {
                       HelloKishanDialog.show(
                         GlobalKeys.wrapperScaffoldKey.currentContext,
-                        STRING_DELETE_SUCCESS,
+                        STRING_DELETE_SUCCESS.tr(),
                         false,
                       );
                     } else {
                       HelloKishanDialog.show(
                         GlobalKeys.wrapperScaffoldKey.currentContext,
-                        STRING_WENT_WRONG,
+                        STRING_WENT_WRONG.tr(),
                         false,
                       );
                     }
                   },
                   icon: Icon(Icons.delete),
-                  label: Text(STRING_DELETE),
+                  label: Text(STRING_DELETE.tr()),
                 ),
                 RaisedButton.icon(
                   color: Colors.yellow,
@@ -175,7 +176,7 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                     ),
                   ),
                   icon: Icon(Icons.edit),
-                  label: Text(STRING_UPDATE),
+                  label: Text(STRING_UPDATE.tr()),
                 ),
               ],
             ),

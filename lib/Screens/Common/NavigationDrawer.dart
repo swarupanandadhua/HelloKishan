@@ -8,7 +8,7 @@ import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
 import 'package:HelloKishan/Screens/Profile/OTPLoginScreen.dart';
 import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:HelloKishan/Services/AuthService.dart';
-// import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:flutter/material.dart';
@@ -59,10 +59,10 @@ class NavigationDrawer extends StatelessWidget {
               ),
             ),
             // TODO: Language support
-/*             Padding(
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(STRING_LANGUAGE, style: styleNavItem),
+                title: Text(STRING_LANGUAGE.tr(), style: styleNavItem),
                 leading: Icon(Icons.language),
                 onTap: () {
                   if (EasyLocalization.of(context).locale.toString() ==
@@ -74,19 +74,19 @@ class NavigationDrawer extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-            ), */
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(STRING_SHARE, style: styleNavItem),
+                title: Text(STRING_SHARE.tr(), style: styleNavItem),
                 leading: Icon(Icons.share),
-                onTap: () => UrlLauncher.launch(STRING_SHARE_ARG),
+                onTap: () => UrlLauncher.launch(STRING_SHARE_ARG.tr()),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(STRING_HELP, style: styleNavItem),
+                title: Text(STRING_HELP.tr(), style: styleNavItem),
                 leading: Icon(Icons.help_outline),
                 onTap: () => UrlLauncher.launch(HELP_MAIL_ARG),
               ),
@@ -94,13 +94,13 @@ class NavigationDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(STRING_SIGN_OUT, style: styleNavItem),
+                title: Text(STRING_SIGN_OUT.tr(), style: styleNavItem),
                 leading: Icon(Icons.power_settings_new),
                 onTap: () async {
                   HelloKishanDialog.show(
                     GlobalKeys.wrapperScaffoldKey.currentContext,
                     // TODO: ISSUE: The above context was poped earlier
-                    STRING_SIGNING_OUT,
+                    STRING_SIGNING_OUT.tr(),
                     true,
                   );
                   bool status = await AuthService.signOut();
@@ -116,7 +116,7 @@ class NavigationDrawer extends StatelessWidget {
                   } else {
                     HelloKishanDialog.show(
                       GlobalKeys.wrapperScaffoldKey.currentContext,
-                      STRING_SIGNING_OUT_FAILED,
+                      STRING_SIGNING_OUT_FAILED.tr(),
                       false,
                     );
                   }

@@ -7,7 +7,7 @@ const String DB_USERS = 'users';
 
 const String HELP_EMAIL = 'swarupanandadhua@gmail.com';
 const String HELP_MAIL_ARG =
-    'mailto:$HELP_EMAIL?$STRING_HELP_SUB&$STRING_HELP_BODY';
+    'mailto:$HELP_EMAIL?$STRING_HELP_SUB&$STRING_HELP_BODY'; // TODO
 
 class LANGUAGE {
   static const int BENGALI = 0;

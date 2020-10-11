@@ -8,6 +8,7 @@ import 'package:HelloKishan/Services/DBService.dart';
 import 'package:HelloKishan/Models/Models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 // TODO: geolocator::distanceBetween can be used for calculating distance
 
@@ -22,7 +23,7 @@ class SearchResultScreen extends StatelessWidget {
     return Scaffold(
       key: GlobalKeys.searchResultScaffoldKey,
       appBar: AppBar(
-        title: Text(STRING_SEARCH_RESULTS),
+        title: Text(STRING_SEARCH_RESULTS.tr()),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -32,13 +33,13 @@ class SearchResultScreen extends StatelessWidget {
           PopupMenuButton<String>(
             onSelected: (option) {
               switch (option) {
-                case STRING_NEAREST_FIRST:
+                case STRING_NEAREST_FIRST.tr():
                   debugPrint(StackTrace.current.toString());
                   break;
-                case STRING_HIGHEST_PRICE_FIRST:
+                case STRING_HIGHEST_PRICE_FIRST.tr():
                   debugPrint(StackTrace.current.toString());
                   break;
-                case STRING_LOWEST_PRICE_FIRST:
+                case STRING_LOWEST_PRICE_FIRST.tr():
                   debugPrint(StackTrace.current.toString());
                   break;
                 default:
@@ -47,9 +48,9 @@ class SearchResultScreen extends StatelessWidget {
             },
             itemBuilder: (_) {
               return {
-                STRING_NEAREST_FIRST,
-                STRING_HIGHEST_PRICE_FIRST,
-                STRING_LOWEST_PRICE_FIRST,
+                STRING_NEAREST_FIRST.tr(),
+                STRING_HIGHEST_PRICE_FIRST.tr(),
+                STRING_LOWEST_PRICE_FIRST.tr(),
               }.map((String option) {
                 return PopupMenuItem<String>(
                   textStyle: styleSortItem,
@@ -83,7 +84,7 @@ class SearchResultScreen extends StatelessWidget {
             } else {
               return Center(
                 child: Text(
-                  '${product[LANGUAGE.CURRENT]} $STRING_NO_BUYER_FOUND',
+                  '${product[LANGUAGE.CURRENT]} ${STRING_NO_BUYER_FOUND.tr()}',
                   style: styleEmpty,
                 ),
               );
@@ -91,7 +92,7 @@ class SearchResultScreen extends StatelessWidget {
           } else if (snap.hasError) {
             return Center(
               child: Text(
-                STRING_WENT_WRONG,
+                STRING_WENT_WRONG.tr(),
                 style: style1,
               ),
             );

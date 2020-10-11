@@ -10,6 +10,7 @@ import 'package:HelloKishan/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+import 'package:easy_localization/easy_localization.dart';
 
 class TradeTile extends StatefulWidget {
   final Transaction t;
@@ -28,7 +29,7 @@ class TradeTileState extends State<TradeTile> {
   void updateTransactionStatus(BuildContext context, String status) async {
     HelloKishanDialog.show(
       GlobalKeys.wrapperScaffoldKey.currentContext,
-      STRING_UPDATING,
+      STRING_UPDATING.tr(),
       true,
     );
     await t.setStatus(status);
@@ -45,20 +46,20 @@ class TradeTileState extends State<TradeTile> {
 
     List<Widget> actions = List<Widget>();
     if (isAccepted) {
-      actions.add(Text(STRING_ACCEPTED, style: styleGreen));
+      actions.add(Text(STRING_ACCEPTED.tr(), style: styleGreen));
       actions.add(
         RaisedButton.icon(
           color: Colors.green,
           textColor: Colors.white,
           onPressed: () => updateTransactionStatus(context, STATUS_SUCCESSFUL),
           icon: Icon(Icons.check_circle),
-          label: Text(STRING_COMPLETE),
+          label: Text(STRING_COMPLETE.tr()),
         ),
       );
     } else {
       if (isFarmer) {
         actions.add(
-          Text(STRING_REQUESTED, style: styleGreen),
+          Text(STRING_REQUESTED.tr(), style: styleGreen),
         );
         actions.add(
           RaisedButton.icon(
@@ -66,7 +67,7 @@ class TradeTileState extends State<TradeTile> {
             textColor: Colors.white,
             onPressed: () => updateTransactionStatus(context, STATUS_CANCELLED),
             icon: Icon(Icons.cancel),
-            label: Text(STRING_CANCEL),
+            label: Text(STRING_CANCEL.tr()),
           ),
         );
       } else {
@@ -76,7 +77,7 @@ class TradeTileState extends State<TradeTile> {
             textColor: Colors.white,
             onPressed: () => updateTransactionStatus(context, STATUS_REJECTED),
             icon: Icon(Icons.cancel),
-            label: Text(STRING_REJECT),
+            label: Text(STRING_REJECT.tr()),
           ),
         );
         actions.add(
@@ -84,7 +85,7 @@ class TradeTileState extends State<TradeTile> {
             color: Colors.green,
             onPressed: () => updateTransactionStatus(context, STATUS_ACCEPTED),
             icon: Icon(Icons.check),
-            label: Text(STRING_ACCEPT),
+            label: Text(STRING_ACCEPT.tr()),
           ),
         );
       }
@@ -112,11 +113,11 @@ class TradeTileState extends State<TradeTile> {
     if (uid == t.uids[0]) {
       name = t.sellerName;
       photoURL = t.sellerPhoto;
-      tradeDesc = STRING_SELLING_TO;
+      tradeDesc = STRING_SELLING_TO.tr();
     } else {
       name = t.buyerName;
       photoURL = t.buyerPhoto;
-      tradeDesc = STRING_BUYING_FROM;
+      tradeDesc = STRING_BUYING_FROM.tr();
     }
 
     final int pid = int.parse(t.pid);

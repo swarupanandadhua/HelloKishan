@@ -7,6 +7,7 @@ import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
 import 'package:HelloKishan/Screens/Common/Timestamp.dart';
 import 'package:HelloKishan/Screens/Trade/SellRequestScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SearchResultTile extends StatelessWidget {
   final Requirement r;
@@ -16,7 +17,7 @@ class SearchResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int pid = int.parse(r.pid);
-    final tradeDesc = STRING_WANTS_TO_BUY;
+    final tradeDesc = STRING_WANTS_TO_BUY.tr();
 
     return Card(
       child: Column(
@@ -112,7 +113,7 @@ class SearchResultTile extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
               color: Color(0xFF149c16),
               child: Text(
-                STRING_SELL,
+                STRING_SELL.tr(),
                 style: styleSellBtn,
               ),
               onPressed: () => Navigator.push(

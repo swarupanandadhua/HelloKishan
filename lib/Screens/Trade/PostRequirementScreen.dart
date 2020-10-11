@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PostRequirementScreen extends StatefulWidget {
   final Requirement r;
@@ -58,7 +59,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
     return Scaffold(
       key: GlobalKeys.postRequirementScaffoldKey,
       appBar: AppBar(
-        title: Text(STRING_POST_REQUIREMENT),
+        title: Text(STRING_POST_REQUIREMENT.tr()),
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -69,7 +70,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  STRING_POST_REQUIREMENT_HEADER,
+                  STRING_POST_REQUIREMENT_HEADER.tr(),
                   style: styleH2,
                 ),
               ),
@@ -78,10 +79,12 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 child: TypeAheadFormField(
                   // TODO: https://stackoverflow.com/questions/63932633/how-to-reset-the-text-of-typeaheadformfield-when-not-selected-from-suggestions-i
                   hideSuggestionsOnKeyboardHide: false,
-                  validator: (v) =>
-                      (selectedProduct != null) ? null : STRING_WRITE_BUY_WHAT,
+                  validator: (v) => (selectedProduct != null)
+                      ? null
+                      : STRING_WRITE_BUY_WHAT.tr(),
                   textFieldConfiguration: TextFieldConfiguration(
-                    decoration: InputDecoration(labelText: STRING_BUY_WHAT),
+                    decoration:
+                        InputDecoration(labelText: STRING_BUY_WHAT.tr()),
                     controller: productC,
                     enabled: !editing,
                   ),
@@ -118,7 +121,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     productC.text = suggestion[LANGUAGE.CURRENT];
                     HelloKishanDialog.show(
                       GlobalKeys.postRequirementScaffoldKey.currentContext,
-                      STRING_PLEASE_WAIT,
+                      STRING_PLEASE_WAIT.tr(),
                       true,
                     );
                     oldR = await DBService.fetchRequirement(
@@ -150,8 +153,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     ),
                   ],
                   decoration: InputDecoration(
-                    hintText: STRING_ENTER_PRICE_PER_KG,
-                    labelText: STRING_BUY_WHAT_PRICE,
+                    hintText: STRING_ENTER_PRICE_PER_KG.tr(),
+                    labelText: STRING_BUY_WHAT_PRICE.tr(),
                   ),
                   validator: Validator.price,
                 ),
@@ -165,8 +168,8 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                     FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
                   ],
                   decoration: InputDecoration(
-                    hintText: STRING_ENTER_QUANTITY,
-                    labelText: STRING_BUY_HOW_MUCH,
+                    hintText: STRING_ENTER_QUANTITY.tr(),
+                    labelText: STRING_BUY_HOW_MUCH.tr(),
                   ),
                   validator: Validator.quantity,
                 ),
@@ -199,7 +202,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
         child: RaisedButton(
           color: Color(APP_COLOR),
           child: Text(
-            STRING_POST,
+            STRING_POST.tr(),
             style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 20,
@@ -235,7 +238,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
       );
       HelloKishanDialog.show(
         GlobalKeys.postRequirementScaffoldKey.currentContext,
-        STRING_PLEASE_WAIT,
+        STRING_PLEASE_WAIT.tr(),
         true,
       );
       bool status = await DBService.uploadRequirement(requirement);
@@ -246,7 +249,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
       } else {
         HelloKishanDialog.show(
           GlobalKeys.postRequirementScaffoldKey.currentContext,
-          STRING_WENT_WRONG,
+          STRING_WENT_WRONG.tr(),
           false,
         );
       }

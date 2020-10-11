@@ -6,6 +6,7 @@ import 'package:HelloKishan/Screens/Common/Validator.dart';
 import 'package:HelloKishan/Services/AuthService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class OTPLoginScreen extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
     return Scaffold(
       key: GlobalKeys.otpLogInScaffoldKey,
       appBar: AppBar(
-        title: Text(STRING_APP_NAME),
+        title: Text(STRING_APP_NAME.tr()),
       ),
       body: Center(
         child: Container(
@@ -49,8 +50,8 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                       FilteringTextInputFormatter.allow(RegExp(r'^\d{0,10}')),
                     ],
                     decoration: InputDecoration(
-                      hintText: STRING_ENTER_MOBILE_NUMBER,
-                      labelText: STRING_ENTER_MOBILE_NUMBER,
+                      hintText: STRING_ENTER_MOBILE_NUMBER.tr(),
+                      labelText: STRING_ENTER_MOBILE_NUMBER.tr(),
                     ),
                     validator: Validator.mobile,
                     onSaved: (value) => mobile = value,
@@ -63,7 +64,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                          STRING_SEND_OTP,
+                          STRING_SEND_OTP.tr(),
                           style: style1,
                         ),
                       ),

@@ -11,6 +11,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 // TODO: IMPORTANT: AdMob: https://pub.dev/packages/firebase_admob
 
@@ -74,7 +75,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      STRING_APP_NAME,
+                      STRING_APP_NAME.tr(),
                       style: TextStyle(
                         fontSize: 40.0,
                         color: Color(APP_COLOR),

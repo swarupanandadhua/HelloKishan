@@ -5,6 +5,7 @@ import 'package:HelloKishan/Models/Styles.dart';
 import 'package:HelloKishan/Screens/Search/SearchResultScreen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -40,11 +41,11 @@ class HomeScreenState extends State<HomeScreen> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(STRING_FERTILIZERS),
+          child: Text(STRING_FERTILIZERS.tr()),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(STRING_VEGETABLES),
+          child: Text(STRING_VEGETABLES.tr()),
         ),
         Container(
           height: 360,

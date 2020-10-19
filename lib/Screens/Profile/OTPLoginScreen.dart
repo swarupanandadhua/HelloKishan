@@ -1,6 +1,7 @@
 import 'package:HelloKishan/Models/Strings.dart';
 import 'package:HelloKishan/Models/Styles.dart';
 import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
+import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
 import 'package:HelloKishan/Screens/Common/LoadingScreen.dart';
 import 'package:HelloKishan/Screens/Common/Validator.dart';
 import 'package:HelloKishan/Services/AuthService.dart';
@@ -15,7 +16,6 @@ class OTPLoginScreen extends StatefulWidget {
 
 class OTPLoginScreenState extends State<OTPLoginScreen> {
   final GlobalKey<FormState> otpLoginFormKey = GlobalKey<FormState>();
-
   String mobile;
 
   @override
@@ -32,6 +32,35 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
             key: otpLoginFormKey,
             child: ListView(
               children: [
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => HelloKishanDialog.languagePickerDialog(),
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          STRING_SELECT_LANGUAGE.tr(),
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.arrow_forward,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Container(

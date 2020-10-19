@@ -65,13 +65,11 @@ class NavigationDrawer extends StatelessWidget {
                 title: Text(STRING_LANGUAGE.tr(), style: styleNavItem),
                 leading: Icon(Icons.language),
                 onTap: () {
-                  if (EasyLocalization.of(context).locale.toString() ==
-                      'bn_IN') {
-                    EasyLocalization.of(context).locale = Locale('en', 'US');
-                  } else {
-                    EasyLocalization.of(context).locale = Locale('bn', 'IN');
-                  }
                   Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (_) => HelloKishanDialog.languagePickerDialog(),
+                  );
                 },
               ),
             ),

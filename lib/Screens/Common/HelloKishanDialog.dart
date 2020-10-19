@@ -1,7 +1,49 @@
 import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Services/SharedPrefData.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class HelloKishanDialog {
+  static int lang = 0;
+
+  static List<String> langs = [
+    'English',
+    'বাংলা',
+  ];
+
+  static Dialog languagePickerDialog() {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+        height: 130,
+        padding: const EdgeInsets.all(10),
+        child: ListView.builder(
+          itemCount: langs.length,
+          itemBuilder: (context, i) {
+            return RadioListTile(
+              title: Text(langs[i]),
+              value: i,
+              groupValue: lang,
+              onChanged: (int x) {
+                lang = x;
+                String oldLang = EasyLocalization.of(context).locale.toString();
+                String newLang = (lang == 0) ? 'en_US' : 'bn_IN';
+                if (oldLang != newLang) {
+                  EasyLocalization.of(context).locale =
+                      (lang == 0) ? Locale('en', 'US') : Locale('bn', 'IN');
+                  SharedPrefData.setLanguage(newLang);
+                }
+                Navigator.pop(context, x);
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   static bool isShowing = false;
   static BuildContext dialogContext;
 

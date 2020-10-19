@@ -1,7 +1,6 @@
 {
   "Hello Kishan": "Hello Kishan",
   "Welcome User": "Welcome User",
-
   "Mobile": "Mobile",
   "Enter Mobile Number": "Enter Mobile Number",
   "Must be 10 digits": "Must be 10 digits",
@@ -30,7 +29,6 @@
   "Pin Code": "Pin Code",
   "Enter Pin Code": "Enter Pin Code",
   "Enter a valid Pin Code": "Enter a valid Pin Code",
-
   "PROCEED": "PROCEED",
   "kg": "kg",
   "Rs/kg": "Rs/kg",
@@ -39,30 +37,25 @@
   "Enter quantity (in kg)": "Enter quantity (in kg)",
   "Enter a valid price": "Enter a valid price",
   "Enter a valid quantity": "Enter a valid quantity",
-
   "Home": "Home",
   "Profile": "Profile",
   "Trade": "Trade",
   "History": "History",
-
   "No buyer found for": "No buyer found for",
   "Wants to buy": "Wants to buy",
   "No requirements found !": "No requirements found !",
   "No transactions found !": "No transactions found !",
-
   "POST": "POST",
   "Post Requirement": "Post Requirement",
   "Please enter what do you want to buy, how much, at what rate and where is your shop located": "Please enter what do you want to buy, how much, at what rate and where is your shop located",
   "Requirements": "Requirements",
   "Save": "Save",
   "Search Results": "Search Results",
-
   "What do you want to buy ?": "What do you want to buy ?",
   "Enter what do you want to buy ?": "Enter what do you want to buy ?",
   "How much (kg) do you want to buy ?": "How much (kg) do you want to buy ?",
   "At what price ?": "At what price ?",
   "Please select a product from list": "Please select a product from list",
-
   "Sell": "Sell",
   "Bought from": "Bought from",
   "Buy": "Buy",
@@ -70,7 +63,6 @@
   "Buying from": "Buying from",
   "Sold to": "Sold to",
   "Sell Request": "Sell Request",
-
   "Rate": "Rate",
   "Quantity": "Quantity",
   "Total Amount": "Total Amount",
@@ -94,19 +86,17 @@
   "Signing out...": "Signing out...",
   "Verification failed !": "Verification failed !",
   "Signing out failed...": "Signing out failed...",
-
   "Language": "Language",
+  "Select Language": "Select Language",
   "Share": "Share",
   "APP_DESC_MSG": "কৃষিক্ষেত্রে ডিজিটালাইজেশন আনতে, অনলাইনে শাক-সব্জি ব্যবসায়ীদের সাথে কৃষকদের যোগাযোগ স্থাপন করতে এবং কৃষিকাজের বিভিন্ন প্রয়োজনীয় জিনিসপত্র অনলাইনে কেনার ব্যবস্থা করতে আমাদের এই ছোট্ট প্রয়াস Hello Kishan অ্যাপ। ব্যবহার করুন এবং আপনার পরিচিতদের সঙ্গে শেয়ার করুন।",
   "Help": "Help",
   "STRING_HELP_BODY": "body=Please%20type%20your%20query%20here...",
   "STRING_HELP_SUB": "subject=HelloKishan%20Help",
-
   "Lowest Price First": "Lowest Price First",
   "Highest Price First": "Highest Price First",
   "Nearest first": "Nearest first",
   "Maximum": "Maximum",
-
   "Vegetables": "Vegetables",
   "Fertilizers": "Fertilizers",
   "Pesticides": "Pesticides",

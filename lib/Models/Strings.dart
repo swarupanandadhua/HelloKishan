@@ -132,6 +132,7 @@ const String STRING_VERIFICATION_FAILED = 'Verification failed !';
 const String STRING_SIGNING_OUT_FAILED = 'Signing out failed...';
 
 const String STRING_LANGUAGE = 'Language';
+const String STRING_SELECT_LANGUAGE = 'Select Language';
 const String STRING_SHARE = 'Share';
 
 const String APP_DESC_MSG = 'APP_DESC_MSG';

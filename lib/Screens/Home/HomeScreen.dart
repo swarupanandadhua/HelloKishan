@@ -7,12 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  HomeScreenState createState() => HomeScreenState();
-}
-
-class HomeScreenState extends State<HomeScreen> {
+class HomeScreen extends StatelessWidget {
   final List<String> homeBanners = [
     'assets/images/banner.jpg',
     'assets/images/banner.jpg',
@@ -41,7 +36,7 @@ class HomeScreenState extends State<HomeScreen> {
         Card(
           child: CarouselSlider.builder(
             options: CarouselOptions(
-              height: 200,
+              height: 150,
               enableInfiniteScroll: true,
               autoPlay: true,
               autoPlayInterval: Duration(seconds: 3),
@@ -164,7 +159,7 @@ class HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => Container(),
+                      builder: (_) => SearchResultScreen(p),
                     ),
                   );
                 },

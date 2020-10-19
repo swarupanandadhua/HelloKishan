@@ -4,14 +4,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class HelloKishanDialog {
-  static int lang = 0;
-
-  static List<String> langs = [
-    'English',
-    'বাংলা',
-  ];
-
   static Dialog languagePickerDialog() {
+    int lang = (SharedPrefData.getLanguage() == 'en_US') ? 0 : 1;
+    List<String> langs = [
+      'English',
+      'বাংলা',
+    ];
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -34,6 +32,7 @@ class HelloKishanDialog {
                   EasyLocalization.of(context).locale =
                       (lang == 0) ? Locale('en', 'US') : Locale('bn', 'IN');
                   SharedPrefData.setLanguage(newLang);
+                  debugPrint('Changed: $newLang');
                 }
                 Navigator.pop(context, x);
               },

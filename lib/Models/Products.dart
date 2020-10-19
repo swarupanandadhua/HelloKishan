@@ -1,10 +1,10 @@
 const List<List<String>> FERTLIZERS = [
-  ['Paras SSP', 'Paras SSP', 'assets/images/paras-ssp.png', '0'],
-  ['Paras 10-26', 'Paas 10-26', 'assets/images/paras-10-26-26.png', '1'],
-  ['Paras 12-32', 'Paras 12-32', 'assets/images/paras-12-32-16.png', '2'],
-  ['Paras 14-35', 'Paras 14-35', 'assets/images/paras-14-35-14.png', '3'],
-  ['Paras DAP', 'Paras DAP', 'assets/images/paras-dap.png', '4'],
-  ['Paras MOP', 'Paras MOP', 'assets/images/paras-mop.png', '5'],
+  ['পরশ SSP', 'Paras SSP', 'assets/images/paras-ssp.png', '0'],
+  ['পরশ ১০-২৬', 'Paas 10-26', 'assets/images/paras-10-26-26.png', '1'],
+  ['পরশ 12-32', 'Paras 12-32', 'assets/images/paras-12-32-16.png', '2'],
+  ['পরশ 14-35', 'Paras 14-35', 'assets/images/paras-14-35-14.png', '3'],
+  ['পরশ ডি.এ.পি.', 'Paras DAP', 'assets/images/paras-dap.png', '4'],
+  ['পরশ MOP', 'Paras MOP', 'assets/images/paras-mop.png', '5'],
 ];
 
 const List<List<String>> PRODUCTS = [

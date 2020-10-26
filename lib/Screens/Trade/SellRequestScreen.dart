@@ -1,5 +1,4 @@
 import 'package:HelloKishan/Models/Colors.dart';
-import 'package:HelloKishan/Models/Constants.dart';
 import 'package:HelloKishan/Models/Models.dart' as HelloKishan;
 import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Models/Strings.dart';
@@ -62,13 +61,13 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                           height: 150.0,
                           width: 150.0,
                           child: ClipOval(
-                            child: Image.asset(PRODUCTS[pid][2]),
+                            child: Image.asset(PRODUCTS[pid][PROD_LOGO_IDX]),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            PRODUCTS[pid][LANGUAGE.CURRENT],
+                            PRODUCTS[pid][PROD_NAME_IDX].tr(),
                             style: styleName20,
                           ),
                         ),

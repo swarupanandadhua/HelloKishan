@@ -1,4 +1,3 @@
-import 'package:HelloKishan/Models/Constants.dart';
 import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Models/Strings.dart';
 import 'package:HelloKishan/Models/Styles.dart';
@@ -48,8 +47,9 @@ class RequirementSearch extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     List<List<String>> products = List<List<String>>();
     for (int i = 0; i < PRODUCTS.length; i++) {
-      if (PRODUCTS[i][LANGUAGE.CURRENT]
-          .toLowerCase()
+      if (PRODUCTS[i][PROD_NAME_IDX]
+          .tr()
+          .toLowerCase() // TODO: This will only work with ENGLISH
           .contains(query.toLowerCase())) {
         products.add(PRODUCTS[i]);
       }
@@ -62,13 +62,13 @@ class RequirementSearch extends SearchDelegate<String> {
           width: 30,
           child: ClipOval(
             child: Image.asset(
-              products[i][2],
+              products[i][PROD_LOGO_IDX],
               color: null,
             ),
           ),
         ),
         title: Text(
-          products[i][LANGUAGE.CURRENT],
+          products[i][PROD_NAME_IDX].tr(),
           style: TextStyle(
             fontSize: 15,
           ),

@@ -1,5 +1,4 @@
 import 'package:HelloKishan/Models/Colors.dart';
-import 'package:HelloKishan/Models/Constants.dart';
 import 'package:HelloKishan/Models/Models.dart';
 import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Models/Strings.dart';
@@ -46,7 +45,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
     if (oldR != null) {
       editing = true;
       selectedProduct = PRODUCTS[int.parse(oldR.pid)];
-      productC.text = selectedProduct[LANGUAGE.CURRENT];
+      productC.text = selectedProduct[PROD_NAME_IDX].tr();
       priceC.text = oldR.rate;
       qtyC.text = oldR.qty;
       address = SharedPrefData.getAddress();
@@ -91,8 +90,9 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   suggestionsCallback: (pattern) async {
                     List<List<String>> suggestions = List<List<String>>();
                     for (int i = 0; i < PRODUCTS.length; i++) {
-                      if (PRODUCTS[i][LANGUAGE.CURRENT]
-                          .toLowerCase()
+                      if (PRODUCTS[i][PROD_NAME_IDX]
+                          .tr()
+                          .toLowerCase() // TODO: This will only work with ENGLISH
                           .contains(pattern.toLowerCase())) {
                         suggestions.add(PRODUCTS[i]);
                       }
@@ -112,13 +112,13 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                           ),
                         ),
                       ),
-                      title: Text(product[LANGUAGE.CURRENT]),
+                      title: Text(product[PROD_NAME_IDX].tr()),
                     );
                   },
                   transitionBuilder: (_, suggestionsBox, ac) => suggestionsBox,
                   onSuggestionSelected: (List<String> suggestion) async {
                     selectedProduct = suggestion;
-                    productC.text = suggestion[LANGUAGE.CURRENT];
+                    productC.text = suggestion[PROD_NAME_IDX].tr();
                     HelloKishanDialog.show(
                       GlobalKeys.postRequirementScaffoldKey.currentContext,
                       STRING_PLEASE_WAIT.tr(),

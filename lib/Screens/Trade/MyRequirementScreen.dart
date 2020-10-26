@@ -4,7 +4,6 @@ import 'package:HelloKishan/Models/Styles.dart';
 import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
 import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
 import 'package:HelloKishan/Services/DBService.dart';
-import 'package:HelloKishan/Models/Constants.dart';
 import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Screens/Common/Timestamp.dart';
 import 'package:HelloKishan/Screens/Trade/PostRequirementScreen.dart';
@@ -90,13 +89,13 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                         height: 80,
                         width: 80,
                         child: ClipOval(
-                          child: Image.asset(PRODUCTS[pid][2]),
+                          child: Image.asset(PRODUCTS[pid][PROD_LOGO_IDX]),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          PRODUCTS[pid][LANGUAGE.CURRENT],
+                          PRODUCTS[pid][PROD_NAME_IDX].tr(),
                           style: styleName,
                         ),
                       ),

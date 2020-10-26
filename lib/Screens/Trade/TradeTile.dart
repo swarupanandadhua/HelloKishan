@@ -1,4 +1,3 @@
-import 'package:HelloKishan/Models/Constants.dart';
 import 'package:HelloKishan/Models/Models.dart';
 import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Models/Strings.dart';
@@ -134,13 +133,13 @@ class TradeTileState extends State<TradeTile> {
               height: 80.0,
               width: 80.0,
               child: ClipOval(
-                child: Image.asset(PRODUCTS[pid][2]),
+                child: Image.asset(PRODUCTS[pid][PROD_LOGO_IDX]),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text(
-                PRODUCTS[pid][LANGUAGE.CURRENT],
+                PRODUCTS[pid][PROD_NAME_IDX].tr(),
                 style: styleName,
               ),
             ),

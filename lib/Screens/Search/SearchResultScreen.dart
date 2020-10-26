@@ -1,4 +1,4 @@
-import 'package:HelloKishan/Models/Constants.dart';
+import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Models/Strings.dart';
 import 'package:HelloKishan/Models/Styles.dart';
 import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
@@ -84,7 +84,7 @@ class SearchResultScreen extends StatelessWidget {
             } else {
               return Center(
                 child: Text(
-                  '${product[LANGUAGE.CURRENT]} ${STRING_NO_BUYER_FOUND.tr()}',
+                  '${product[PROD_NAME_IDX].tr()} ${STRING_NO_BUYER_FOUND.tr()}',
                   style: styleEmpty,
                 ),
               );

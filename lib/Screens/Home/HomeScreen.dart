@@ -1,4 +1,3 @@
-import 'package:HelloKishan/Models/Constants.dart';
 import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Models/Strings.dart';
 import 'package:HelloKishan/Models/Styles.dart';
@@ -174,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                         child: Image.asset(p[2]),
                         //),
                       ),
-                      Text(p[LANGUAGE.CURRENT], style: styleName),
+                      Text(p[PROD_NAME_IDX].tr(), style: styleName),
                     ],
                   ),
                 ),
@@ -231,10 +230,10 @@ class HomeScreen extends StatelessWidget {
                         height: 120,
                         width: 120,
                         child: ClipOval(
-                          child: Image.asset(p[2]),
+                          child: Image.asset(p[PROD_LOGO_IDX]),
                         ),
                       ),
-                      Text(p[LANGUAGE.CURRENT], style: styleName),
+                      Text(p[PROD_NAME_IDX].tr(), style: styleName),
                     ],
                   ),
                 ),

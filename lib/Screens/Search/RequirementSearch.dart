@@ -46,12 +46,12 @@ class RequirementSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     List<List<String>> products = List<List<String>>();
-    for (int i = 0; i < PRODUCTS.length; i++) {
-      if (PRODUCTS[i][PROD_NAME_IDX]
+    for (int i = 0; i < VEGETABLES.length; i++) {
+      if (VEGETABLES[i][PROD_NAME_IDX]
           .tr()
           .toLowerCase() // TODO: This will only work with ENGLISH
           .contains(query.toLowerCase())) {
-        products.add(PRODUCTS[i]);
+        products.add(VEGETABLES[i]);
       }
     }
     return ListView.builder(

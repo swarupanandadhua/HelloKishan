@@ -133,13 +133,13 @@ class TradeTileState extends State<TradeTile> {
               height: 80.0,
               width: 80.0,
               child: ClipOval(
-                child: Image.asset(PRODUCTS[pid][PROD_LOGO_IDX]),
+                child: Image.asset(VEGETABLES[pid][PROD_LOGO_IDX]),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text(
-                PRODUCTS[pid][PROD_NAME_IDX].tr(),
+                VEGETABLES[pid][PROD_NAME_IDX].tr(),
                 style: styleName,
               ),
             ),

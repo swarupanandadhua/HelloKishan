@@ -7,18 +7,11 @@ const List<List<String>> FERTLIZERS = [
   ['পরশ MOP', 'Paras MOP', 'assets/images/paras-mop.png', '5'],
 ];
 
-/* main() {
-  for (int i = 0; i < PRODUCTS.length; i++) {
-    print("['${PRODUCTS[i][1]}', '${PRODUCTS[i][2]}', '${PRODUCTS[i][3]}'],");
-  }
-} */
-
 const PROD_NAME_IDX = 0;
 const PROD_LOGO_IDX = 1;
 const PROD_ID_IDX = 2;
 
-const List<List<String>> PRODUCTS = [
-  // TODO: Inserting the index at the end is a hack, get rid of it
+const List<List<String>> VEGETABLES = [
   // সবজি
   ['Arum', 'assets/images/arum.jpg', '0'],
   ['Bitter Gourd', 'assets/images/bitter_gourd.jpg', '1'],
@@ -81,55 +74,11 @@ const List<List<String>> PRODUCTS = [
   ['Read Leafy', 'assets/images/app_logo.jpg', '51'],
   ['Lettuce', 'assets/images/app_logo.jpg', '52'],
   ['Cress', 'assets/images/app_logo.jpg', '53'],
-  //['পাট শাক', '???', 'assets/images/app_logo.jpg', '54'],
-  //['শুশনী শাক', '???', 'assets/images/app_logo.jpg', '55'],
-  //['কুলেখাড়া শাক', '???', 'assets/images/app_logo.jpg', '56'],
-  //['লাউ শাক', '???', 'assets/images/app_logo.jpg', '57'],
-  //['বেথুয়া শাক', '???', 'assets/images/app_logo.jpg', '58'],
-  //['গিমা শাক', '???', 'assets/images/app_logo.jpg', '59'],
-  //['সজনে শাক', '???', 'assets/images/app_logo.jpg', '60'],
-  //['কুমড়ো শাক', '???', 'assets/images/app_logo.jpg', '61'],
-  //['মুলো শাক', '???', 'assets/images/app_logo.jpg', '62'],
-  //['পুটুস শাক', '???', 'assets/images/app_logo.jpg', '63'],
 
-  //['বাদাম', '???', 'assets/images/app_logo.jpg', '57'],
-  //['কুরকুরি ছাতু', '???', 'assets/images/app_logo.jpg', '57'],
   ['Watermelon', 'assets/images/watermelon.jpg', '54'],
-  //['উচ্ছে', '???', 'assets/images/app_logo.jpg', '57'],
+  // বাদাম, কুরকুরি ছাতু, উচ্ছে
 ];
 
-/****সবজি****
-এঁচোড়
-চালতা
-কামরাঙ্গা
-আমড়া
-কালমেঘ লঙ্কা
-লুরকি বেগুন
-**************/
-
-/****ফল****
-আম
-জাম
-খেজুর
-মুসাম্বি লেবু
-কাগজি লেবু
-বাতাবি লেবু
-গন্ধরাজ লেবু
-তাল
-আনারস
-কাঁঠাল
-কলা পাকা
-সিঙ্গাপুরি কলা
-পেয়ারা
-লিচু
-আপেল
-আঙ্গুর
-কুল
-নারকেল কুল
-চেরি
-তরমুজ
-পাকা পেঁপে
-কাজুবাদাম
-নারকেল
-ডাব
-************/
+// শাক : পাট শাক, শুশনী শাক, কুলেখাড়া শাক, লাউ শাক, বেথুয়া শাক, গিমা শাক, সজনে শাক, কুমড়ো শাক, মুলো শাক, পুটুস শাক
+// সবজি : এঁচোড়, চালতা, কামরাঙ্গা, আমড়া, কালমেঘ লঙ্কা, লুরকি বেগুন
+// ফল : আম, জাম, খেজুর, মুসাম্বি লেবু, কাগজি লেবু, বাতাবি লেবু, গন্ধরাজ লেবু, তাল, আনারস, কাঁঠাল, কলা পাকা, সিঙ্গাপুরি কলা, পেয়ারা, লিচু, আপেল, আঙ্গুর, কুল, নারকেল কুল, চেরি, তরমুজ, পাকা পেঁপে, কাজুবাদাম, নারকেল, ডাব

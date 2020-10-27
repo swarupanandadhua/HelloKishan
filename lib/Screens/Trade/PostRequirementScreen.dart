@@ -44,7 +44,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
   void initState() {
     if (oldR != null) {
       editing = true;
-      selectedProduct = PRODUCTS[int.parse(oldR.pid)];
+      selectedProduct = VEGETABLES[int.parse(oldR.pid)];
       productC.text = selectedProduct[PROD_NAME_IDX].tr();
       priceC.text = oldR.rate;
       qtyC.text = oldR.qty;
@@ -89,12 +89,12 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                   ),
                   suggestionsCallback: (pattern) async {
                     List<List<String>> suggestions = List<List<String>>();
-                    for (int i = 0; i < PRODUCTS.length; i++) {
-                      if (PRODUCTS[i][PROD_NAME_IDX]
+                    for (int i = 0; i < VEGETABLES.length; i++) {
+                      if (VEGETABLES[i][PROD_NAME_IDX]
                           .tr()
                           .toLowerCase() // TODO: This will only work with ENGLISH
                           .contains(pattern.toLowerCase())) {
-                        suggestions.add(PRODUCTS[i]);
+                        suggestions.add(VEGETABLES[i]);
                       }
                     }
                     return suggestions;

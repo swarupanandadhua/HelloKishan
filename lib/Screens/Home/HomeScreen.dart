@@ -207,9 +207,9 @@ class HomeScreen extends StatelessWidget {
               crossAxisSpacing: 5.0,
               mainAxisSpacing: 5.0,
             ),
-            itemCount: PRODUCTS.length,
+            itemCount: VEGETABLES.length,
             itemBuilder: (_, i) {
-              List<String> p = PRODUCTS[i];
+              List<String> p = VEGETABLES[i];
               return GestureDetector(
                 onTap: () {
                   // TODO: IMPORTANT

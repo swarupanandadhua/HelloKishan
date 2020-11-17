@@ -50,7 +50,16 @@ AUTH {
         // add the SHA1 to the project
         // download the google-services.json
     }
-    // Similar for release key also
+    // hellokishan release key
+
+    1. Google manages app signing key.
+    2. Developer needs to manage the upload key.
+    3. If upload key is compromised, generate a new one. And upload the .pem file in
+        : keytool -genkey -v -keystore ~/.android/hello_kishan.release.keystore -storepass hellokishan -alias hellokishanreleasekey -keypass hellokishan -keyalg RSA -keysize 2048 -validity 10000
+        : keytool -export -rfc -keystore ~/.android/hello_kishan.release.keystore -alias hellokishanreleasekey -file hellokishan.pem
+        // hellokishan.pem & hello_kishan.release.keystore are saved in Drive
+        // https://support.google.com/googleplay/android-developer/contact/otherbugs
+    4. Sign the app bundle using the upload key and upload it.
 }
 
 Release{// https://flutter.dev/docs/deployment/android#shrinking-your-code-with-r8
@@ -92,7 +101,7 @@ Django : https : //www.django-rest-framework.org/
 
 Django 1 { // https://dev.to/amartyadev/flutter-app-authentication-with-django-backend-1-21cp
     Django REST Framework(DRF) : PostgreSQL in Django + SQLite in Frontend
-    
+
     BLoC works on sinks and streams : The widgets monitor state changes & send them to BloC using sinks & other widgets monitor those by subscribing to streams.
 
     Go to the desired folder & activate virtual environment : https : //docs.python.org/3/library/venv.html

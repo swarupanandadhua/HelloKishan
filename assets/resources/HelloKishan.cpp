@@ -1,5 +1,17 @@
+REFERRAL {
+    
+}
+
 LOCALIZATION {
     https://stackoverflow.com/questions/49441212/flutter-multi-lingual-application-how-to-override-the-locale
+}
+
+AdMob { // App ID: ca-app-pub-8285249568639559~5250421163
+    1. Create AdMob app , get App ID.
+    2. Create ad unit.
+    3. ENable user metrics
+    4. Link AdMob app to firebase app.
+    5. Add AdMob App ID to AndroidManifest.xml
 }
 
 COMPETITORS {
@@ -28,14 +40,6 @@ COMPANY REGISTRATION {
 FERTILIZER {
     License : matirkatha.net
     Dealer Retailer List.csv
-}
-
-AdMob { // App ID: ca-app-pub-8285249568639559~5250421163
-    1. Create AdMob app , get App ID.
-    2. Create ad unit.
-    3. ENable user metrics
-    4. Link AdMob app to firebase app.
-    5. Add AdMob App ID to AndroidManifest.xml
 }
 
 AUTH {
@@ -77,7 +81,7 @@ Finance {
     CrunchBase - Place for companies & investores
 }
 
-Vision &Mission {
+Vision & Mission {
     Vision: To provide access to buy and sell agricultural products in 1 click
     Mission :
         1. To balance out price difference in the agricultural market

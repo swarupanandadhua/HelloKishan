@@ -171,13 +171,9 @@ class DBService {
   }
 
   static Future<String> uploadPhoto(File image, String destination) async {
-    StorageReference ref = FirebaseStorage.instance.ref();
-    StorageUploadTask uploadtask = ref.child(destination).putFile(image);
-    String downloadURL;
-    await uploadtask.onComplete.then(
-      (snap) async => downloadURL = await snap.ref.getDownloadURL(),
-    );
-    return downloadURL;
+    Reference ref = FirebaseStorage.instance.ref();
+    TaskSnapshot snap = await ref.child(destination).putFile(image);
+    return await snap.ref.getDownloadURL();
   }
 
   static Future<void> saveFCMToken(String uid, String fcmToken) async {

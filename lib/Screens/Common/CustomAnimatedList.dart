@@ -73,7 +73,7 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
     super.dispose();
   }
 
-  void _onError(Error error) {
+  void _onError(Exception error) {
     if (mounted) {
       setState(() {
         error = error;

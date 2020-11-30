@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 
 class LocationService {
   static Future<Address> getAddress() async {
-    Position p = await getCurrentPosition(
+    Position p = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
     if (p == null) return null;

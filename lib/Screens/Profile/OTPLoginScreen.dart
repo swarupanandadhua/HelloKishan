@@ -55,7 +55,8 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(
-                          Icons.arrow_forward,
+                          Icons.language,
+                          size: 32,
                         ),
                       ),
                     ],

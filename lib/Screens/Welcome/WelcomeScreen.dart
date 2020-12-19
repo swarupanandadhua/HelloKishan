@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:HelloKishan/Models/Colors.dart';
 import 'package:HelloKishan/Models/Strings.dart';
 import 'package:HelloKishan/Screens/Common/LoadingScreen.dart';
-import 'package:HelloKishan/Screens/Home/WrapperScreen.dart';
+import 'package:HelloKishan/Screens/Payment/UpiPayment.dart';
 import 'package:HelloKishan/Screens/Profile/OTPLoginScreen.dart';
 import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
 import 'package:HelloKishan/Services/SharedPrefData.dart';
@@ -57,7 +57,12 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (user != null) {
-      return profileUpdated ? Wrapper() : ProfileUpdateScaffold(true, true);
+      if (profileUpdated) {
+        return UpiPayment('1', '9609750449@ybl');
+        // return Wrapper();
+      } else {
+        return ProfileUpdateScaffold(true, true);
+      }
     }
     return loading
         ? Container(

@@ -98,11 +98,15 @@
   "Nearest first": "Nearest first",
   "Maximum": "Maximum",
   "Vegetables": "Vegetables",
+  "Flowers": "Flowers",
+  "Fruits": "Fruits",
   "Fertilizers": "Fertilizers",
   "Pesticides": "Pesticides",
   "Insecticides": "Insecticides",
   "Fungicides": "Fungicides",
   "Herbicides": "Herbicides",
+  "Seeds": "Seed",
+  "Machinaries": "Machinaries",
   "Arum": "Arum",
   "Bitter Gourd": "Bitter Gourd",
   "Green Chili": "Green Chili",
@@ -157,5 +161,11 @@
   "Read Leafy": "Read Leafy",
   "Lettuce": "Lettuce",
   "Cress": "Cress",
-  "Watermelon": "Watermelon"
+  "Watermelon": "Watermelon",
+  "Paras SSP": "Paras SSP",
+  "Paras 10-26": "Paras 10-26",
+  "Paras 12-32": "Paras 12-32",
+  "Paras 14-35": "Paras 14-35",
+  "Paras DAP": "Paras DAP",
+  "Paras MOP": "Paras MOP"
 }

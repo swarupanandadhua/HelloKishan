@@ -1,15 +1,65 @@
+class Category {
+  final String id;
+  final String name;
+  final String image;
+  final List<Category> subcategories;
+  final List<List<String>> prodList;
+
+  int getHash() {
+    return id.hashCode;
+  }
+
+  const Category(
+    this.id,
+    this.name,
+    this.image,
+    this.subcategories,
+    this.prodList,
+  );
+}
+
+const List<Category> CATEGORIES = [
+  Category('VEG', 'Vegetables', 'assets/images/app_logo.jpg', null, VEGETABLES),
+  Category('FRUIT', 'Fruits', 'assets/images/app_logo.jpg', null, null),
+  Category('FLWR', 'Flowers', 'assets/images/app_logo.jpg', null, null),
+  Category('FERT', 'Fertilizers', 'assets/images/app_logo.jpg', null, FERTLIZERS),
+  Category('PSIDE', 'Pesticides', 'assets/images/app_logo.jpg', null, null),
+  Category('ISIDE', 'Insecticides', 'assets/images/app_logo.jpg', null, null),
+  Category('FSIDE', 'Fungicides', 'assets/images/app_logo.jpg', null, null),
+  Category('HSIDE', 'Herbicides', 'assets/images/app_logo.jpg', null, null),
+  Category(
+    'SEED',
+    'Seeds',
+    'assets/images/app_logo.jpg',
+    <Category>[
+      Category('SEED-VEG', 'Vegetable Seeds', 'assets/images/app_logo.jpg', null, null),
+      Category('SEED-FRUIT', 'Fruit Seeds', 'assets/images/app_logo.jpg', null, null),
+      Category('SEED-FLWR', 'Flower Seeds', 'assets/images/app_logo.jpg', null, null),
+    ],
+    null,
+  ),
+  Category('MACH', 'Machinaries', 'assets/images/app_logo.jpg', null, null),
+];
+
 const List<List<String>> FERTLIZERS = [
-  ['পরশ SSP', 'Paras SSP', 'assets/images/paras-ssp.png', '0'],
-  ['পরশ ১০-২৬', 'Paas 10-26', 'assets/images/paras-10-26-26.png', '1'],
-  ['পরশ 12-32', 'Paras 12-32', 'assets/images/paras-12-32-16.png', '2'],
-  ['পরশ 14-35', 'Paras 14-35', 'assets/images/paras-14-35-14.png', '3'],
-  ['পরশ ডি.এ.পি.', 'Paras DAP', 'assets/images/paras-dap.png', '4'],
-  ['পরশ MOP', 'Paras MOP', 'assets/images/paras-mop.png', '5'],
+  ['Paras SSP', 'assets/images/paras-ssp.png', '0'],
+  ['Paras 10-26', 'assets/images/paras-10-26-26.png', '1'],
+  ['Paras 12-32', 'assets/images/paras-12-32-16.png', '2'],
+  ['Paras 14-35', 'assets/images/paras-14-35-14.png', '3'],
+  ['Paras DAP', 'assets/images/paras-dap.png', '4'],
+  ['Paras MOP', 'assets/images/paras-mop.png', '5'],
 ];
 
 const PROD_NAME_IDX = 0;
 const PROD_LOGO_IDX = 1;
 const PROD_ID_IDX = 2;
+
+const List<String> HOME_PAGE_BANNERS = [
+  'assets/images/banner.jpg',
+  'assets/images/banner.jpg',
+  'assets/images/banner.jpg',
+  'assets/images/banner.jpg',
+];
 
 const List<List<String>> VEGETABLES = [
   // সবজি

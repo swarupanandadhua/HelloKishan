@@ -1,63 +1,19 @@
 import 'package:HelloKishan/Models/Products.dart';
 import 'package:HelloKishan/Models/Strings.dart';
 import 'package:HelloKishan/Models/Styles.dart';
+import 'package:HelloKishan/Screens/Home/HomeWidgets/CarouselSliderWidget.dart';
 import 'package:HelloKishan/Screens/Search/SearchResultScreen.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class HomeScreen extends StatelessWidget {
-  final List<String> homeBanners = [
-    'assets/images/banner.jpg',
-    'assets/images/banner.jpg',
-    'assets/images/banner.jpg',
-    'assets/images/banner.jpg',
-  ];
-
-  final List<String> categories = [
-    STRING_FERTILIZERS,
-    STRING_PESTICIDES,
-    STRING_INSECTICIDES,
-    STRING_HERBICIDES,
-  ];
-  final List<String> imageLocations = [
-    'assets/images/app_logo.jpg',
-    'assets/images/app_logo.jpg',
-    'assets/images/app_logo.jpg',
-    'assets/images/app_logo.jpg',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return ListView(
       scrollDirection: Axis.vertical,
       children: [
         Card(
-          child: CarouselSlider.builder(
-            options: CarouselOptions(
-              height: 150,
-              enableInfiniteScroll: true,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              //onPageChanged: callbackFunction,
-              scrollDirection: Axis.horizontal,
-            ),
-            itemCount: homeBanners.length,
-            itemBuilder: (_, int i) => Container(
-              child: Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: [
-                  Image.asset(
-                    homeBanners[i],
-                  ),
-                  Text(STRING_APP_NAME.tr()),
-                ],
-              ),
-            ),
-          ),
+          child: CarouselSliderWidget(HOME_PAGE_BANNERS),
         ),
         GridView.builder(
           addRepaintBoundaries: true,
@@ -69,7 +25,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisSpacing: 5.0,
           ),
           shrinkWrap: true,
-          itemCount: categories.length,
+          itemCount: CATEGORIES.length,
           itemBuilder: (context, i) {
             return GestureDetector(
               onTap: () {
@@ -92,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Image.asset(
-                        imageLocations[i],
+                        CATEGORIES[i].image,
                         fit: BoxFit.scaleDown,
                       ),
                     ),
@@ -104,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              categories[i].tr(),
+                              CATEGORIES[i].name.tr(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -169,9 +125,7 @@ class HomeScreen extends StatelessWidget {
                         padding: EdgeInsets.all(8),
                         height: 140,
                         width: 140,
-                        // child: ClipOval(
-                        child: Image.asset(p[2]),
-                        //),
+                        child: Image.asset(p[PROD_LOGO_IDX]),
                       ),
                       Text(p[PROD_NAME_IDX].tr(), style: styleName),
                     ],

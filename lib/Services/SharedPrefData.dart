@@ -32,8 +32,8 @@ class SharedPrefData {
   static void setFCMToken(String token) => p.setString('fcmToken', token);
   static String getFCMToken() => p.getString('fcmToken');
 
-  static void setLanguage(String language) => p.setString('language', language);
-  static String getLanguage() => p.getString('language');
+  static void setLanguage(int language) => p.setInt('language', language);
+  static int getLanguage() => p.getInt('language');
 
   static void reset() {
     p.remove('address');

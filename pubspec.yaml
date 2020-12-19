@@ -30,6 +30,7 @@ dependencies:
   geoflutterfire:
   geolocator:
   provider:
+  upi_pay:
 
 environment:
   sdk:

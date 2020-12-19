@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class HelloKishanDialog {
   static Dialog languagePickerDialog() {
-    int lang = (SharedPrefData.getLanguage() == 'en_US') ? 0 : 1;
-    List<String> langs = [
+    int oldLang = SharedPrefData.getLanguage() ?? 0;
+    List<String> languages = [
       'English',
       'বাংলা',
     ];
@@ -18,23 +18,20 @@ class HelloKishanDialog {
         height: 130,
         padding: const EdgeInsets.all(10),
         child: ListView.builder(
-          itemCount: langs.length,
+          itemCount: languages.length,
           itemBuilder: (context, i) {
             return RadioListTile(
-              title: Text(langs[i]),
+              title: Text(languages[i]),
               value: i,
-              groupValue: lang,
-              onChanged: (int x) {
-                lang = x;
-                String oldLang = EasyLocalization.of(context).locale.toString();
-                String newLang = (lang == 0) ? 'en_US' : 'bn_IN';
+              groupValue: oldLang,
+              onChanged: (int newLang) {
                 if (oldLang != newLang) {
+                  oldLang = newLang;
                   EasyLocalization.of(context).locale =
-                      (lang == 0) ? Locale('en', 'US') : Locale('bn', 'IN');
+                      (newLang == 0) ? Locale('en', 'US') : Locale('bn', 'IN');
                   SharedPrefData.setLanguage(newLang);
-                  debugPrint('Changed: $newLang');
                 }
-                Navigator.pop(context, x);
+                Navigator.pop(context);
               },
             );
           },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:HelloKishan/Models/Colors.dart';
+import 'package:hello_kishan/Models/Colors.dart';
 
 ThemeData helloKishanTheme = ThemeData(
   primarySwatch: MaterialColor(APP_COLOR, APP_SWATCH),

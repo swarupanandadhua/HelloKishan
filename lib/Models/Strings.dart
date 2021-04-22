@@ -1,4 +1,4 @@
-import 'package:HelloKishan/Screens/Common/Translate.dart';
+import 'package:hello_kishan/Screens/Common/Translate.dart';
 
 String displayRate(String rate) {
   return '$STRING_RATE : ${numE2B(rate)} $STRING_RS_PER_KG';
@@ -15,11 +15,9 @@ String displayAmt(String amt) {
 // INFO: Following APP_ID is used in AndroidManifest.xml as well
 const String ADMOB_APP_ID = 'ca-app-pub-8285249568639559~5250421163';
 const String COUNTRY_CODE_IN = '+91';
-const String STRING_INVALID_VERIFICATION_CODE =
-    'ERROR_INVALID_VERIFICATION_CODE';
+const String STRING_INVALID_VERIFICATION_CODE = 'ERROR_INVALID_VERIFICATION_CODE';
 const String STRING_TODO_IMPORTANT_FUNCTIONALITY = 'TODO : IMPORTANT FUNC.';
-const String APP_PLAY_STORE_URL =
-    'https://play.google.com/store/apps/details?id=com.HelloKishan.HelloKishan';
+const String APP_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.HelloKishan.HelloKishan';
 const String STRING_SHARE_ARG = '$APP_DESC_MSG \n $APP_PLAY_STORE_URL';
 
 const String STRING_APP_NAME = 'Hello Kishan';
@@ -80,8 +78,7 @@ const String STRING_NO_TRANSACTIONS_FOUND = 'No transactions found !';
 
 const String STRING_POST = 'POST';
 const String STRING_POST_REQUIREMENT = 'Post Requirement';
-const String STRING_POST_REQUIREMENT_HEADER =
-    'Please enter what do you want to buy, how much, at what rate and where is your shop located';
+const String STRING_POST_REQUIREMENT_HEADER = 'Please enter what do you want to buy, how much, at what rate and where is your shop located';
 
 const String STRING_REQUIREMENTS = 'Requirements';
 const String STRING_SAVE = 'Save';
@@ -92,8 +89,7 @@ const String STRING_WRITE_BUY_WHAT = 'Enter what do you want to buy ?';
 const String STRING_BUY_HOW_MUCH = 'How much (kg) do you want to buy ?';
 const String STRING_BUY_WHAT_PRICE = 'At what price ?';
 
-const String STRING_WHAT_SELL_SELECT_FROM_LIST =
-    'Please select a product from list';
+const String STRING_WHAT_SELL_SELECT_FROM_LIST = 'Please select a product from list';
 
 const String STRING_SELL = 'Sell';
 const String STRING_BOUGHT_FROM = 'Bought from';
@@ -154,3 +150,5 @@ const String STRING_PESTICIDES = 'Pesticides';
 const String STRING_INSECTICIDES = 'Insecticides';
 const String STRING_FUNGICIDES = 'Fungicides';
 const String STRING_HERBICIDES = 'Herbicides';
+
+const String STRING_SHOW_MORE = 'Show More';

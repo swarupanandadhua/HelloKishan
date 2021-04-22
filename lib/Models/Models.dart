@@ -1,4 +1,4 @@
-import 'package:HelloKishan/Services/DBService.dart';
+import 'package:hello_kishan/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const String STATUS_REQUESTED = 'REQUESTED'; // --> (Accept/Reject, Cancel)

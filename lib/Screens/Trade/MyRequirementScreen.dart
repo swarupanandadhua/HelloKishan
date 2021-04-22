@@ -1,12 +1,12 @@
-import 'package:HelloKishan/Models/Models.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
-import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
-import 'package:HelloKishan/Services/DBService.dart';
-import 'package:HelloKishan/Models/Products.dart';
-import 'package:HelloKishan/Screens/Common/Timestamp.dart';
-import 'package:HelloKishan/Screens/Trade/PostRequirementScreen.dart';
+import 'package:hello_kishan/Models/Models.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:hello_kishan/Screens/Common/GlobalKeys.dart';
+import 'package:hello_kishan/Services/DBService.dart';
+import 'package:hello_kishan/Models/Products.dart';
+import 'package:hello_kishan/Screens/Common/Timestamp.dart';
+import 'package:hello_kishan/Screens/Trade/PostRequirementScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -137,9 +137,7 @@ class MyRequirementTileState extends State<MyRequirementTile> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                RaisedButton.icon(
-                  color: Colors.red,
-                  textColor: Colors.white,
+                ElevatedButton.icon(
                   onPressed: () async {
                     HelloKishanDialog.show(
                       GlobalKeys.wrapperScaffoldKey.currentContext,
@@ -165,9 +163,7 @@ class MyRequirementTileState extends State<MyRequirementTile> {
                   icon: Icon(Icons.delete),
                   label: Text(STRING_DELETE.tr()),
                 ),
-                RaisedButton.icon(
-                  color: Colors.yellow,
-                  textColor: Colors.grey[800],
+                ElevatedButton.icon(
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(

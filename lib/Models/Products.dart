@@ -18,7 +18,7 @@ class Category {
   );
 }
 
-const List<Category> CATEGORIES = [
+const List<Category> ROOT_CATEGORIES = [
   Category('VEG', 'Vegetables', 'assets/images/app_logo.jpg', null, VEGETABLES),
   Category('FRUIT', 'Fruits', 'assets/images/app_logo.jpg', null, null),
   Category('FLWR', 'Flowers', 'assets/images/app_logo.jpg', null, null),

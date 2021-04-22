@@ -1,8 +1,8 @@
-import 'package:HelloKishan/Models/Models.dart' as HelloKishan;
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Trade/TradeTile.dart';
-import 'package:HelloKishan/Services/DBService.dart';
+import 'package:hello_kishan/Models/Models.dart' as HelloKishan;
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Trade/TradeTile.dart';
+import 'package:hello_kishan/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';

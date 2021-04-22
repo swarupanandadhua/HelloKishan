@@ -1,14 +1,13 @@
-import 'package:HelloKishan/Models/Colors.dart';
-import 'package:HelloKishan/Models/Models.dart';
-import 'package:HelloKishan/Models/Products.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
-import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
-import 'package:HelloKishan/Screens/Common/Timestamp.dart';
-import 'package:HelloKishan/Screens/Common/Validator.dart';
-import 'package:HelloKishan/Services/DBService.dart';
-import 'package:HelloKishan/Services/SharedPrefData.dart';
+import 'package:hello_kishan/Models/Models.dart';
+import 'package:hello_kishan/Models/Products.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:hello_kishan/Screens/Common/GlobalKeys.dart';
+import 'package:hello_kishan/Screens/Common/Timestamp.dart';
+import 'package:hello_kishan/Screens/Common/Validator.dart';
+import 'package:hello_kishan/Services/DBService.dart';
+import 'package:hello_kishan/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +21,7 @@ class PostRequirementScreen extends StatefulWidget {
   PostRequirementScreen({this.r});
 
   @override
-  PostRequirementScreenState createState() =>
-      PostRequirementScreenState(oldR: r);
+  PostRequirementScreenState createState() => PostRequirementScreenState(oldR: r);
 }
 
 class PostRequirementScreenState extends State<PostRequirementScreen> {
@@ -78,17 +76,14 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
                 child: TypeAheadFormField(
                   // TODO: https://stackoverflow.com/questions/63932633/how-to-reset-the-text-of-typeaheadformfield-when-not-selected-from-suggestions-i
                   hideSuggestionsOnKeyboardHide: false,
-                  validator: (v) => (selectedProduct != null)
-                      ? null
-                      : STRING_WRITE_BUY_WHAT.tr(),
+                  validator: (v) => (selectedProduct != null) ? null : STRING_WRITE_BUY_WHAT.tr(),
                   textFieldConfiguration: TextFieldConfiguration(
-                    decoration:
-                        InputDecoration(labelText: STRING_BUY_WHAT.tr()),
+                    decoration: InputDecoration(labelText: STRING_BUY_WHAT.tr()),
                     controller: productC,
                     enabled: !editing,
                   ),
                   suggestionsCallback: (pattern) async {
-                    List<List<String>> suggestions = List<List<String>>();
+                    List<List<String>> suggestions = [];
                     for (int i = 0; i < VEGETABLES.length; i++) {
                       if (VEGETABLES[i][PROD_NAME_IDX]
                           .tr()
@@ -199,8 +194,7 @@ class PostRequirementScreenState extends State<PostRequirementScreen> {
       bottomSheet: Container(
         height: 60,
         width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          color: Color(APP_COLOR),
+        child: ElevatedButton(
           child: Text(
             STRING_POST.tr(),
             style: TextStyle(

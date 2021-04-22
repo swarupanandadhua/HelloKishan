@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:HelloKishan/Models/Constants.dart';
-import 'package:HelloKishan/Models/Models.dart' as HelloKishan;
-import 'package:HelloKishan/Services/SharedPrefData.dart';
+import 'package:hello_kishan/Models/Constants.dart';
+import 'package:hello_kishan/Models/Models.dart' as HelloKishan;
+import 'package:hello_kishan/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -54,11 +54,7 @@ class DBService {
       .limit(30);
 
   static Query searchResultScreenQ(String pid) {
-    return FirebaseFirestore.instance
-        .collection(DB_REQUIREMENTS)
-        .where('pid', isEqualTo: pid)
-        .orderBy('timestamp', descending: true)
-        .limit(30);
+    return FirebaseFirestore.instance.collection(DB_REQUIREMENTS).where('pid', isEqualTo: pid).orderBy('timestamp', descending: true).limit(30);
     // TODO: IMPORTANT: use docChange.newIndex/oldIndex
   }
 
@@ -66,15 +62,10 @@ class DBService {
     bool status;
     try {
       if (r.rid != null) {
-        await FirebaseFirestore.instance
-            .collection(DB_REQUIREMENTS)
-            .doc(r.rid)
-            .set(r.toMap());
+        await FirebaseFirestore.instance.collection(DB_REQUIREMENTS).doc(r.rid).set(r.toMap());
         status = true;
       } else {
-        await FirebaseFirestore.instance
-            .collection(DB_REQUIREMENTS)
-            .add(r.toMap());
+        await FirebaseFirestore.instance.collection(DB_REQUIREMENTS).add(r.toMap());
         status = true;
       }
     } catch (e) {
@@ -86,10 +77,7 @@ class DBService {
 
   static Future<bool> deleteRequirement(String rid) async {
     try {
-      await FirebaseFirestore.instance
-          .collection(DB_REQUIREMENTS)
-          .doc(rid)
-          .delete();
+      await FirebaseFirestore.instance.collection(DB_REQUIREMENTS).doc(rid).delete();
       return true;
     } catch (e) {
       debugPrint(StackTrace.current.toString());
@@ -97,8 +85,7 @@ class DBService {
     }
   }
 
-  static Stream<List<HelloKishan.Requirement>> fetchRequirementsByLocation(
-      String db, double lat, double long, double rad, String product) {
+  static Stream<List<HelloKishan.Requirement>> fetchRequirementsByLocation(String db, double lat, double long, double rad, String product) {
     CollectionReference ref = FirebaseFirestore.instance.collection(db);
     Geoflutterfire geo = Geoflutterfire();
     GeoFirePoint center = geo.point(
@@ -116,8 +103,7 @@ class DBService {
         )
         .map(
       (snap) {
-        List<HelloKishan.Requirement> requirements =
-            List<HelloKishan.Requirement>();
+        List<HelloKishan.Requirement> requirements = [];
         snap.forEach(
           (doc) {
             requirements.insert(
@@ -146,16 +132,14 @@ class DBService {
 
     QuerySnapshot snap = await q.get();
     if (snap?.docs?.length != null && snap.docs.length > 0) {
-      return HelloKishan.Requirement.fromMap(
-          snap.docs[0].id, snap.docs[0].data());
+      return HelloKishan.Requirement.fromMap(snap.docs[0].id, snap.docs[0].data());
     } else {
       return null;
     }
   }
 
   static Future<bool> uploadTransaction(HelloKishan.Transaction t) async {
-    CollectionReference ref =
-        FirebaseFirestore.instance.collection(DB_TRANSACTIONS);
+    CollectionReference ref = FirebaseFirestore.instance.collection(DB_TRANSACTIONS);
 
     try {
       if (t.tid == null) {

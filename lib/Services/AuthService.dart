@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
-import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
-import 'package:HelloKishan/Screens/Common/Validator.dart';
-import 'package:HelloKishan/Screens/Home/WrapperScreen.dart';
-import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
-import 'package:HelloKishan/Services/SharedPrefData.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:hello_kishan/Screens/Common/GlobalKeys.dart';
+import 'package:hello_kishan/Screens/Common/Validator.dart';
+import 'package:hello_kishan/Screens/Home/WrapperScreen.dart';
+import 'package:hello_kishan/Screens/Profile/ProfileUpdateScreen.dart';
+import 'package:hello_kishan/Services/SharedPrefData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,9 +83,7 @@ class AuthService {
               ),
             ),
             actions: [
-              RaisedButton.icon(
-                color: Colors.green,
-                textColor: Colors.white,
+              ElevatedButton.icon(
                 onPressed: () {
                   if (otpFormKey.currentState.validate()) {
                     HelloKishanDialog.hide();

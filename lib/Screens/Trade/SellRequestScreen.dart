@@ -1,12 +1,11 @@
-import 'package:HelloKishan/Models/Colors.dart';
-import 'package:HelloKishan/Models/Models.dart' as HelloKishan;
-import 'package:HelloKishan/Models/Products.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
-import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
-import 'package:HelloKishan/Screens/Common/Translate.dart';
-import 'package:HelloKishan/Services/DBService.dart';
+import 'package:hello_kishan/Models/Models.dart' as HelloKishan;
+import 'package:hello_kishan/Models/Products.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:hello_kishan/Screens/Common/GlobalKeys.dart';
+import 'package:hello_kishan/Screens/Common/Translate.dart';
+import 'package:hello_kishan/Services/DBService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -97,8 +96,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
                   ),
                   validator: (val) {
                     double q = double.tryParse(val);
-                    if (q == null || q <= 0)
-                      return STRING_ENTER_VALID_QUANTITY.tr();
+                    if (q == null || q <= 0) return STRING_ENTER_VALID_QUANTITY.tr();
                     if (q > double.tryParse(r.qty)) {
                       return '${STRING_MAXIMUM.tr()} : ${numE2B(r.qty)} ${STRING_KG.tr()}';
                     }
@@ -128,8 +126,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
       bottomSheet: Container(
         height: 60,
         width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          color: Color(APP_COLOR),
+        child: ElevatedButton(
           child: Text(
             STRING_PROCEED.tr(),
             style: TextStyle(
@@ -150,7 +147,7 @@ class SellRequestScreenState extends State<SellRequestScreen> {
         STRING_SENDING_SELL_REQUEST.tr(),
         true,
       );
-      List<String> uids = List<String>();
+      List<String> uids = [];
       uids.add(FirebaseAuth.instance.currentUser.uid);
       uids.add(r.uid);
       HelloKishan.Transaction t = HelloKishan.Transaction(

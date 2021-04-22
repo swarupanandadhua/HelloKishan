@@ -1,4 +1,4 @@
-import 'package:HelloKishan/Models/Colors.dart';
+import 'package:hello_kishan/Models/Colors.dart';
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
@@ -14,14 +14,9 @@ class MyButton extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(right: 10.0),
         child: Container(
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Text(text),
-            textColor: Colors.white,
-            color: color,
             onPressed: onPressedCallBack,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
           ),
         ),
       ),

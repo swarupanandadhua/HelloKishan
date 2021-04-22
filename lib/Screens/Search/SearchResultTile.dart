@@ -1,10 +1,10 @@
-import 'package:HelloKishan/Models/Models.dart';
-import 'package:HelloKishan/Models/Products.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
-import 'package:HelloKishan/Screens/Common/Timestamp.dart';
-import 'package:HelloKishan/Screens/Trade/SellRequestScreen.dart';
+import 'package:hello_kishan/Models/Models.dart';
+import 'package:hello_kishan/Models/Products.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Common/ProfilePicture.dart';
+import 'package:hello_kishan/Screens/Common/Timestamp.dart';
+import 'package:hello_kishan/Screens/Trade/SellRequestScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -108,9 +108,7 @@ class SearchResultTile extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-              color: Color(0xFF149c16),
+            child: ElevatedButton(
               child: Text(
                 STRING_SELL.tr(),
                 style: styleSellBtn,

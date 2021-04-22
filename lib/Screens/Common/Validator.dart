@@ -1,4 +1,4 @@
-import 'package:HelloKishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -22,21 +22,15 @@ class Validator {
   }
 
   static String mobile(String val) {
-    return (val != null && val.length == 10)
-        ? null
-        : STRING_MUST_BE_10_DIGITS.tr();
+    return (val != null && val.length == 10) ? null : STRING_MUST_BE_10_DIGITS.tr();
   }
 
   static String addressLine(String val) {
-    return (val != null && val.length >= 5)
-        ? null
-        : STRING_ADDRESS_INVALID.tr();
+    return (val != null && val.length >= 5) ? null : STRING_ADDRESS_INVALID.tr();
   }
 
   static String district(String val) {
-    return (val != null && val.length >= 5)
-        ? null
-        : STRING_DISTRICT_NAME_INVALID.tr();
+    return (val != null && val.length >= 5) ? null : STRING_DISTRICT_NAME_INVALID.tr();
   }
 
   static String pincode(String val) {
@@ -44,9 +38,7 @@ class Validator {
   }
 
   static String state(String val) {
-    return (val != null && val.length >= 5)
-        ? null
-        : STRING_STATE_NAME_INVALID.tr();
+    return (val != null && val.length >= 5) ? null : STRING_STATE_NAME_INVALID.tr();
   }
 
   static void defaultErrorHandler() {

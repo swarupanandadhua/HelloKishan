@@ -1,17 +1,17 @@
 import 'dart:io';
-import 'package:HelloKishan/Models/Colors.dart';
-import 'package:HelloKishan/Models/Constants.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
-import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
-import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
-import 'package:HelloKishan/Screens/Common/Validator.dart';
-import 'package:HelloKishan/Screens/Profile/MyButton.dart';
-import 'package:HelloKishan/Screens/Home/WrapperScreen.dart';
-import 'package:HelloKishan/Services/DBService.dart';
-import 'package:HelloKishan/Services/LocationService.dart';
-import 'package:HelloKishan/Services/SharedPrefData.dart';
+import 'package:hello_kishan/Models/Colors.dart';
+import 'package:hello_kishan/Models/Constants.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:hello_kishan/Screens/Common/GlobalKeys.dart';
+import 'package:hello_kishan/Screens/Common/ProfilePicture.dart';
+import 'package:hello_kishan/Screens/Common/Validator.dart';
+import 'package:hello_kishan/Screens/Profile/MyButton.dart';
+import 'package:hello_kishan/Screens/Home/WrapperScreen.dart';
+import 'package:hello_kishan/Services/DBService.dart';
+import 'package:hello_kishan/Services/LocationService.dart';
+import 'package:hello_kishan/Services/SharedPrefData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +21,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ProfileUpdateScaffold extends StatelessWidget {
-  final GlobalKey<ProfileUpdateScreenState> profileUpdateScreenKey =
-      GlobalKey();
+  final GlobalKey<ProfileUpdateScreenState> profileUpdateScreenKey = GlobalKey();
   final bool showBottomSheet, editing;
 
   ProfileUpdateScaffold(this.showBottomSheet, this.editing);
@@ -53,8 +52,7 @@ class ProfileUpdateScaffold extends StatelessWidget {
       return Container(
         height: 60,
         width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          color: Color(APP_COLOR),
+        child: ElevatedButton(
           child: Text(
             STRING_PROCEED.tr(),
             style: TextStyle(

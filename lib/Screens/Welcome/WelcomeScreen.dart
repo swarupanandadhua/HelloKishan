@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:HelloKishan/Models/Colors.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Screens/Common/LoadingScreen.dart';
-import 'package:HelloKishan/Screens/Payment/UpiPayment.dart';
-import 'package:HelloKishan/Screens/Profile/OTPLoginScreen.dart';
-import 'package:HelloKishan/Screens/Profile/ProfileUpdateScreen.dart';
-import 'package:HelloKishan/Services/SharedPrefData.dart';
+import 'package:hello_kishan/Models/Colors.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Screens/Common/LoadingScreen.dart';
+import 'package:hello_kishan/Screens/Home/WrapperScreen.dart';
+import 'package:hello_kishan/Screens/Profile/OTPLoginScreen.dart';
+import 'package:hello_kishan/Screens/Profile/ProfileUpdateScreen.dart';
+import 'package:hello_kishan/Services/SharedPrefData.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,8 +58,8 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     if (user != null) {
       if (profileUpdated) {
-        return UpiPayment('1', '9609750449@ybl');
-        // return Wrapper();
+        // return Payment2('1', '9609750449@ybl');
+        return Wrapper();
       } else {
         return ProfileUpdateScaffold(true, true);
       }

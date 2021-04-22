@@ -1,11 +1,11 @@
-import 'package:HelloKishan/Models/Models.dart';
-import 'package:HelloKishan/Models/Products.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
-import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
-import 'package:HelloKishan/Screens/Common/ProfilePicture.dart';
-import 'package:HelloKishan/Screens/Common/Timestamp.dart';
+import 'package:hello_kishan/Models/Models.dart';
+import 'package:hello_kishan/Models/Products.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:hello_kishan/Screens/Common/GlobalKeys.dart';
+import 'package:hello_kishan/Screens/Common/ProfilePicture.dart';
+import 'package:hello_kishan/Screens/Common/Timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -43,13 +43,11 @@ class TradeTileState extends State<TradeTile> {
     bool isFarmer = (t.uids[0] == FirebaseAuth.instance.currentUser.uid);
     bool isAccepted = (t.status == STATUS_ACCEPTED);
 
-    List<Widget> actions = List<Widget>();
+    List<Widget> actions = [];
     if (isAccepted) {
       actions.add(Text(STRING_ACCEPTED.tr(), style: styleGreen));
       actions.add(
-        RaisedButton.icon(
-          color: Colors.green,
-          textColor: Colors.white,
+        ElevatedButton.icon(
           onPressed: () => updateTransactionStatus(context, STATUS_SUCCESSFUL),
           icon: Icon(Icons.check_circle),
           label: Text(STRING_COMPLETE.tr()),
@@ -61,9 +59,7 @@ class TradeTileState extends State<TradeTile> {
           Text(STRING_REQUESTED.tr(), style: styleGreen),
         );
         actions.add(
-          RaisedButton.icon(
-            color: Colors.red,
-            textColor: Colors.white,
+          ElevatedButton.icon(
             onPressed: () => updateTransactionStatus(context, STATUS_CANCELLED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_CANCEL.tr()),
@@ -71,17 +67,14 @@ class TradeTileState extends State<TradeTile> {
         );
       } else {
         actions.add(
-          RaisedButton.icon(
-            color: Colors.red,
-            textColor: Colors.white,
+          ElevatedButton.icon(
             onPressed: () => updateTransactionStatus(context, STATUS_REJECTED),
             icon: Icon(Icons.cancel),
             label: Text(STRING_REJECT.tr()),
           ),
         );
         actions.add(
-          RaisedButton.icon(
-            color: Colors.green,
+          ElevatedButton.icon(
             onPressed: () => updateTransactionStatus(context, STATUS_ACCEPTED),
             icon: Icon(Icons.check),
             label: Text(STRING_ACCEPT.tr()),
@@ -209,8 +202,7 @@ class TradeTileState extends State<TradeTile> {
 
   @override
   Widget build(BuildContext context) {
-    final bool showActionButtons =
-        (t.status == STATUS_REQUESTED) || (t.status == STATUS_ACCEPTED);
+    final bool showActionButtons = (t.status == STATUS_REQUESTED) || (t.status == STATUS_ACCEPTED);
     return Card(
       child: Column(
         children: [

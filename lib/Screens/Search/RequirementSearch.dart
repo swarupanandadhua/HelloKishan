@@ -1,7 +1,7 @@
-import 'package:HelloKishan/Models/Products.dart';
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Search/SearchResultScreen.dart';
+import 'package:hello_kishan/Models/Products.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Search/SearchResultScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -45,7 +45,7 @@ class RequirementSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<List<String>> products = List<List<String>>();
+    List<List<String>> products = [];
     for (int i = 0; i < VEGETABLES.length; i++) {
       if (VEGETABLES[i][PROD_NAME_IDX]
           .tr()

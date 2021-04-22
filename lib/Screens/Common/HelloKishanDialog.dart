@@ -1,5 +1,5 @@
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Services/SharedPrefData.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Services/SharedPrefData.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +27,7 @@ class HelloKishanDialog {
               onChanged: (int newLang) {
                 if (oldLang != newLang) {
                   oldLang = newLang;
-                  EasyLocalization.of(context).locale =
-                      (newLang == 0) ? Locale('en', 'US') : Locale('bn', 'IN');
+                  EasyLocalization.of(context).locale = (newLang == 0) ? Locale('en', 'US') : Locale('bn', 'IN');
                   SharedPrefData.setLanguage(newLang);
                 }
                 Navigator.pop(context);
@@ -107,7 +106,7 @@ class HelloKishanDialog {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
                   },

@@ -1,4 +1,4 @@
-import 'package:HelloKishan/Models/Assets.dart';
+import 'package:hello_kishan/Models/Assets.dart';
 import 'package:flutter/material.dart';
 
 class ImageAsset {

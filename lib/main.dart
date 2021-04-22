@@ -1,7 +1,8 @@
-import 'package:HelloKishan/Models/Theme.dart';
-import 'package:HelloKishan/Screens/Welcome/WelcomeScreen.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:hello_kishan/Models/Theme.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import 'Screens/Welcome/WelcomeScreen.dart';
 
 final bool release = false;
 
@@ -22,9 +23,9 @@ class HelloKishan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
+      localizationsDelegates: [EasyLocalization.of(context).delegate],
+      supportedLocales: EasyLocalization.of(context).supportedLocales,
+      locale: EasyLocalization.of(context).locale,
       debugShowCheckedModeBanner: false,
       theme: helloKishanTheme,
       home: Scaffold(

@@ -1,4 +1,4 @@
-name: HelloKishan
+name: hello_kishan
 description: HelloKishan
 version: 1.0.2+3
 
@@ -31,9 +31,10 @@ dependencies:
   geolocator:
   provider:
   upi_pay:
+  razorpay_flutter:
 
 environment:
-  sdk:
+  sdk: ">=2.10.0 <3.0.0"
 
 dev_dependencies:
   flutter_test:

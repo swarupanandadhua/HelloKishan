@@ -1,10 +1,10 @@
-import 'package:HelloKishan/Models/Strings.dart';
-import 'package:HelloKishan/Models/Styles.dart';
-import 'package:HelloKishan/Screens/Common/GlobalKeys.dart';
-import 'package:HelloKishan/Screens/Common/HelloKishanDialog.dart';
-import 'package:HelloKishan/Screens/Common/LoadingScreen.dart';
-import 'package:HelloKishan/Screens/Common/Validator.dart';
-import 'package:HelloKishan/Services/AuthService.dart';
+import 'package:hello_kishan/Models/Strings.dart';
+import 'package:hello_kishan/Models/Styles.dart';
+import 'package:hello_kishan/Screens/Common/GlobalKeys.dart';
+import 'package:hello_kishan/Screens/Common/HelloKishanDialog.dart';
+import 'package:hello_kishan/Screens/Common/LoadingScreen.dart';
+import 'package:hello_kishan/Screens/Common/Validator.dart';
+import 'package:hello_kishan/Services/AuthService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -90,7 +90,7 @@ class OTPLoginScreenState extends State<OTPLoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(

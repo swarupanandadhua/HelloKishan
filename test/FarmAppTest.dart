@@ -1,4 +1,4 @@
-import 'package:HelloKishan/main.dart';
+import 'package:hello_kishan/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

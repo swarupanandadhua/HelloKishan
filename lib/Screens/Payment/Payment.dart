@@ -1,17 +1,18 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:upi_pay/upi_pay.dart';
 
-class UpiPayment extends StatefulWidget {
+class Payment extends StatefulWidget {
   final String amount, vpa;
 
-  const UpiPayment(this.amount, this.vpa);
+  const Payment(this.amount, this.vpa);
 
   @override
-  UpiPaymentState createState() => UpiPaymentState();
+  PaymentState createState() => PaymentState();
 }
 
-class UpiPaymentState extends State<UpiPayment> {
+class PaymentState extends State<Payment> {
   String invalidVpaError;
   Future<List<ApplicationMeta>> upiApps;
 
@@ -151,6 +152,96 @@ class UpiPaymentState extends State<UpiPayment> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class Payment2 extends StatefulWidget {
+  final String amount, vpa;
+
+  const Payment2(this.amount, this.vpa);
+
+  @override
+  Payment2State createState() => Payment2State();
+}
+
+class Payment2State extends State<Payment2> {
+  Razorpay razorpay;
+
+  @override
+  void initState() {
+    super.initState();
+    razorpay = Razorpay();
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlerPaymentSuccess);
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
+    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    razorpay.clear();
+  }
+
+  void openCheckout() {
+    Map<String, dynamic> options = {
+      'key': 'rzp_test_UPa3aC3LVTwpVR', // TODO
+      'amount': int.parse(widget.amount),
+      'name': 'Hello Kishan',
+      'description': 'Payment for Hello Kishan',
+      'prefill': {
+        'contact': '+919609750449',
+        'email': 'swarupanandadhua@gmail.com',
+      },
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error from try...catch is :');
+      debugPrint(e.toString());
+    }
+  }
+
+  void handlerPaymentSuccess(PaymentSuccessResponse response) {
+    debugPrint('Payment successful.');
+    debugPrint(response.toString());
+  }
+
+  void handlerErrorFailure(PaymentFailureResponse response) {
+    debugPrint('handlerErrorFailure: Payment failed.');
+    debugPrint(response.toString());
+  }
+
+  void handlerExternalWallet(ExternalWalletResponse response) {
+    debugPrint('External Wallet...');
+    debugPrint(response.toString());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Razor Pay Demo'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          children: [
+            Text(widget.amount),
+            SizedBox(height: 12),
+            ElevatedButton(
+              child: Text('Donate Now'),
+              onPressed: () {
+                openCheckout();
+              },
+            )
+          ],
         ),
       ),
     );
